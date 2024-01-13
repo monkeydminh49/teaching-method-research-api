@@ -18,12 +18,12 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${application.security.jwt.secret-key}")
+//    @Value("${application.security.jwt.secret-key}")
+    @Value("531c7c9f715b0e4b92d14a0f9599a3fa1e91cb83d7836a34ec0e030ecedb218d")
     private String secretKey;
-    @Value("${application.security.jwt.expiration}")
+//    @Value("${application.security.jwt.expiration}")
+    @Value("604800000")
     private long expiration;
-    @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshExpiration;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -56,10 +56,6 @@ public class JwtService {
             UserDetails userDetails
     ) {
         return buildToken(extraClaims, userDetails, expiration);
-    }
-
-    public String generateRefreshToken(UserInfoUserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
     }
 
     public String buildToken(
