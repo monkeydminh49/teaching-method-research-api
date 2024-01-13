@@ -70,13 +70,25 @@ jobs:
       with:
         username: ${{ env.DOCKERHUB_USERNAME }}
         password: ${{ env.DOCKERHUB_TOKEN }}
-    - name: Pull Docker image
-      run: |
-        sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker pull monkeydminh49/quiz-api:latest'
-    - name: Stop running container
-      run: |
-        sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker stop research-api || true'
-        sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker rm research-api || true'
-    - name: Run new container
-      run: |
-        sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker run -d --name research-api -e SPRING_DATASOURCE_USERNAME='${{ secrets.SPRING_DATASOURCE_USERNAME }}' -e SPRING_DATASOURCE_PASSWORD='${{ secrets.SPRING_DATASOURCE_PASSWORD }}' -p 80:8080 monkeydminh49/quiz-api:latest'
+
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: 172.22.8.5
+        username: ${{ env.SSH_USERNAME }}
+        password: ${{ env.SSH_PASSWORD }}
+        port: 22
+        script: |
+          whoami
+          pwd
+      
+    # - name: Pull Docker image
+    #   run: |
+    #     sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker pull monkeydminh49/quiz-api:latest'
+    # - name: Stop running container
+    #   run: |
+    #     sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker stop research-api || true'
+    #     sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker rm research-api || true'
+    # - name: Run new container
+    #   run: |
+    #     sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker run -d --name research-api -e SPRING_DATASOURCE_USERNAME='${{ secrets.SPRING_DATASOURCE_USERNAME }}' -e SPRING_DATASOURCE_PASSWORD='${{ secrets.SPRING_DATASOURCE_PASSWORD }}' -p 80:8080 monkeydminh49/quiz-api:latest'
