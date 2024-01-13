@@ -24,11 +24,11 @@ public class InitConfig {
     @Bean
     CommandLineRunner commandLineRunner() {
         return args -> {
-            User admin = userRepository.findByEmail("admin@gmail.com").orElse(null);
+            User admin = userRepository.findByUsername("admin").orElse(null);
             if (admin == null) {
                 admin = new User();
-                admin.setName("admin");
-                admin.setEmail("admin@gmail.com");
+                admin.setFirstName("admin");
+                admin.setUsername("admin");
                 admin.setPassword(passwordEncoder.encode("123456"));
                 admin.setRoles(List.of(UserRole.ROLE_ADMIN));
                 userRepository.save(admin);

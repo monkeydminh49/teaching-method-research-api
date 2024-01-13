@@ -27,9 +27,11 @@ public class User {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
-    private String name;
+    private String username;
+    private String firstName;
+    private String lastName;
     @Column(unique = true)
-    private String email;
+//    private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private List<UserRole> roles;

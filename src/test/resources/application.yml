@@ -1,0 +1,28 @@
+bezkoder:
+  openapi:
+    dev-url: http://localhost:8080
+    prod-url: http://172.22.8.5
+spring:
+  datasource:
+    url: jdbc:h2://mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    name: TeachingResearch
+application:
+  security:
+    jwt:
+      secret-key: 531c7c9f715b0e4b92d14a0f9599a3fa1e91cb83d7836a34ec0e030ecedb218d
+      expiration: 604800000 # 7 days
+      refresh-token:
+        expiration: 2592000000 # 30 days
