@@ -71,7 +71,7 @@ jobs:
         username: ${{ env.DOCKERHUB_USERNAME }}
         password: ${{ env.DOCKERHUB_TOKEN }}
 
-    - name: executing remote ssh commands using password
+    - name: Executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: 172.22.8.5
@@ -79,9 +79,11 @@ jobs:
         password: ${{ env.SSH_PASSWORD }}
         port: 22
         script: |
-          whoami
-          pwd
-      
+          sudo docker pull monkeydminh49/quiz-api:latest
+          sudo docker stop research-api || true
+          sudo docker rm research-api || true
+          sudo docker run -d --name research-api -e SPRING_DATASOURCE_USERNAME='${{ secrets.SPRING_DATASOURCE_USERNAME }}' -e SPRING_DATASOURCE_PASSWORD='${{ secrets.SPRING_DATASOURCE_PASSWORD }}' -p 80:8080 monkeydminh49/quiz-api:latest
+          
     # - name: Pull Docker image
     #   run: |
     #     sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ env.SSH_USERNAME }}@172.22.8.5 'sudo docker pull monkeydminh49/quiz-api:latest'
