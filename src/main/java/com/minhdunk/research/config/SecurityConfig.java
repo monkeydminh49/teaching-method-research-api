@@ -51,12 +51,7 @@ public class SecurityConfig {
                                 )
                                 .permitAll()
                                 .requestMatchers("/api/v1/user/**",
-                                        "api/v1/predict",
-                                        "/api/v1/subject",
-                                        "/api/v1/level",
-                                        "/api/v1/label",
-                                        "/api/v1/list-labels-by-subjectId",
-                                        "/api/v1/video"
+                                        "/api/v1/hello-**"
                                 )
                                 .authenticated()
                 )
