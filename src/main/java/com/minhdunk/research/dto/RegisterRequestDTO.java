@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +17,9 @@ import java.util.Date;
 public class RegisterRequestDTO {
     private String firstName;
     private String username;
-    private String password;
     private String lastName;
-    private Date dateOfBirth;
+    private String password;
+    private LocalDate dateOfBirth;
+    @Schema(description = "Role of user", example = "ROLE_STUDENT | ROLE_TEACHER")
+    private String role;
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +36,6 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private List<UserRole> roles;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
 }
