@@ -79,10 +79,10 @@ jobs:
         password: ${{ env.SSH_PASSWORD }}
         port: 22
         script: |
-          echo ${{ env.SSH_USERNAME }} | sudo -S docker pull monkeydminh49/quiz-api:latest
-          echo ${{ env.SSH_USERNAME }} | sudo -S docker stop research-api || true
-          echo ${{ env.SSH_USERNAME }} | sudo -S docker rm research-api || true
-          echo ${{ env.SSH_USERNAME }} | sudo -S docker run -d --name research-api -e SPRING_DATASOURCE_USERNAME='${{ secrets.SPRING_DATASOURCE_USERNAME }}' -e SPRING_DATASOURCE_PASSWORD='${{ secrets.SPRING_DATASOURCE_PASSWORD }}' -p 80:8080 monkeydminh49/quiz-api:latest
+          echo ${{ env.SSH_PASSWORD }} | sudo -S docker pull monkeydminh49/quiz-api:latest
+          echo ${{ env.SSH_PASSWORD }} | sudo -S docker stop research-api || true
+          echo ${{ env.SSH_PASSWORD }} | sudo -S docker rm research-api || true
+          echo ${{ env.SSH_PASSWORD }} | sudo -S docker run -d --name research-api -e SPRING_DATASOURCE_USERNAME='${{ secrets.SPRING_DATASOURCE_USERNAME }}' -e SPRING_DATASOURCE_PASSWORD='${{ secrets.SPRING_DATASOURCE_PASSWORD }}' -p 80:8080 monkeydminh49/quiz-api:latest
           
     # - name: Pull Docker image
     #   run: |
