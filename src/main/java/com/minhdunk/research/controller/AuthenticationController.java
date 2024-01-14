@@ -34,13 +34,4 @@ public class AuthenticationController {
         return userResponse;
     }
 
-//    @PostMapping("/refresh-token")
-//    public MappingResponse refreshToken(@RequestBody RefreshTokenRequest request) {
-//        JwtResponse token =  authenticationService.refreshToken(request);
-//        return MappingResponse.builder()
-//                .status("ok")
-//                .body(token)
-//                .message("Refresh token successfully")
-//                .build();
-//    }
 }
