@@ -10,9 +10,9 @@ import java.util.Map;
 
 @ControllerAdvice
 public class UserExceptionHandler {
-    @ExceptionHandler(UserAlreadyExistedException.class)
+    @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, ApiException> handleUserAlreadyExistedException(UserAlreadyExistedException ex) {
+    public Map<String, ApiException> handleUserAlreadyExistedException(UserAlreadyExistsException ex) {
         return Map.of("error", new ApiException(ex.getMessage(), HttpStatus.BAD_REQUEST.value()));
     }
 
