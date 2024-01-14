@@ -6,12 +6,11 @@ import com.minhdunk.research.dto.LoginRequestDTO;
 import com.minhdunk.research.dto.RegisterRequestDTO;
 import com.minhdunk.research.dto.UserOutputDTO;
 import com.minhdunk.research.entity.User;
-import com.minhdunk.research.exception.UserAlreadyExistedException;
+import com.minhdunk.research.exception.UserAlreadyExistsException;
 import com.minhdunk.research.mapper.UserMapper;
 import com.minhdunk.research.repository.UserRepository;
 import com.minhdunk.research.utils.UserRole;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -51,10 +50,11 @@ public class AuthenticationService {
         User userExists = userRepository.findByUsername(user.getUsername()).orElse(null);
         if (userExists != null) {
             log.info("User already exists");
-            throw new UserAlreadyExistedException("User already exists");
+            throw new UserAlreadyExistsException("User already exists");
         }
-        if (request.getRole().equals("ROLE_STUDENT"))user.setRoles(List.of(UserRole.ROLE_STUDENT));
-        else user.setRoles(List.of(UserRole.ROLE_TEACHER));
+        if (request.getRole().equals("ROLE_TEACHER"))user.setRoles(List.of(UserRole.ROLE_TEACHER));
+        else user.setRoles(List.of(UserRole.ROLE_STUDENT));
+        user.setPassword(encoder.encode(user.getPassword()));
 
         var savedUser = userRepository.save(user);
 

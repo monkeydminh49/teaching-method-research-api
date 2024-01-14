@@ -22,7 +22,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public UserOutputDTO registerUser(@RequestBody RegisterRequestDTO request) {
         UserOutputDTO userResponse = authenticationService.register(request);
-        log.info("Test logggggggg");
+        log.info("Test loggggggg");
         return userResponse;
     }
 

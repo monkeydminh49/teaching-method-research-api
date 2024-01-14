@@ -23,15 +23,15 @@ jobs:
           java-version: '21'
           distribution: 'adopt'
 
-      - name: Set up the Maven dependencies caching
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: Install Maven dependencies
-        run: mvn clean install -DskipTests
+#      - name: Set up the Maven dependencies caching
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: ${{ runner.os }}-m2
+#
+#      - name: Install Maven dependencies
+#        run: mvn clean install -DskipTests
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
