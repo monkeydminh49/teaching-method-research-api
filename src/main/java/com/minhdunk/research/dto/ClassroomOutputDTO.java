@@ -12,4 +12,6 @@ public class ClassroomOutputDTO {
     private String name;
     private String code;
     private Long teacherId;
+    private int numberOfStudents;
+    private Iterable<UserOutputDTO> students;
 }

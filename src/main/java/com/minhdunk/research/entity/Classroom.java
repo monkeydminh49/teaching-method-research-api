@@ -2,17 +2,15 @@ package com.minhdunk.research.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
@@ -45,11 +43,15 @@ public class Classroom {
 
     public void addStudent(User student) {
         this.students.add(student);
-        this.numberOfStudents++;
+        student.getClasses().add(this);
     }
 
     public void removeStudent(User student) {
         this.students.remove(student);
-        this.numberOfStudents--;
+    }
+
+    public int getNumberOfStudents() {
+        this.numberOfStudents = this.students.size();
+        return this.numberOfStudents;
     }
 }
