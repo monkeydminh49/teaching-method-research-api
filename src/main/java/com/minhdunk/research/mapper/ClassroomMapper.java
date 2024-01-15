@@ -2,9 +2,12 @@ package com.minhdunk.research.mapper;
 
 import com.minhdunk.research.dto.ClassroomInputDTO;
 import com.minhdunk.research.dto.ClassroomOutputDTO;
+import com.minhdunk.research.dto.ClassroomOutputInListDTO;
 import com.minhdunk.research.entity.Classroom;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ClassroomMapper {
@@ -19,4 +22,7 @@ public interface ClassroomMapper {
     @Mapping(target = "code", ignore = true)
     Classroom getClassRoomFromClassRoomInputDTO(ClassroomInputDTO classRoomInputDTO);
 
+    List<ClassroomOutputDTO> getClassRoomOutputDTOsFromClassRooms(List<Classroom> classRooms);
+
+    List<ClassroomOutputInListDTO> getClassRoomOutputInListDTOsFromClassRooms(List<Classroom> classRooms);
 }
