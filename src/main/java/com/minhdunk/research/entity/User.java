@@ -45,8 +45,22 @@ public class User {
             },
             mappedBy = "students")
     @JsonIgnore
-    private Set<ClassRoom> classes = new HashSet<>();
+    private Set<Classroom> classes = new HashSet<>();
     @OneToMany(mappedBy = "teacher")
     @JsonIgnore
-    private Set<ClassRoom> ownedClasses = new HashSet<>();
+    private Set<Classroom> ownedClasses = new HashSet<>();
+
+    public void joinClass(Classroom classroom) {
+        this.classes.add(classroom);
+    }
+
+    public void leaveClass(Classroom classroom) {
+        this.classes.remove(classroom);
+    }
+
+    public void joinOwnedClass(Classroom classroom) {
+        this.ownedClasses.add(classroom);
+    }
+
+
 }

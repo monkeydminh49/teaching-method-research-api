@@ -20,7 +20,7 @@ import java.util.Set;
 @Table(
         name = "CLASSES"
 )
-public class ClassRoom {
+public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
