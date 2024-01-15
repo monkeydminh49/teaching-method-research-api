@@ -18,4 +18,5 @@ public interface ClassroomMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "code", ignore = true)
     Classroom getClassRoomFromClassRoomInputDTO(ClassroomInputDTO classRoomInputDTO);
+
 }

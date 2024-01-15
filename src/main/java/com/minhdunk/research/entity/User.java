@@ -3,10 +3,7 @@ package com.minhdunk.research.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.minhdunk.research.utils.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -14,7 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Component

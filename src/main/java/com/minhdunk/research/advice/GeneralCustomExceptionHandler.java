@@ -1,13 +1,13 @@
 package com.minhdunk.research.advice;
 
+import com.minhdunk.research.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -21,4 +21,11 @@ public class GeneralCustomExceptionHandler extends ResponseEntityExceptionHandle
 //        ProblemDetail body = createProblemDetail(ex, status, "Missing request body", null, null, request);
 //        return handleExceptionInternal(ex, body, headers, status, request);
 //    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ProblemDetail handleNotFoundException(NotFoundException ex) {
+        log.info("Handle not found exception");
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
 }
