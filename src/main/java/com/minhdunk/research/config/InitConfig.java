@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
-
 @Configuration
 public class InitConfig {
 
@@ -30,7 +28,7 @@ public class InitConfig {
                 admin.setFirstName("admin");
                 admin.setUsername("admin");
                 admin.setPassword(passwordEncoder.encode("123456"));
-                admin.setRoles(List.of(UserRole.ROLE_ADMIN));
+                admin.setRole(UserRole.ROLE_ADMIN);
                 userRepository.save(admin);
             }
         };

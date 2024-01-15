@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserInfoUserDetails implements UserDetails {
 
@@ -22,9 +21,10 @@ public class UserInfoUserDetails implements UserDetails {
         this.lastName = user.getLastName();
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.authorities = user.getRoles().stream().map(
-                role -> new SimpleGrantedAuthority(role.name())
-        ).collect(Collectors.toList());
+//        this.authorities = user.getRoles().stream().map(
+//                role -> new SimpleGrantedAuthority(role.name())
+//        ).collect(Collectors.toList());
+        this.authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override

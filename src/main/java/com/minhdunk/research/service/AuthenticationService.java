@@ -20,8 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @Controller
 @RestController
 @RequestMapping("/api/v1")
@@ -52,8 +50,8 @@ public class AuthenticationService {
             log.info("User already exists");
             throw new UserAlreadyExistsException("User already exists");
         }
-        if (request.getRole().equals("ROLE_TEACHER"))user.setRoles(List.of(UserRole.ROLE_TEACHER));
-        else user.setRoles(List.of(UserRole.ROLE_STUDENT));
+        if (request.getRole().equals("ROLE_TEACHER"))user.setRole(UserRole.ROLE_TEACHER);
+        else user.setRole(UserRole.ROLE_STUDENT);
         user.setPassword(encoder.encode(user.getPassword()));
 
         var savedUser = userRepository.save(user);
