@@ -1,9 +1,6 @@
 package com.minhdunk.research.controller;
 
-import com.minhdunk.research.dto.ClassroomInputDTO;
-import com.minhdunk.research.dto.ClassroomOutputDTO;
-import com.minhdunk.research.dto.StudentOutputDTO;
-import com.minhdunk.research.dto.UserOutputDTO;
+import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Classroom;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.mapper.ClassroomMapper;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +39,6 @@ public class ClassroomController {
     @GetMapping("/{id}")
     public ClassroomOutputDTO getClassroomInfoById(@PathVariable("id") Long id){
         return classRoomMapper.getClassRoomOutputDTOFromClassRoom(classRoomService.getClassroomById(id));
-
     }
 
     @GetMapping()
@@ -61,5 +58,9 @@ public class ClassroomController {
         return userMapper.getStudentOutputDTOsFromUsers(students);
     }
 
+    @GetMapping("/all")
+    public List<ClassroomOutputInListDTO> getAllClassrooms(Principal principal) {
+        return  classRoomMapper.getClassRoomOutputInListDTOsFromClassRooms(classRoomService.getAllClassrooms(principal));
+    }
 
 }

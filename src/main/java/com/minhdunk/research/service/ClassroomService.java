@@ -7,19 +7,19 @@ import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.mapper.ClassroomMapper;
 import com.minhdunk.research.repository.ClassroomRepository;
 import com.minhdunk.research.repository.UserRepository;
+import com.minhdunk.research.utils.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 public class ClassroomService {
     @Autowired
-    private ClassroomRepository classRoomRepository;
+    private ClassroomRepository classroomRepository;
     @Autowired
     private ClassroomMapper classRoomMapper;
     @Autowired
@@ -35,27 +35,36 @@ public class ClassroomService {
         String code = classroomCodeGenerator.generateUniqueClassroomCode();
         classRoom.setCode(code);
         classRoom.setTeacher(teacher);
-        return classRoomRepository.save(classRoom);
+        return classroomRepository.save(classRoom);
     }
 
     public Classroom getClassroomById(Long id) {
-        Classroom classroom = classRoomRepository.findById(id).orElseThrow(() -> new NotFoundException("Classroom not found"));
+        Classroom classroom = classroomRepository.findById(id).orElseThrow(() -> new NotFoundException("Classroom not found"));
         log.info(String.valueOf(classroom.getStudents().size()));
         return classroom;
     }
 
     public Classroom getClassroomByCode(String code) {
-        return classRoomRepository.findByCode(code).orElseThrow(() -> new NotFoundException("Classroom not found"));
+        return classroomRepository.findByCode(code).orElseThrow(() -> new NotFoundException("Classroom not found"));
     }
 
     public void joinClassroom(String code, Principal principal) {
         Classroom classroom = getClassroomByCode(code);
         User student = userRepository.findByUsername(principal.getName()).get();
         classroom.addStudent(student);
-        classRoomRepository.save(classroom);
+        classroom.setNumberOfStudents(classroom.getStudents().size());
+        classroomRepository.save(classroom);
     }
 
     public List<User> getStudentsByClassroomId(Long id) {
         return userRepository.findUsersByClassesId(id);
+    }
+
+    public List<Classroom> getAllClassrooms(Principal principal) {
+        User user = userRepository.findByUsername(principal.getName()).get();
+        if (user.getRole() == UserRole.ROLE_TEACHER) {
+            return classroomRepository.findAllByTeacherId(user.getId());
+        }
+        return classroomRepository.getListClassroomsByStudentId(user.getId());
     }
 }
