@@ -18,7 +18,7 @@ public class UserOutputDTO {
     private String firstName;
     private String lastName;
     private String username;
-    private List<UserRole> roles;
+    private UserRole role;
     private String token;
     private LocalDate dateOfBirth;
 }
