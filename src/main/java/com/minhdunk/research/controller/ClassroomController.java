@@ -2,10 +2,12 @@ package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Classroom;
+import com.minhdunk.research.entity.Notification;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.mapper.ClassroomMapper;
 import com.minhdunk.research.mapper.UserMapper;
 import com.minhdunk.research.service.ClassroomService;
+import com.minhdunk.research.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,6 +31,9 @@ public class ClassroomController {
     private ClassroomMapper classRoomMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NotificationService notificationService;
+
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     public ClassroomOutputDTO createClassRoom(Principal principal, @RequestBody ClassroomInputDTO request) {
@@ -61,6 +66,17 @@ public class ClassroomController {
     @GetMapping("/all")
     public List<ClassroomOutputInListDTO> getAllClassrooms(Principal principal) {
         return  classRoomMapper.getClassRoomOutputInListDTOsFromClassRooms(classRoomService.getAllClassrooms(principal));
+    }
+
+    @PostMapping("{id}/notifications")
+    public Map<String, String> postNotificationWithClassId(Principal principal,@PathVariable("id") Long id, @RequestBody NotificationInputDTO request){
+        notificationService.postNotificationToClassWithId(principal, id, request);
+        return Map.of("status", "success","message", "Post notification to class with id = " + id + " successfully");
+    }
+
+    @GetMapping("{id}/notifications")
+    public List<Notification> getAllClassNotificationsByClassId(@PathVariable("id") Long id){
+        return notificationService.getAllClassNotificationsByClassId(id);
     }
 
 }
