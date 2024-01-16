@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
@@ -28,6 +29,7 @@ public class ClassroomService {
     private ClassroomCodeGenerator classroomCodeGenerator;
     public Classroom createClassRoom(Principal principal, ClassroomInputDTO request) {
         Classroom classRoom = classRoomMapper.getClassRoomFromClassRoomInputDTO(request);
+        classRoom.setStudents(new HashSet<>());
         // Set teacher for classroom
         User teacher = userRepository.findByUsername(principal.getName()).get();
 

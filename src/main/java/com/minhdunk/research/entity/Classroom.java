@@ -51,7 +51,12 @@ public class Classroom {
     }
 
     public int getNumberOfStudents() {
-        this.numberOfStudents = this.students.size();
+        if (this.students != null) {
+            this.students = new HashSet<>();
+            this.numberOfStudents = this.students.size();
+        } else {
+            this.numberOfStudents = 0;
+        }
         return this.numberOfStudents;
     }
 }
