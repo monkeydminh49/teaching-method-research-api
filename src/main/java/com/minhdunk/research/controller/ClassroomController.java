@@ -2,9 +2,9 @@ package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Classroom;
-import com.minhdunk.research.entity.Notification;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.mapper.ClassroomMapper;
+import com.minhdunk.research.mapper.NotificationMapper;
 import com.minhdunk.research.mapper.UserMapper;
 import com.minhdunk.research.service.ClassroomService;
 import com.minhdunk.research.service.NotificationService;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +32,8 @@ public class ClassroomController {
     private UserMapper userMapper;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -75,8 +76,8 @@ public class ClassroomController {
     }
 
     @GetMapping("/{id}/notifications")
-    public List<Notification> getAllClassNotificationsByClassId(@PathVariable("id") Long id){
-        return notificationService.getAllClassNotificationsByClassId(id);
+    public List<NotificationOutputDTO> getAllClassNotificationsByClassId(@PathVariable("id") Long id){
+        return notificationMapper.getNotificationOutputDTOsFromNotifications(notificationService.getAllClassNotificationsByClassId(id));
     }
 
 }
