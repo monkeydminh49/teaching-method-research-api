@@ -57,7 +57,7 @@ public class ClassroomController {
         return Map.of("status", "success","message", "Joined classroom " + code + " successfully");
     }
 
-    @GetMapping("{id}/students")
+    @GetMapping("/{id}/students")
     public List<StudentOutputDTO> getStudentsByClassroomId(@PathVariable("id") Long id){
         List<User> students = classRoomService.getStudentsByClassroomId(id);
         return userMapper.getStudentOutputDTOsFromUsers(students);
@@ -68,13 +68,13 @@ public class ClassroomController {
         return  classRoomMapper.getClassRoomOutputInListDTOsFromClassRooms(classRoomService.getAllClassrooms(principal));
     }
 
-    @PostMapping("{id}/notifications")
+    @PostMapping("/{id}/notifications")
     public Map<String, String> postNotificationWithClassId(Principal principal,@PathVariable("id") Long id, @RequestBody NotificationInputDTO request){
         notificationService.postNotificationToClassWithId(principal, id, request);
         return Map.of("status", "success","message", "Post notification to class with id = " + id + " successfully");
     }
 
-    @GetMapping("{id}/notifications")
+    @GetMapping("/{id}/notifications")
     public List<Notification> getAllClassNotificationsByClassId(@PathVariable("id") Long id){
         return notificationService.getAllClassNotificationsByClassId(id);
     }

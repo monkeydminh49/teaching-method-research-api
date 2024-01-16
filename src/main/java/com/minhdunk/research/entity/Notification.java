@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Builder
 @Getter
@@ -31,4 +32,7 @@ public class Notification {
     private User author;
     private String content;
     private LocalDateTime postTime;
+    public LocalDateTime getPostTime(){
+        return this.postTime.truncatedTo(ChronoUnit.SECONDS);
+    }
 }
