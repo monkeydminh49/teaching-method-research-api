@@ -15,8 +15,6 @@ public interface UserMapper {
     @Mapping(target = "token", ignore = true)
     UserOutputDTO getUserOutputDTOFromUser(User user);
 
-    @Mapping(target = "notifications", ignore = true)
-    @Mapping(target = "ownedClasses", ignore = true)
     @Mapping(target = "classes", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "id", ignore = true)
