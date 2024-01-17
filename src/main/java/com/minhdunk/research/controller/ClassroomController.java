@@ -2,9 +2,9 @@ package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Classroom;
-import com.minhdunk.research.entity.Notification;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.mapper.ClassroomMapper;
+import com.minhdunk.research.mapper.NotificationMapper;
 import com.minhdunk.research.mapper.UserMapper;
 import com.minhdunk.research.service.ClassroomService;
 import com.minhdunk.research.service.NotificationService;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +32,8 @@ public class ClassroomController {
     private UserMapper userMapper;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -57,7 +58,7 @@ public class ClassroomController {
         return Map.of("status", "success","message", "Joined classroom " + code + " successfully");
     }
 
-    @GetMapping("{id}/students")
+    @GetMapping("/{id}/students")
     public List<StudentOutputDTO> getStudentsByClassroomId(@PathVariable("id") Long id){
         List<User> students = classRoomService.getStudentsByClassroomId(id);
         return userMapper.getStudentOutputDTOsFromUsers(students);
@@ -68,15 +69,15 @@ public class ClassroomController {
         return  classRoomMapper.getClassRoomOutputInListDTOsFromClassRooms(classRoomService.getAllClassrooms(principal));
     }
 
-    @PostMapping("{id}/notifications")
+    @PostMapping("/{id}/notifications")
     public Map<String, String> postNotificationWithClassId(Principal principal,@PathVariable("id") Long id, @RequestBody NotificationInputDTO request){
         notificationService.postNotificationToClassWithId(principal, id, request);
         return Map.of("status", "success","message", "Post notification to class with id = " + id + " successfully");
     }
 
-    @GetMapping("{id}/notifications")
-    public List<Notification> getAllClassNotificationsByClassId(@PathVariable("id") Long id){
-        return notificationService.getAllClassNotificationsByClassId(id);
+    @GetMapping("/{id}/notifications")
+    public List<NotificationOutputDTO> getAllClassNotificationsByClassId(@PathVariable("id") Long id){
+        return notificationMapper.getNotificationOutputDTOsFromNotifications(notificationService.getAllClassNotificationsByClassId(id));
     }
 
 }

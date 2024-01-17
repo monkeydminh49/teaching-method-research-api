@@ -1,11 +1,13 @@
 package com.minhdunk.research.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Builder
 @Getter
@@ -27,8 +29,10 @@ public class Notification {
     private Classroom classroom;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnore
     private User author;
     private String content;
     private LocalDateTime postTime;
+    public LocalDateTime getPostTime(){
+        return this.postTime.truncatedTo(ChronoUnit.SECONDS);
+    }
 }
