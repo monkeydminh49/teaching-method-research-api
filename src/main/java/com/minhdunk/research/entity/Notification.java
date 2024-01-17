@@ -32,7 +32,5 @@ public class Notification {
     private User author;
     private String content;
     private LocalDateTime postTime;
-    public LocalDateTime getPostTime(){
-        return this.postTime.truncatedTo(ChronoUnit.SECONDS);
-    }
+
 }
