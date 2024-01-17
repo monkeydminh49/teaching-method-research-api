@@ -19,6 +19,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   application:
     name: TeachingResearch
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
 application:
   security:
     jwt:
