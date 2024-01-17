@@ -1,7 +1,7 @@
 bezkoder:
   openapi:
     dev-url: http://localhost:8080
-    prod-url: http://172.22.8.5
+    prod-url: http://172.22.0.0
 spring:
   datasource:
     url: jdbc:postgresql://172.22.0.0:5432/teaching_research
