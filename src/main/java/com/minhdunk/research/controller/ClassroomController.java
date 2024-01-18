@@ -3,9 +3,11 @@ package com.minhdunk.research.controller;
 import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Classroom;
 import com.minhdunk.research.entity.User;
+import com.minhdunk.research.mapper.AssignmentMapper;
 import com.minhdunk.research.mapper.ClassroomMapper;
 import com.minhdunk.research.mapper.NotificationMapper;
 import com.minhdunk.research.mapper.UserMapper;
+import com.minhdunk.research.service.AssignmentService;
 import com.minhdunk.research.service.ClassroomService;
 import com.minhdunk.research.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,10 @@ public class ClassroomController {
     private NotificationService notificationService;
     @Autowired
     private NotificationMapper notificationMapper;
+    @Autowired
+    private AssignmentMapper assignmentMapper;
+    @Autowired
+    private AssignmentService  assignmentService;
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -79,5 +85,21 @@ public class ClassroomController {
     public List<NotificationOutputDTO> getAllClassNotificationsByClassId(@PathVariable("id") Long id){
         return notificationMapper.getNotificationOutputDTOsFromNotifications(notificationService.getAllClassNotificationsByClassId(id));
     }
+
+    @PostMapping("/{id}/assignments")
+    public Map<String, String> postAssignmentWithClassId(@PathVariable("id") Long id, @RequestBody AssignmentInputDTO request){
+        assignmentService.postAssignmentToClassWithId(id, request);
+        return Map.of("status", "success","message", "Post assignment to class with id = " + id + " successfully");
+    }
+
+    @GetMapping("/{id}/assignments")
+    public List<AssignmentOutputDTO> getAllClassAssignmentsByClassId(@PathVariable("id") Long id){
+        return assignmentMapper.getAssignmentOutputDTOsFromAssignments(assignmentService.getAllClassAssignmentsByClassId(id));
+    }
+
+
+
+
+
 
 }

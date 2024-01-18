@@ -53,12 +53,14 @@ public class SecurityConfig {
                                         "/api/v1/refresh-token",
                                         "/api/v1/auth/**",
                                         "/v3/api-docs/**",
-                                        "/swagger-ui/**"
+                                        "/swagger-ui/**",
+                                        "/api/v1/media/**"
                                 )
                                 .permitAll()
                                 .requestMatchers("/api/v1/user/**",
                                         "/api/v1/hello-**",
-                                        "/api/v1/classrooms/**"
+                                        "/api/v1/classrooms/**",
+                                        "/api/v1/assignments/**"
                                 )
                                 .authenticated()
                 )
