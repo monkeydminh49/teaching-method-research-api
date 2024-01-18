@@ -59,9 +59,10 @@ public class ClassroomController {
     }
 
     @PostMapping("/join")
-    public Map<String, String> joinClassroom(@RequestParam("code") String code, Principal principal){
-        classRoomService.joinClassroom(code, principal);
-        return Map.of("status", "success","message", "Joined classroom " + code + " successfully");
+    public Map<String, Object> joinClassroom(@RequestParam("code") String code, Principal principal){
+        Classroom classroom = classRoomService.joinClassroom(code, principal);
+        ClassroomOutputDTO classroomOutputDTO = classRoomMapper.getClassRoomOutputDTOFromClassRoom(classroom);
+        return Map.of("status", "success", "body" , classroomOutputDTO,"message", "Joined classroom " + code + " successfully");
     }
 
     @GetMapping("/{id}/students")

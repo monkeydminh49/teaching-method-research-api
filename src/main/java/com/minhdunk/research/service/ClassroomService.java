@@ -50,12 +50,12 @@ public class ClassroomService {
         return classroomRepository.findByCode(code).orElseThrow(() -> new NotFoundException("Classroom not found"));
     }
 
-    public void joinClassroom(String code, Principal principal) {
+    public Classroom joinClassroom(String code, Principal principal) {
         Classroom classroom = getClassroomByCode(code);
         User student = userRepository.findByUsername(principal.getName()).get();
         classroom.addStudent(student);
         classroom.setNumberOfStudents(classroom.getStudents().size());
-        classroomRepository.save(classroom);
+        return classroomRepository.save(classroom);
     }
 
     public List<User> getStudentsByClassroomId(Long id) {
