@@ -54,7 +54,7 @@ public class SecurityConfig {
                                         "/api/v1/auth/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/api/v1/file-system/**"
+                                        "/api/v1/media/**"
                                 )
                                 .permitAll()
                                 .requestMatchers("/api/v1/user/**",

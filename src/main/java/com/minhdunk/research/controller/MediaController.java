@@ -22,7 +22,7 @@ public class MediaController {
     @Autowired
     private MediaService mediaService;
 
-    @PostMapping("/file-system")
+    @PostMapping("/media")
     public BaseResponse uploadFileToFIleSystem(@RequestParam("file") MultipartFile file, @RequestParam("description") String description) throws IOException {
         MediaOutputDTO uploadedMedia = mediaService.uploadFileToFileSystem(file, description);
         return BaseResponse.builder()
@@ -32,7 +32,7 @@ public class MediaController {
                 .build();
     }
 
-    @GetMapping("/file-system/{id}")
+    @GetMapping("/media/{id}")
     public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable String id) throws IOException {
         return mediaService.downloadFileFromFileSystem(id);
 

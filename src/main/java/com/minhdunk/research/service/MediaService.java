@@ -6,6 +6,7 @@ import com.minhdunk.research.repository.MediaRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,8 @@ public class MediaService {
     @Autowired
     private MediaRepository mediaRepository;
 
-    private final String FOLDER_PATH="D:\\media\\";
+    @Value("${application.media-directory}")
+    private String FOLDER_PATH;
 
     @Transactional(rollbackOn = {Exception.class, Throwable.class})
     public MediaOutputDTO uploadFileToFileSystem(MultipartFile file, String description) throws IOException {
