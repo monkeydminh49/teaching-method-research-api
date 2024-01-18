@@ -26,4 +26,5 @@ public class Media {
     private String type;
     private String filePath;
     private String description;
+    private Long size;
 }

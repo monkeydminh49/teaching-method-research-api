@@ -14,4 +14,5 @@ public class MediaOutputDTO {
     public String name;
     public String description;
     public String type;
+    public Long size;
 }

@@ -51,26 +51,32 @@ public class MediaService {
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
                 .filePath(filePath)
+                .size(file.getSize())
                 .description(description)
                 .build());
         File f = new File(filePath);
         file.transferTo(f);
-        log.info("File path: "+f.getAbsolutePath());
+        log.info("File path: " + f.getAbsolutePath());
 
         return MediaOutputDTO.builder()
                 .id(fileData.getId())
                 .name(fileData.getName())
                 .type(fileData.getType())
                 .description(fileData.getDescription())
+                .size(fileData.getSize())
                 .build();
     }
 
     public ResponseEntity<?> downloadFileFromFileSystem(String id) throws IOException {
         Optional<Media> fileData = mediaRepository.findById(id);
-        String filePath=fileData.get().getFilePath();
+        String filePath = fileData.get().getFilePath();
         byte[] file = Files.readAllBytes(new File(filePath).toPath());
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf(fileData.get().getType()))
                 .body(file);
+    }
+
+    public Media getMediaById(String id){
+        return mediaRepository.findById(id).get();
     }
 }
