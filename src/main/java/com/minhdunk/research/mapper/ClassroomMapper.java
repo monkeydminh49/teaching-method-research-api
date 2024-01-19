@@ -13,6 +13,8 @@ import java.util.List;
 public interface ClassroomMapper {
 
     @Mapping(target = "teacherId", source = "teacher.id")
+    @Mapping(target = "teacherFirstName", source = "teacher.firstName")
+    @Mapping(target = "teacherLastName", source = "teacher.lastName")
     ClassroomOutputDTO getClassRoomOutputDTOFromClassRoom(Classroom classRoom);
 
     @Mapping(target = "teacher", ignore = true)
