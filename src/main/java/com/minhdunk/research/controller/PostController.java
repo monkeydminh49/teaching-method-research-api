@@ -34,7 +34,8 @@ public class PostController {
     public BaseResponse submitAssignment(Principal principal,
                                          @RequestParam(value = "files", required = false) MultipartFile[] files,
                                          @RequestParam(value = "caption", required = false) String caption,
-                                         @RequestParam(value = "caption", required = false) PostOrientation orientation ,
+                                         @RequestParam(value = "orientation", required = false) PostOrientation orientation ,
+                                         @RequestParam(value = "member-ids", required = false) Long[] memberIds,
                                          @PathVariable Long id) {
         Set<Media> medias = new HashSet<>();
         for(MultipartFile file : files) {
@@ -50,7 +51,7 @@ public class PostController {
                 .caption(caption)
                 .orientation(orientation)
                 .build();
-        Post post = postService.submitAssignment(principal ,id, request, medias);
+        Post post = postService.submitAssignment(principal ,id, request, medias, memberIds);
         PostOutputDTO postOutputDTO = postMapper.getPostOutputDTOFromPost(post);
         return BaseResponse.builder()
                 .status("ok")
