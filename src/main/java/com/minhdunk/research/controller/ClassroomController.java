@@ -89,6 +89,7 @@ public class ClassroomController {
 
     @PostMapping("/{id}/assignments")
     public Map<String, String> postAssignmentWithClassId(@PathVariable("id") Long id, @RequestBody AssignmentInputDTO request){
+        log.info("Is assignment for Group " + request.getIsForGroup());
         assignmentService.postAssignmentToClassWithId(id, request);
         return Map.of("status", "success","message", "Post assignment to class with id = " + id + " successfully");
     }

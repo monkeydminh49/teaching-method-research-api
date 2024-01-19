@@ -2,6 +2,8 @@ package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.BaseResponse;
 import com.minhdunk.research.dto.MediaOutputDTO;
+import com.minhdunk.research.entity.Media;
+import com.minhdunk.research.mapper.MediaMapper;
 import com.minhdunk.research.service.MediaService;
 import com.minhdunk.research.service.StreamingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,16 @@ public class MediaController {
     private MediaService mediaService;
     @Autowired
     private StreamingService streamingService;
+    @Autowired
+    private MediaMapper mediaMapper;
 
     @PostMapping()
-    public BaseResponse uploadFileToFIleSystem(@RequestParam("file") MultipartFile file, @RequestParam("description") String description) throws IOException {
-        MediaOutputDTO uploadedMedia = mediaService.uploadFileToFileSystem(file, description);
+    public BaseResponse uploadFileToFIleSystem(@RequestParam("file") MultipartFile file, @RequestParam(value = "description", required = false) String description) throws IOException {
+        Media uploadedMedia = mediaService.persistMedia(file, description);
+        MediaOutputDTO mediaOutputDTO = mediaMapper.getMediaOutputDTOFromMedia(uploadedMedia);
         return BaseResponse.builder()
                 .status("ok")
-                .data(uploadedMedia)
+                .data(mediaOutputDTO)
                 .message("Upload file " + uploadedMedia.getName() + " successfully")
                 .build();
     }
