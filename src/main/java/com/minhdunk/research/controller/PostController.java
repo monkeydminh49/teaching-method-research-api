@@ -8,6 +8,7 @@ import com.minhdunk.research.entity.Post;
 import com.minhdunk.research.mapper.PostMapper;
 import com.minhdunk.research.service.MediaService;
 import com.minhdunk.research.service.PostService;
+import com.minhdunk.research.utils.PostAction;
 import com.minhdunk.research.utils.PostOrientation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -60,4 +62,28 @@ public class PostController {
                 .build();
     }
 
+    @GetMapping("/classrooms/{id}/posts")
+    public List<PostOutputDTO> getPostsByClassroomId(@PathVariable Long id) {
+        List<Post> posts = postService.getPostsByClassroomId(id);
+        return postMapper.getPostOutputDTOsFromPosts(posts);
+    }
+
+    @GetMapping("/posts/{postId}")
+    public PostOutputDTO getPostById(@PathVariable Long postId) {
+        Post post = postService.getPostByIdWithMedias(postId);
+        return postMapper.getPostOutputDTOFromPost(post);
+    }
+
+    @GetMapping("/classrooms/{id}/author/{authorId}/posts")
+    public List<PostOutputDTO> getPostsByClassroomIdAndAuthorId(@PathVariable Long id, @PathVariable Long authorId) {
+        List<Post> posts = postService.getPostsByClassroomIdAndAuthorId(id, authorId);
+        return postMapper.getPostOutputDTOsFromPosts(posts);
+    }
+
+    @PutMapping("/posts/{postId}/action/{action}")
+    public PostOutputDTO updatePostType(Principal principal, @PathVariable Long postId, @PathVariable String action) {
+        PostAction postAction = PostAction.valueOf(action.toUpperCase());
+        Post post = postService.updatePostType(principal, postId, postAction);
+        return postMapper.getPostOutputDTOFromPost(post);
+    }
 }

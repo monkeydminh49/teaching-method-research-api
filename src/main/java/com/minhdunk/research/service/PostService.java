@@ -2,7 +2,11 @@ package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.PostInputDTO;
 import com.minhdunk.research.entity.*;
+import com.minhdunk.research.exception.ForbiddenException;
+import com.minhdunk.research.exception.NotFoundException;
+import com.minhdunk.research.mapper.PostMapper;
 import com.minhdunk.research.repository.GroupRepository;
+import com.minhdunk.research.utils.PostAction;
 import com.minhdunk.research.utils.PostType;
 import com.minhdunk.research.repository.AssignmentRepository;
 import com.minhdunk.research.repository.PostRepository;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -28,6 +33,11 @@ public class PostService {
     private UserService userService;
     @Autowired
     private GroupRepository groupRepository;
+    @Autowired
+    private PostMapper postMapper;
+    @Autowired
+    private ClassroomService classroomService;
+
 
     public Post submitAssignment(Principal principal, Long assignmentId, PostInputDTO request, Set<Media> medias, Long[] memberIds) {
         User user = userService.getUserByUsername(principal.getName());
@@ -43,7 +53,7 @@ public class PostService {
                 .medias(medias)
                 .build();
 
-        if (assignment.getIsForGroup() ){
+        if (assignment.getIsForGroup()) {
             members.add(user);
             if (memberIds != null) {
                 for (Long memberId : memberIds) {
@@ -65,4 +75,40 @@ public class PostService {
 
         return postRepository.save(post);
     }
+
+    public List<Post> getPostsByClassroomId(Long id) {
+        return postRepository.getPostsByClassroomId(id);
+    }
+
+    public Post getPostByIdWithMedias(Long postId) {
+        return postRepository.findByIdWithMedias(postId).orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
+    }
+
+    public Post getPostById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
+    }
+
+    public List<Post> getPostsByClassroomIdAndAuthorId(Long id, Long authorId) {
+        return postRepository.getPostsByClassroomIdAndAuthorId(id, authorId);
+    }
+
+    public Post updatePostType(Principal principal, Long postId, PostAction action) {
+        User user = userService.getUserByUsername(principal.getName());
+        Post post = getPostByIdWithMedias(postId);
+        Classroom classroom = classroomService.getClassroomById(post.getAssignment().getClassroom().getId());
+
+        if (!user.getId().equals(classroom.getTeacher().getId())) {
+            throw new ForbiddenException("You are not allowed to perform this action");
+        }
+
+        if (action.equals(PostAction.APPROVE)) {
+            log.info("Approve post id " + postId);
+            post.setType(PostType.APPROVED);
+        } else if (action.equals(PostAction.REJECT)) {
+            log.info("Reject post id " + postId);
+            post.setType(PostType.REJECTED);
+        }
+        return postRepository.save(post);
+    }
+
 }
