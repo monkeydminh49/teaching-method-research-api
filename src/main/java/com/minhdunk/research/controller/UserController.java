@@ -6,10 +6,7 @@ import com.minhdunk.research.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -27,4 +24,10 @@ public class UserController {
     private UserOutputDTO getUserByUsernameInPrincipal(Principal principal){
         return userMapper.getUserOutputDTOFromUser(userService.getUserByUsername(principal.getName()));
     }
+
+    @GetMapping("/users/{id}")
+    private UserOutputDTO getUserById(@PathVariable Long id){
+        return userMapper.getUserOutputDTOFromUser(userService.getUserById(id));
+    }
+
 }

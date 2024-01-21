@@ -28,10 +28,14 @@ public class MediaService {
     private String FOLDER_PATH;
 
     @Transactional(rollbackOn = {Exception.class, Throwable.class})
-    public MediaOutputDTO uploadFileToFileSystem(MultipartFile file, String description) throws IOException {
+    public Media uploadFileToFileSystem(MultipartFile file, String description) throws IOException {
+        Media media = uploadFileToFileSystem(file);
+        media.setDescription(description);
+        return media;
+    }
 
-//        String filePath=FOLDER_PATH+file.getOriginalFilename();
-
+    @Transactional(rollbackOn = {Exception.class, Throwable.class})
+    public Media uploadFileToFileSystem(MultipartFile file) throws IOException {
         // Add timestamp to file name
         String fileName = file.getOriginalFilename();
         String[] fileNameParts = fileName.split("\\.");
@@ -47,25 +51,32 @@ public class MediaService {
             folder.mkdirs();
         }
 
-        Media fileData = mediaRepository.save(Media.builder()
+        Media media = Media.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
                 .filePath(filePath)
                 .size(file.getSize())
-                .description(description)
-                .build());
+                .build();
         File f = new File(filePath);
         file.transferTo(f);
         log.info("File path: " + f.getAbsolutePath());
 
-        return MediaOutputDTO.builder()
-                .id(fileData.getId())
-                .name(fileData.getName())
-                .type(fileData.getType())
-                .description(fileData.getDescription())
-                .size(fileData.getSize())
-                .build();
+        return media;
     }
+
+    @Transactional(rollbackOn = {Exception.class, Throwable.class})
+    public Media persistMedia(MultipartFile file) throws IOException {
+        Media media = uploadFileToFileSystem(file);
+        return mediaRepository.save(media);
+    }
+
+    @Transactional(rollbackOn = {Exception.class, Throwable.class})
+    public Media persistMedia(MultipartFile file, String description) throws IOException {
+        Media media = uploadFileToFileSystem(file, description);
+        return mediaRepository.save(media);
+    }
+
+
 
     public ResponseEntity<?> downloadFileFromFileSystem(String id) throws IOException {
         Optional<Media> fileData = mediaRepository.findById(id);

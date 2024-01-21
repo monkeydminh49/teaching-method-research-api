@@ -1,5 +1,6 @@
 package com.minhdunk.research.advice;
 
+import com.minhdunk.research.exception.ForbiddenException;
 import com.minhdunk.research.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -27,5 +28,12 @@ public class GeneralCustomExceptionHandler extends ResponseEntityExceptionHandle
     public ProblemDetail handleNotFoundException(NotFoundException ex) {
         log.info("Handle not found exception");
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ProblemDetail handleForbiddenException(ForbiddenException ex) {
+        log.info("Handle forbidden exception");
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 }

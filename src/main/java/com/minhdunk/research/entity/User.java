@@ -47,6 +47,15 @@ public class User {
             mappedBy = "students")
     @JsonIgnore
     private Set<Classroom> classes = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "students")
+    @JsonIgnore
+    private Set<Group> groups = new HashSet<>();
+
 //    @OneToMany(mappedBy = "teacher")
 //    @JsonIgnore
 //    private Set<Classroom> ownedClasses = new HashSet<>();

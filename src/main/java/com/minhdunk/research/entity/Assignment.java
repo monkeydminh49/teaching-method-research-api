@@ -24,5 +24,8 @@ public class Assignment {
     private String content;
     private LocalDateTime assignedDateTime;
     private LocalDateTime dueDateTime;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isForGroup;
+
 
 }
