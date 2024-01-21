@@ -10,6 +10,7 @@ import com.minhdunk.research.service.MediaService;
 import com.minhdunk.research.service.PostService;
 import com.minhdunk.research.utils.PostAction;
 import com.minhdunk.research.utils.PostOrientation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -81,7 +82,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}/action/{action}")
-    public PostOutputDTO updatePostType(Principal principal, @PathVariable Long postId, @PathVariable String action) {
+    public PostOutputDTO updatePostType(Principal principal, @PathVariable Long postId, @PathVariable @Parameter(name = "action", description = "approve | reject", example = "approve") String action) {
         PostAction postAction = PostAction.valueOf(action.toUpperCase());
         Post post = postService.updatePostType(principal, postId, postAction);
         return postMapper.getPostOutputDTOFromPost(post);
