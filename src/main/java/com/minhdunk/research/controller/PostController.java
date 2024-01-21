@@ -21,7 +21,7 @@ import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+@CrossOrigin
 @Controller
 @RestController
 @RequestMapping("/api/v1")

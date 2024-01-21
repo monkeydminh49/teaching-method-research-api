@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-
+@CrossOrigin
 @Controller
 @RestController
 @RequestMapping("/api/v1/media")
