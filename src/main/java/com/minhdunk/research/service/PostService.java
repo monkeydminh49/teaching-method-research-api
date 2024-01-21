@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +51,7 @@ public class PostService {
                 .assignment(assignment)
                 .type(PostType.PENDING)
                 .orientation(request.getOrientation())
+                .postTime(LocalDateTime.now())
                 .medias(medias)
                 .build();
 

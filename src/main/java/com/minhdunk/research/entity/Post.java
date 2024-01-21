@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class Post {
     private PostOrientation orientation;
     @Enumerated(EnumType.STRING)
     private PostType type;
-
+    private LocalDateTime postTime;
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
