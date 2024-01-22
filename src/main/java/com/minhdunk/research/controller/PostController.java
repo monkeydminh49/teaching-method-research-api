@@ -1,11 +1,15 @@
 package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.BaseResponse;
+import com.minhdunk.research.dto.CommentOutputDTO;
 import com.minhdunk.research.dto.PostInputDTO;
 import com.minhdunk.research.dto.PostOutputDTO;
+import com.minhdunk.research.entity.Comment;
 import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.entity.Post;
+import com.minhdunk.research.mapper.CommentMapper;
 import com.minhdunk.research.mapper.PostMapper;
+import com.minhdunk.research.service.CommentService;
 import com.minhdunk.research.service.MediaService;
 import com.minhdunk.research.service.PostService;
 import com.minhdunk.research.utils.PostAction;
@@ -32,6 +36,11 @@ public class PostController {
     private PostService postService;
     @Autowired
     private PostMapper postMapper;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private CommentMapper commentMapper;
+
 
     @PostMapping("/assignments/{id}/post")
     public BaseResponse submitAssignment(Principal principal,
@@ -63,11 +72,7 @@ public class PostController {
                 .build();
     }
 
-    @GetMapping("/classrooms/{id}/posts")
-    public List<PostOutputDTO> getPostsByClassroomId(@PathVariable Long id) {
-        List<Post> posts = postService.getPostsByClassroomId(id);
-        return postMapper.getPostOutputDTOsFromPosts(posts);
-    }
+
 
     @GetMapping("/posts/{postId}")
     public PostOutputDTO getPostById(@PathVariable Long postId) {
@@ -75,16 +80,15 @@ public class PostController {
         return postMapper.getPostOutputDTOFromPost(post);
     }
 
-    @GetMapping("/classrooms/{id}/author/{authorId}/posts")
-    public List<PostOutputDTO> getPostsByClassroomIdAndAuthorId(@PathVariable Long id, @PathVariable Long authorId) {
-        List<Post> posts = postService.getPostsByClassroomIdAndAuthorId(id, authorId);
-        return postMapper.getPostOutputDTOsFromPosts(posts);
-    }
-
     @PutMapping("/posts/{postId}/action/{action}")
     public PostOutputDTO updatePostType(Principal principal, @PathVariable Long postId, @PathVariable @Parameter(name = "action", description = "approve | reject", example = "approve") String action) {
         PostAction postAction = PostAction.valueOf(action.toUpperCase());
         Post post = postService.updatePostType(principal, postId, postAction);
         return postMapper.getPostOutputDTOFromPost(post);
+    }
+    @GetMapping("/posts/{postId}/comments")
+    public List<CommentOutputDTO> getAllPostComment(@PathVariable("postId") Long postId){
+        List<Comment> comments =  commentService.getAllCommentByPostId(postId);
+        return commentMapper.getCommentOutputDTOsFromComments(comments);
     }
 }
