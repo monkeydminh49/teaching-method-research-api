@@ -32,5 +32,4 @@ public class Notification {
     private User author;
     private String content;
     private LocalDateTime postTime;
-
 }

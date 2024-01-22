@@ -1,10 +1,7 @@
 package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.*;
-import com.minhdunk.research.entity.Assignment;
-import com.minhdunk.research.entity.Classroom;
-import com.minhdunk.research.entity.Post;
-import com.minhdunk.research.entity.User;
+import com.minhdunk.research.entity.*;
 import com.minhdunk.research.mapper.*;
 import com.minhdunk.research.service.AssignmentService;
 import com.minhdunk.research.service.ClassroomService;
@@ -91,7 +88,7 @@ public class ClassroomController {
 
     @GetMapping("/{id}/notifications")
     public List<NotificationOutputDTO> getAllClassNotificationsByClassId(@PathVariable("id") Long id){
-        return notificationMapper.getNotificationOutputDTOsFromNotifications(notificationService.getAllClassNotificationsByClassId(id));
+        return notificationService.getAllClassNotificationsByClassId(id);
     }
 
     @PostMapping("/{id}/assignments")
@@ -120,48 +117,7 @@ public class ClassroomController {
 
     @GetMapping("/{id}/assignments/status")
     public Map<Object, Object> getAssignmentStatusByClassroomId(@PathVariable Long id) {
-        Map<Object,Object> status = new HashMap<>();
-        Map<Object, Object> tmpStatus = new HashMap<>();
-        List<Assignment> assignments = assignmentService.getAllClassAssignmentsByClassId(id);
-        List<UserOutputDTO> students = classRoomService.getStudentOutputDTOsByClassroomId(id);
-        List<Post> posts = postService.getPostsByClassroomIdWithoutMedias(id);
-        status.put("assignments", assignmentMapper.getAssignmentOutputDTOsFromAssignments(assignments));
-
-        for (UserOutputDTO student: students) {
-            tmpStatus.put(student.getId(), new int[assignments.size()]);
-        }
-
-        for (int i = 0; i < assignments.size(); i++) {
-            Assignment assignment = assignments.get(i);
-            for (UserOutputDTO student : students) {
-                int[] studentStatus = (int[]) tmpStatus.get(student.getId());
-                for (Post post : posts) {
-                    if (post.getAuthorId().equals(student.getId()) && post.getAssignment().getId().equals(assignment.getId())) {
-                        if (post.getType().equals(PostType.APPROVED)) {
-                            studentStatus[i] = 2;
-                        } else if (post.getType().equals(PostType.PENDING)) {
-                            studentStatus[i] = 1;
-                        } else if (post.getType().equals(PostType.REJECTED)) {
-                            studentStatus[i] = -1;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-
-
-        status.put("status", tmpStatus);
-        status.put("students", students);
-        status.put("notations", Map.of(
-                0, "NOT_YET_SUBMITTED" ,
-                1, PostType.PENDING,
-                2, PostType.APPROVED,
-                -1, PostType.REJECTED
-        ));
-
-        return status;
-
+        return classRoomService.getAssignmentStatusByClassroomId(id);
     }
 
 
