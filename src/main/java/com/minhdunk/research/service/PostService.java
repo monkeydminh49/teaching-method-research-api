@@ -5,11 +5,11 @@ import com.minhdunk.research.entity.*;
 import com.minhdunk.research.exception.ForbiddenException;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.mapper.PostMapper;
+import com.minhdunk.research.repository.AssignmentRepository;
 import com.minhdunk.research.repository.GroupRepository;
+import com.minhdunk.research.repository.PostRepository;
 import com.minhdunk.research.utils.PostAction;
 import com.minhdunk.research.utils.PostType;
-import com.minhdunk.research.repository.AssignmentRepository;
-import com.minhdunk.research.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +25,6 @@ import java.util.Set;
 public class PostService {
 
     @Autowired
-    private MediaService mediaService;
-    @Autowired
     private PostRepository postRepository;
     @Autowired
     private AssignmentRepository assignmentRepository;
@@ -34,8 +32,6 @@ public class PostService {
     private UserService userService;
     @Autowired
     private GroupRepository groupRepository;
-    @Autowired
-    private PostMapper postMapper;
     @Autowired
     private ClassroomService classroomService;
 

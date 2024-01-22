@@ -1,6 +1,7 @@
 package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.NotificationInputDTO;
+import com.minhdunk.research.dto.NotificationOutputDTO;
 import com.minhdunk.research.entity.Assignment;
 import com.minhdunk.research.entity.Notification;
 import com.minhdunk.research.entity.User;
@@ -36,7 +37,7 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    public List<Notification> getAllClassNotificationsByClassId(Long id) {
+    public List<NotificationOutputDTO> getAllClassNotificationsByClassId(Long id) {
         return notificationRepository.findAllByClassroomId(id);
     }
 
