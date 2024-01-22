@@ -62,7 +62,9 @@ public class SecurityConfig {
                                         "/api/v1/hello-**",
                                         "/api/v1/classrooms/**",
                                         "/api/v1/assignments/**",
-                                        "/api/v1/posts/**"
+                                        "/api/v1/posts/**",
+                                        "/api/v1/comments/**",
+                                        "/api/v1/notifications/**"
                                 )
                                 .authenticated()
                 )

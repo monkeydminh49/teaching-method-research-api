@@ -40,4 +40,11 @@ public class NotificationService {
         return notificationRepository.findAllByClassroomId(id);
     }
 
+    public Notification getNotificationById(Long notificationId) {
+        return notificationRepository.findById(notificationId).orElseThrow(()-> new NotFoundException("Notification id not found"));
+    }
+
+    public Boolean isNotificationIdExist(Long notificationId) {
+        return notificationRepository.existsById(notificationId);
+    }
 }

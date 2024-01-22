@@ -2,14 +2,13 @@ package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Classroom;
+import com.minhdunk.research.entity.Post;
 import com.minhdunk.research.entity.User;
-import com.minhdunk.research.mapper.AssignmentMapper;
-import com.minhdunk.research.mapper.ClassroomMapper;
-import com.minhdunk.research.mapper.NotificationMapper;
-import com.minhdunk.research.mapper.UserMapper;
+import com.minhdunk.research.mapper.*;
 import com.minhdunk.research.service.AssignmentService;
 import com.minhdunk.research.service.ClassroomService;
 import com.minhdunk.research.service.NotificationService;
+import com.minhdunk.research.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +39,10 @@ public class ClassroomController {
     private AssignmentMapper assignmentMapper;
     @Autowired
     private AssignmentService  assignmentService;
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private PostMapper postMapper;
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -99,7 +102,17 @@ public class ClassroomController {
         return assignmentMapper.getAssignmentOutputDTOsFromAssignments(assignmentService.getAllClassAssignmentsByClassId(id));
     }
 
+    @GetMapping("/{id}/posts")
+    public List<PostOutputDTO> getPostsByClassroomId(@PathVariable Long id) {
+        List<Post> posts = postService.getPostsByClassroomId(id);
+        return postMapper.getPostOutputDTOsFromPosts(posts);
+    }
 
+    @GetMapping("/{id}/author/{authorId}/posts")
+    public List<PostOutputDTO> getPostsByClassroomIdAndAuthorId(@PathVariable Long id, @PathVariable Long authorId) {
+        List<Post> posts = postService.getPostsByClassroomIdAndAuthorId(id, authorId);
+        return postMapper.getPostOutputDTOsFromPosts(posts);
+    }
 
 
 

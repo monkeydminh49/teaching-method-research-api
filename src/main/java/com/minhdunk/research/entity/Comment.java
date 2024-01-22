@@ -1,5 +1,6 @@
 package com.minhdunk.research.entity;
 
+import com.minhdunk.research.utils.CommentType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -23,9 +24,9 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false)
-    private Post post;
+    private Long destinationId;
     private String content;
     private LocalDateTime postTime;
+    @Enumerated(EnumType.STRING)
+    private CommentType type;
 }
