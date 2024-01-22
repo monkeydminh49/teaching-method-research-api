@@ -10,7 +10,7 @@ spring:
 #    driver-class-name:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show_sql: true
     properties:
       hibernate:

@@ -1,6 +1,7 @@
 package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.ClassroomInputDTO;
+import com.minhdunk.research.dto.UserOutputDTO;
 import com.minhdunk.research.entity.Classroom;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.exception.NotFoundException;
@@ -68,5 +69,9 @@ public class ClassroomService {
             return classroomRepository.findAllByTeacherId(user.getId());
         }
         return classroomRepository.getListClassroomsByStudentId(user.getId());
+    }
+
+    public List<UserOutputDTO> getStudentOutputDTOsByClassroomId(Long id) {
+        return userRepository.getUserOutputDTOsByClassesId(id);
     }
 }

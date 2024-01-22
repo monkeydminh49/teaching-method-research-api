@@ -21,4 +21,13 @@ public class UserOutputDTO {
     private UserRole role;
     private String token;
     private LocalDate dateOfBirth;
+
+    public UserOutputDTO (Long id, String firstName, String lastName, String username, UserRole role, LocalDate dateOfBirth) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.role = role;
+        this.dateOfBirth = dateOfBirth;
+    }
 }
