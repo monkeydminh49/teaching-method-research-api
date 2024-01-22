@@ -1,5 +1,6 @@
 package com.minhdunk.research.repository;
 
+import com.minhdunk.research.dto.UserOutputDTO;
 import com.minhdunk.research.entity.Classroom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,5 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
        List<Classroom> getListClassroomsByStudentId(Long id);
 
        List<Classroom> findAllByTeacherId(Long id);
+
 }
