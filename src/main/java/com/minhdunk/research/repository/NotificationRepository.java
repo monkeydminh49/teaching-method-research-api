@@ -13,7 +13,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     @Query(value = "SELECT new com.minhdunk.research.dto.NotificationOutputDTO(n.id, n.author.id, n.author.avatar.id, n.content, n.postTime, c) " +
             "FROM Notification n " +
-            "JOIN Comment c " +
+            "LEFT JOIN Comment c " +
             "ON n.id = c.destinationId " +
             "AND c.type = 'COMMENT_NOTIFICATION' " +
             "AND n.classroom.id = ?1 " +
