@@ -15,6 +15,8 @@ public interface UserMapper {
     @Mapping(target = "token", ignore = true)
     UserOutputDTO getUserOutputDTOFromUser(User user);
 
+    @Mapping(target = "groups", ignore = true)
+    @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "classes", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "id", ignore = true)
