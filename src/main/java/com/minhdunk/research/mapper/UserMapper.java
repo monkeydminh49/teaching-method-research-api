@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+    @Mapping(target = "avatarId", source = "avatar.id")
     @Mapping(target = "token", ignore = true)
     UserOutputDTO getUserOutputDTOFromUser(User user);
 

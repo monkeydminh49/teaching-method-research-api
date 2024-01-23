@@ -21,7 +21,7 @@ public class UserOutputDTO {
     private UserRole role;
     private String token;
     private LocalDate dateOfBirth;
-    private MediaOutputDTO avatar;
+    private String avatarId;
 
     public UserOutputDTO (Long id, String firstName, String lastName, String username, UserRole role, LocalDate dateOfBirth) {
         this.id = id;
