@@ -20,17 +20,17 @@ import java.time.temporal.ChronoUnit;
 public class NotificationOutputDTO {
     private Long id;
     private Long authorId;
-    private String avatarId;
+    private String authorAvatarId;
     private String content;
     private LocalDateTime postTime;
     private CommentOutputDTO lastComment;
     @JsonIgnore
     private CommentMapperImpl commentMapper;
 
-    public NotificationOutputDTO(Long id, Long authorId, String avatarId ,String content, LocalDateTime postTime, Comment lastComment) {
+    public NotificationOutputDTO(Long id, Long authorId, String authorAvatarId ,String content, LocalDateTime postTime, Comment lastComment) {
         this.commentMapper = new CommentMapperImpl();
         this.id = id;
-        this.avatarId = avatarId;
+        this.authorAvatarId = authorAvatarId;
         this.authorId = authorId;
         this.content = content;
         this.postTime = postTime;

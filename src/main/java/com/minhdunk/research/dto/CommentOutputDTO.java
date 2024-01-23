@@ -16,10 +16,12 @@ public class CommentOutputDTO {
     private Long userId;
     private String userFirstName;
     private String userLastName;
+    private String userAvatarId;
     private Long destinationId;
     private String content;
     private LocalDateTime postTime;
     private CommentType type;
+
 
     public LocalDateTime getPostTime(){
         return this.postTime.truncatedTo(ChronoUnit.SECONDS);

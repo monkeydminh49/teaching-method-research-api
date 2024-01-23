@@ -10,6 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
+    @Mapping(target = "userAvatarId", source = "user.avatar.id")
     @Mapping(target = "userLastName", source = "user.lastName")
     @Mapping(target = "userFirstName", source = "user.firstName")
     @Mapping(target = "userId", source = "user.id")
