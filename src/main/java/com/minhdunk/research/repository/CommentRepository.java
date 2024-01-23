@@ -10,14 +10,26 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query("SELECT new com.minhdunk.research.dto.CommentOutputDTO(c.id, c.user.id, c.destinationId, c.content, c.postTime, c.type) " +
+    @Query("SELECT new com.minhdunk.research.dto.CommentOutputDTO(c.id, c.user.id, c.user.firstName, c.user.lastName ,c.user.avatar.id, c.destinationId, c.content, c.postTime, c.type) " +
             "FROM Comment c " +
             "WHERE c.id = ?1")
     CommentOutputDTO getCommentOutputDtoById(Long commentId);
 
-    @Query("SELECT c FROM Comment c JOIN Post p ON c.destinationId = p.id WHERE p.id = ?1 AND c.type = 'COMMENT_POST'")
+    @Query("SELECT c " +
+            "FROM Comment c " +
+            "JOIN FETCH c.user " +
+            "JOIN Post p " +
+            "ON c.destinationId = p.id " +
+            "WHERE p.id = ?1 " +
+            "AND c.type = 'COMMENT_POST'")
     List<Comment> findAllCommentsByPostId(Long postId);
 
-    @Query("SELECT c FROM Comment c JOIN Notification n ON c.destinationId = n.id WHERE n.id = ?1 AND c.type = 'COMMENT_NOTIFICATION'")
+    @Query("SELECT c " +
+            "FROM Comment c " +
+            "JOIN FETCH c.user " +
+            "JOIN Notification n " +
+            "ON c.destinationId = n.id " +
+            "WHERE n.id = ?1 " +
+            "AND c.type = 'COMMENT_NOTIFICATION'")
     List<Comment> findAllCommentsByNotificationId(Long notificationId);
 }
