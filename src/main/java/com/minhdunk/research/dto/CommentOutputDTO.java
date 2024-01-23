@@ -14,6 +14,8 @@ import java.time.temporal.ChronoUnit;
 public class CommentOutputDTO {
     private Long id;
     private Long userId;
+    private String userFirstName;
+    private String userLastName;
     private Long destinationId;
     private String content;
     private LocalDateTime postTime;
