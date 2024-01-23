@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    @Query(value = "SELECT new com.minhdunk.research.dto.NotificationOutputDTO(n.id, n.author.id, n.author.avatar.id, n.content, n.postTime, c) " +
+    @Query(value = "SELECT new com.minhdunk.research.dto.NotificationOutputDTO(n.id, n.author.id, n.author.firstName, n.author.lastName, n.author.avatar.id, n.content, n.postTime, c) " +
             "FROM Notification n " +
             "LEFT JOIN Comment c " +
             "ON n.id = c.destinationId " +
