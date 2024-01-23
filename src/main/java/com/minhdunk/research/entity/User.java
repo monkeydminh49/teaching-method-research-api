@@ -39,6 +39,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
     private LocalDate dateOfBirth;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "avatar_id")
+    private Media avatar;
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,

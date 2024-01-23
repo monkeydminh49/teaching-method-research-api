@@ -90,4 +90,16 @@ public class MediaService {
     public Media getMediaById(String id){
         return mediaRepository.findById(id).get();
     }
+
+    public void deleteMedia(String id) {
+        // remove file from file system
+        Optional<Media> media = mediaRepository.findById(id);
+        if (media.isPresent()) {
+            File file = new File(media.get().getFilePath());
+            boolean isDeleted =  file.delete();
+            log.info("Old avatar " + media.get().getName() + " is deleted: " + isDeleted);
+        }
+
+        mediaRepository.delete(media.get());
+    }
 }
