@@ -11,12 +11,12 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    @Query(value = "SELECT new com.minhdunk.research.dto.NotificationOutputDTO(n.id, n.author.id, n.content, n.postTime, c) " +
+    @Query(value = "SELECT new com.minhdunk.research.dto.NotificationOutputDTO(n.id, n.author.id, n.author.avatar.id, n.content, n.postTime, c) " +
             "FROM Notification n " +
             "JOIN Comment c " +
             "ON n.id = c.destinationId " +
             "AND c.type = 'COMMENT_NOTIFICATION' " +
             "AND n.classroom.id = ?1 " +
-            "AND c.postTime = (SELECT MAX(c2.postTime) FROM Comment c2 WHERE c2.destinationId = c.destinationId)")
+            "AND c.postTime in (SELECT MAX(c2.postTime) FROM Comment c2  where c2.type = 'COMMENT_NOTIFICATION' group by c2.destinationId) ")
     List<NotificationOutputDTO> findAllByClassroomId(Long id);
 }
