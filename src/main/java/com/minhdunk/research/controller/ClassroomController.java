@@ -104,8 +104,8 @@ public class ClassroomController {
     }
 
     @GetMapping("/{id}/posts")
-    public List<PostOutputDTO> getPostsByClassroomId(@PathVariable Long id) {
-        List<Post> posts = postService.getPostsByClassroomId(id);
+    public List<PostOutputDTO> getPostsByClassroomId(@PathVariable Long id, @RequestParam(required = false) PostType type) {
+        List<Post> posts = postService.getPostsByClassroomId(id, type);
         return postMapper.getPostOutputDTOsFromPosts(posts);
     }
 

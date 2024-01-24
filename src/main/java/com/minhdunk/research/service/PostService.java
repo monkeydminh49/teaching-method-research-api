@@ -78,6 +78,13 @@ public class PostService {
         return postRepository.getPostsByClassroomId(id);
     }
 
+    public List<Post> getPostsByClassroomId(Long id, PostType type) {
+        if (type == null) {
+            return getPostsByClassroomId(id);
+        }
+        return postRepository.getPostsByClassroomId(id, type);
+    }
+
     public List<Post> getPostsByClassroomIdWithoutMedias(Long id) {
         return postRepository.getPostsByClassroomIdWithoutMedias(id);
     }
@@ -85,6 +92,7 @@ public class PostService {
     public Post getPostByIdWithMedias(Long postId) {
         return postRepository.findByIdWithMedias(postId).orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
     }
+
 
     public Post getPostById(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));

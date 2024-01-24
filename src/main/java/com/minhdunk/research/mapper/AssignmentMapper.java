@@ -13,7 +13,7 @@ public interface AssignmentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "classroom", ignore = true)
     @Mapping(target = "assignedDateTime", ignore = true)
-    @Mapping(target = "isForGroup", source = "assignmentInputDTO.isForGroup")
+    @Mapping(target = "isForGroup", source = "assignmentInputDTO.isForGroup", defaultExpression = "java(false)")
     Assignment getAssignmentFromAssignmentInputDTO(AssignmentInputDTO assignmentInputDTO);
 
     AssignmentOutputDTO getAssignmentOutputDTOFromAssignment(Assignment assignment);

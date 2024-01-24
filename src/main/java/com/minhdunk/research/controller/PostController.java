@@ -14,6 +14,7 @@ import com.minhdunk.research.service.MediaService;
 import com.minhdunk.research.service.PostService;
 import com.minhdunk.research.utils.PostAction;
 import com.minhdunk.research.utils.PostOrientation;
+import com.minhdunk.research.utils.PostType;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
