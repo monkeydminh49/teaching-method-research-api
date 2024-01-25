@@ -73,7 +73,7 @@ jobs:
     - name: Docker Compose Action
       uses: isbang/compose-action@v1.5.1
       with:
-          compose_file: ../../docker-compose.yml
+          compose_file: "../../docker-compose.yml"
 
 
         #    - name: Executing remote ssh commands using password
