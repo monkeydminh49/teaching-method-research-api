@@ -9,8 +9,7 @@ services:
       - my_network
 
   spring-boot-app:
-    image: spring-boot-app
-    build: .
+    image: monkeydminh49/research-api:latest
     ports:
       - "10049:8080"
     environment:
