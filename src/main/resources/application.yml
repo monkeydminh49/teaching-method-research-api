@@ -1,11 +1,11 @@
 bezkoder:
   openapi:
     dev-url: http://localhost:8080
-    prod-url: http://172.22.0.0
+    prod-url: http://118.140.229.222
 spring:
   datasource:
-    url: jdbc:postgresql://172.22.0.0:5432/teaching_research
-    username: postgres
+    url: jdbc:postgresql://118.140.229.222:2003/teaching_research
+    username: minhdunk
     password: dangminh49
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -28,4 +28,4 @@ application:
     jwt:
       secret-key: 531c7c9f715b0e4b92d14a0f9599a3fa1e91cb83d7836a34ec0e030ecedb218d
       expiration: 86400000 # 1 day
-  media-directory: "/home/minhdunk/media/"
+  media-directory: "/home/proptit/dangminh/media"
