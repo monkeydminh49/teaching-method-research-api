@@ -64,7 +64,7 @@ jobs:
         target: "/home/proptit/dangminh/"
         script: |
           cd /home/proptit/dangminh
-          docker compose up
+          docker-compose up -d
 #          docker compose -f docker-compose.yaml up -d
 #        script: |
 #          echo ${{ env.SSH_PASSWORD }} | sudo -S docker pull monkeydminh49/research-api:latest
