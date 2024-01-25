@@ -18,8 +18,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Port forwarding
-        run: sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -f -N -L 2003:localhost:2003 ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST_IP_ADDRESS }}
+#      - name: Port forwarding
+#        run: sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -f -N -L 2003:localhost:2003 ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST_IP_ADDRESS }}
 
 
       - name: Set up JDK 21
@@ -69,18 +69,25 @@ jobs:
         username: ${{ env.DOCKERHUB_USERNAME }}
         password: ${{ env.DOCKERHUB_TOKEN }}
 
-    - name: Executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.3
+
+    - name: Docker Compose Action
+      uses: isbang/compose-action@v1.5.1
       with:
-        host: ${{ env.HOST_IP_ADDRESS }}
-        username: ${{ env.SSH_USERNAME }}
-        password: ${{ env.SSH_PASSWORD }}
-        port: 22
-        script: |
-          echo ${{ env.SSH_PASSWORD }} | sudo -S docker pull monkeydminh49/research-api:latest
-          echo ${{ env.SSH_PASSWORD }} | sudo -S docker stop research-api || true
-          echo ${{ env.SSH_PASSWORD }} | sudo -S docker rm research-api || true
-          echo ${{ env.SSH_PASSWORD }} | sudo -S docker run -d --name research-api -p 10049:8080 monkeydminh49/research-api:latest
+          compose_file: docker-compose.yml
+
+
+        #    - name: Executing remote ssh commands using password
+#      uses: appleboy/ssh-action@v1.0.3
+#      with:
+#        host: ${{ env.HOST_IP_ADDRESS }}
+#        username: ${{ env.SSH_USERNAME }}
+#        password: ${{ env.SSH_PASSWORD }}
+#        port: 22
+#        script: |
+#          echo ${{ env.SSH_PASSWORD }} | sudo -S docker pull monkeydminh49/research-api:latest
+#          echo ${{ env.SSH_PASSWORD }} | sudo -S docker stop research-api || true
+#          echo ${{ env.SSH_PASSWORD }} | sudo -S docker rm research-api || true
+#          echo ${{ env.SSH_PASSWORD }} | sudo -S docker run -d --name research-api -p 10049:8080 monkeydminh49/research-api:latest
           
     # - name: Pull Docker image
     #   run: |
