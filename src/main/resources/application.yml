@@ -4,7 +4,7 @@ bezkoder:
     prod-url: http://118.140.229.222
 spring:
   datasource:
-    url: jdbc:postgresql://dangminh-db:2003/teaching_research
+    url: jdbc:postgresql://118.140.229.222:2003/teaching_research
     username: minhdunk
     password: dangminh49
     driver-class-name: org.postgresql.Driver
