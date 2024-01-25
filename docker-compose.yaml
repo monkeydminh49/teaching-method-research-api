@@ -1,0 +1,27 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: minhdunk
+      POSTGRES_PASSWORD: dangminh49
+    networks:
+      - my_network
+
+  spring-boot-app:
+    image: spring-boot-app
+    build: .
+    ports:
+      - "80:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: minhdunk
+      SPRING_DATASOURCE_PASSWORD: dangminh49
+    depends_on:
+      - postgres
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
