@@ -18,6 +18,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Port forwarding
+        run: echo ${{ env.SSH_PASSWORD }} | ssh -f -N -L 2003:localhost:2003 ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST_IP_ADDRESS }}
+
+
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
