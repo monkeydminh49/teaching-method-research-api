@@ -70,10 +70,8 @@ jobs:
         password: ${{ env.DOCKERHUB_TOKEN }}
 
 
-    - name: Docker Compose Action
-      uses: isbang/compose-action@v1.5.1
-      with:
-          compose_file: "docker-compose.yaml"
+    - name: Start Docker Compose services
+      run: docker compose -f docker-compose.yaml up -d
 
 
         #    - name: Executing remote ssh commands using password
