@@ -17,27 +17,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-#      - name: Port forwarding
-#        run: sshpass -p ${{ env.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -f -N -L 2003:localhost:2003 ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST_IP_ADDRESS }}
-
-
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'adopt'
-
-#      - name: Set up the Maven dependencies caching
-#        uses: actions/cache@v3
-#        with:
-#          path: ~/.m2
-#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-#          restore-keys: ${{ runner.os }}-m2
-#
-#      - name: Install Maven dependencies
-#        run: mvn clean install -DskipTests
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -69,18 +53,18 @@ jobs:
         username: ${{ env.DOCKERHUB_USERNAME }}
         password: ${{ env.DOCKERHUB_TOKEN }}
 
-
-    - name: Start Docker Compose services
-      run: docker compose -f docker-compose.yaml up -d
-
-
-        #    - name: Executing remote ssh commands using password
-#      uses: appleboy/ssh-action@v1.0.3
-#      with:
-#        host: ${{ env.HOST_IP_ADDRESS }}
-#        username: ${{ env.SSH_USERNAME }}
-#        password: ${{ env.SSH_PASSWORD }}
-#        port: 22
+    - name: Executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ env.HOST_IP_ADDRESS }}
+        username: ${{ env.SSH_USERNAME }}
+        password: ${{ env.SSH_PASSWORD }}
+        port: 22
+        source: "./docker-compose.yml"
+        target: "/home/proptit/dangminh/"
+        script: |
+          cd /home/proptit/dangminh
+          docker compose -f docker-compose.yaml up -d
 #        script: |
 #          echo ${{ env.SSH_PASSWORD }} | sudo -S docker pull monkeydminh49/research-api:latest
 #          echo ${{ env.SSH_PASSWORD }} | sudo -S docker stop research-api || true
