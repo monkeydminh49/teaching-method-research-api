@@ -4,9 +4,9 @@ bezkoder:
     prod-url: http://118.140.229.222
 spring:
   datasource:
-    url: jdbc:postgresql://118.140.229.222:2003/teaching_research
-    username: minhdunk
-    password: dangminh49
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
