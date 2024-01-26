@@ -1,7 +1,7 @@
 bezkoder:
   openapi:
     dev-url: http://localhost:8080
-    prod-url: http://118.140.229.222
+    prod-url: http://localhost:10049
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}
@@ -11,7 +11,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show_sql: false
+    show_sql: true
     properties:
       hibernate:
         format_sql: true
