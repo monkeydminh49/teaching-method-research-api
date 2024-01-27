@@ -15,11 +15,11 @@ services:
 
   spring-boot-app:
     image: monkeydminh49/research-api:latest
-    container_name: research-api
+    container_name: dangminh-research-api
     ports:
       - "10049:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:2003/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dangminh-db:5432/postgres
       SPRING_DATASOURCE_USERNAME: minhdunk
       SPRING_DATASOURCE_PASSWORD: dangminh49
     depends_on:

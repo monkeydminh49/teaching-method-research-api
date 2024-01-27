@@ -18,6 +18,7 @@ public class PostOutputDTO {
     private Long id;
     private Long authorId;
     private Long assignmentId;
+    private String title;
     private String caption;
     private PostOrientation orientation;
     private PostType type;

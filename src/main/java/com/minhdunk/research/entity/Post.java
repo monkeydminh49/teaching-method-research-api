@@ -25,6 +25,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long authorId;
+    private String title;
     private String caption;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "assignment_id", referencedColumnName = "id", nullable = false)

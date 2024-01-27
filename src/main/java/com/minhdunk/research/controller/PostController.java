@@ -16,6 +16,7 @@ import com.minhdunk.research.utils.PostAction;
 import com.minhdunk.research.utils.PostOrientation;
 import com.minhdunk.research.utils.PostType;
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ import java.util.Set;
 @CrossOrigin
 @Controller
 @RestController
+@Slf4j
 @RequestMapping("/api/v1")
 public class PostController {
     @Autowired
@@ -46,25 +48,31 @@ public class PostController {
     @PostMapping("/assignments/{id}/post")
     public BaseResponse submitAssignment(Principal principal,
                                          @RequestParam(value = "files", required = false) MultipartFile[] files,
+                                         @RequestParam(value = "title", required = false) String title,
                                          @RequestParam(value = "caption", required = false) String caption,
                                          @RequestParam(value = "orientation", required = false) PostOrientation orientation ,
                                          @RequestParam(value = "member-ids", required = false) Long[] memberIds,
                                          @PathVariable Long id) {
         Set<Media> medias = new HashSet<>();
-        for(MultipartFile file : files) {
-            try {
-                Media media = mediaService.persistMedia(file);
-                medias.add(media);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        if(files != null){
+            for(MultipartFile file : files) {
+                try {
+                    Media media = mediaService.persistMedia(file);
+                    medias.add(media);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
+
         PostInputDTO request = PostInputDTO.builder()
+                .title(title)
                 .caption(caption)
                 .orientation(orientation)
                 .build();
         Post post = postService.submitAssignment(principal ,id, request, medias, memberIds);
+        log.info(post.getTitle());
         PostOutputDTO postOutputDTO = postMapper.getPostOutputDTOFromPost(post);
         return BaseResponse.builder()
                 .status("ok")

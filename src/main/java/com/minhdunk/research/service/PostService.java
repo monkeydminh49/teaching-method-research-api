@@ -10,6 +10,7 @@ import com.minhdunk.research.repository.GroupRepository;
 import com.minhdunk.research.repository.PostRepository;
 import com.minhdunk.research.utils.PostAction;
 import com.minhdunk.research.utils.PostType;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class PostService {
     @Autowired
     private ClassroomService classroomService;
 
-
+    @Transactional
     public Post submitAssignment(Principal principal, Long assignmentId, PostInputDTO request, Set<Media> medias, Long[] memberIds) {
         User user = userService.getUserByUsername(principal.getName());
         Assignment assignment = assignmentRepository.findById(assignmentId).get();
@@ -43,6 +44,7 @@ public class PostService {
         Group group = new Group();
 
         Post post = Post.builder()
+                .title(request.getTitle())
                 .caption(request.getCaption())
                 .assignment(assignment)
                 .type(PostType.PENDING)
