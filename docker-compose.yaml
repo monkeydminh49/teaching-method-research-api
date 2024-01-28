@@ -19,7 +19,7 @@ services:
     ports:
       - "10049:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://dangminh-db:5432/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dangminh-db:5432/teaching_research
       SPRING_DATASOURCE_USERNAME: minhdunk
       SPRING_DATASOURCE_PASSWORD: dangminh49
     depends_on:
