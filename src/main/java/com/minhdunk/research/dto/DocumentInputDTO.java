@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DocumentInputDTO {
     private String title;
-    private String description;
+    private String veryFirstText;
     private DocumentType type;
     private String notionPageId;
 }

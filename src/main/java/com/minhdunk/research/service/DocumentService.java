@@ -28,12 +28,15 @@ public class DocumentService {
     @Autowired
     private MediaService mediaService;
 
-    public Document createDocument(Principal principal, DocumentInputDTO request, MultipartFile audio) throws IOException {
+    public Document createDocument(Principal principal, DocumentInputDTO request, MultipartFile audio, MultipartFile thumbnail) throws IOException {
         User user = userService.getUserByUsername(principal.getName());
         Document document = documentMapper.getDocumentFromDocumentInputDto(request);
         document.setAuthor(user);
         document.setPostTime(LocalDateTime.now());
-
+        if (thumbnail != null) {
+            Media savedThumbnail = mediaService.persistMedia(thumbnail);
+            document.setThumbnail(savedThumbnail);
+        }
         if (audio != null) {
             Media savedAudio = mediaService.persistMedia(audio);
             document.setAudio(savedAudio);

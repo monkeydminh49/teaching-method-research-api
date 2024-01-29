@@ -25,11 +25,13 @@ public class Document {
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private User author;
     private String title;
-    private String description;
+    private String veryFirstText;
     private LocalDateTime postTime;
     @Enumerated(EnumType.STRING)
     private DocumentType type;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Media audio;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Media thumbnail;
     private String notionPageId;
 }

@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface DocumentMapper {
     DocumentOutputDTO getDocumentOutputDtoFromDocument(Document document);
+    @Mapping(target = "thumbnail", ignore = true)
     @Mapping(target = "postTime", ignore = true)
-    @Mapping(target = "notionPageId", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "audio", ignore = true)

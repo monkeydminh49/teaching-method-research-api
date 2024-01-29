@@ -8,6 +8,7 @@ import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.service.DocumentService;
 import com.minhdunk.research.service.MediaService;
 import com.minhdunk.research.utils.DocumentType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.List;
 @Controller
 @RestController
 @CrossOrigin
+@Slf4j
 @RequestMapping("/api/v1/documents")
 public class DocumentController {
     @Autowired
@@ -31,15 +33,17 @@ public class DocumentController {
     @PostMapping()
     public DocumentOutputDTO createDocument(
             Principal principal,
-            @RequestParam(value = "file", required = false) MultipartFile audio,
+            @RequestParam(value = "audio", required = false) MultipartFile audio,
+            @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
             @RequestParam(value = "title", required = true) String title,
-            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "veryFirstText", required = false) String veryFirstText,
             @RequestParam(value = "type", required = false) DocumentType type,
             @RequestParam(value = "notionPageId", required = false) String notionPageId
     ) throws IOException {
-        DocumentInputDTO request = new DocumentInputDTO(title, description, type, notionPageId);
+        DocumentInputDTO request = new DocumentInputDTO(title, veryFirstText, type, notionPageId);
+        log.info(notionPageId + " " + thumbnail.getName());
         Document document = null;
-        document = documentService.createDocument(principal, request, audio);
+        document = documentService.createDocument(principal, request, audio, thumbnail);
         return documentMapper.getDocumentOutputDtoFromDocument(document);
     }
 

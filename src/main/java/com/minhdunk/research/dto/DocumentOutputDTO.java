@@ -16,9 +16,10 @@ public class DocumentOutputDTO {
     private Long id;
     private UserOutputDTO author;
     private String title;
-    private String description;
+    private String veryFirstText;
     private LocalDateTime postTime;
     private DocumentType type;
     private MediaOutputDTO audio;
     private String notionPageId;
+    private MediaOutputDTO thumbnail;
 }
