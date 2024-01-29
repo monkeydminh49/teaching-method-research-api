@@ -2,6 +2,7 @@ package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.MediaOutputDTO;
 import com.minhdunk.research.entity.Media;
+import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.repository.MediaRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +81,7 @@ public class MediaService {
 
     public ResponseEntity<?> downloadFileFromFileSystem(String id) throws IOException {
         Optional<Media> fileData = mediaRepository.findById(id);
-        String filePath = fileData.get().getFilePath();
+        String filePath = fileData.orElseThrow(()->new NotFoundException("File not found")).getFilePath();
         byte[] file = Files.readAllBytes(new File(filePath).toPath());
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf(fileData.get().getType()))
