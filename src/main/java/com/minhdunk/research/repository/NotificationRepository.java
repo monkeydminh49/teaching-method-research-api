@@ -15,8 +15,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
             "FROM Notification n " +
             "LEFT JOIN Comment c " +
             "ON n.id = c.destinationId " +
-            "WHERE c.type = 'COMMENT_NOTIFICATION' " +
-            "AND n.classroom.id = ?1 " +
-            "AND c.postTime in (SELECT MAX(c2.postTime) FROM Comment c2  where c2.type = 'COMMENT_NOTIFICATION' group by c2.destinationId) ")
+            "AND c.type = 'COMMENT_NOTIFICATION' " +
+            "AND c.postTime in (SELECT MAX(c2.postTime) FROM Comment c2  where c2.type = 'COMMENT_NOTIFICATION' group by c2.destinationId) " +
+            "WHERE n.classroom.id = ?1 ")
     List<NotificationOutputDTO> findAllByClassroomId(Long id);
 }
