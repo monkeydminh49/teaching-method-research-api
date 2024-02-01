@@ -1,5 +1,6 @@
 package com.minhdunk.research.controller;
 
+import com.minhdunk.research.dto.BaseResponse;
 import com.minhdunk.research.dto.DocumentInputDTO;
 import com.minhdunk.research.dto.DocumentOutputDTO;
 import com.minhdunk.research.entity.Document;
@@ -57,6 +58,28 @@ public class DocumentController {
     public DocumentOutputDTO getDocumentById(@PathVariable("id") Long id) {
         return documentMapper.getDocumentOutputDtoFromDocument(documentService.getDocumentById(id));
     }
+
+    @PutMapping("/{id}/like")
+    public BaseResponse likeDocument(@PathVariable("id") Long id, Principal principal) {
+        documentService.likeDocument(id, principal);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Add document to favourite list successfully!")
+                .data(null)
+                .build();
+    }
+
+    @PutMapping("/{id}/unlike")
+    public BaseResponse unlikeDocument(@PathVariable("id") Long id, Principal principal) {
+        documentService.unlikeDocument(id, principal);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Remove document from favourite list successfully!")
+                .data(null)
+                .build();
+    }
+
+
 
 
 }

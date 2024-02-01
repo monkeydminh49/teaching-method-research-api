@@ -1,8 +1,10 @@
 package com.minhdunk.research.service;
 
+import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.exception.NotFoundException;
+import com.minhdunk.research.repository.DocumentRepository;
 import com.minhdunk.research.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -17,6 +21,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private MediaService mediaService;
+    @Autowired
+    private DocumentRepository documentRepository;
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(()->new NotFoundException("User with username " + username + " not found."));
     }
@@ -35,5 +41,9 @@ public class UserService {
 
         user.setAvatar(mediaService.persistMedia(avatar));
         return userRepository.save(user);
+    }
+
+    public List<Document> getFavouriteDocuments(Long id) {
+        return documentRepository.findAllByLikedByUsersId(id);
     }
 }

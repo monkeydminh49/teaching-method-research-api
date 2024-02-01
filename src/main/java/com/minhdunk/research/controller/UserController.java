@@ -1,6 +1,8 @@
 package com.minhdunk.research.controller;
 
+import com.minhdunk.research.dto.DocumentOutputDTO;
 import com.minhdunk.research.dto.UserOutputDTO;
+import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.mapper.UserMapper;
 import com.minhdunk.research.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @CrossOrigin
 @Controller
@@ -22,6 +25,9 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private DocumentMapper documentMapper;
+
     @GetMapping("/user")
     private UserOutputDTO getUserByUsernameInPrincipal(Principal principal){
         return userMapper.getUserOutputDTOFromUser(userService.getUserByUsername(principal.getName()));
@@ -37,4 +43,8 @@ public class UserController {
         return userMapper.getUserOutputDTOFromUser(userService.updateAvatar(principal, avatar));
     }
 
+    @GetMapping("/users/{id}/favourite-documents")
+    private List<DocumentOutputDTO> getFavouriteDocuments(@PathVariable Long id){
+        return documentMapper.getDocumentOutputDtosFromDocuments(userService.getFavouriteDocuments(id));
+    }
 }

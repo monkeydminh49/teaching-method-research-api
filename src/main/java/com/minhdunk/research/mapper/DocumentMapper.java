@@ -11,6 +11,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface DocumentMapper {
     DocumentOutputDTO getDocumentOutputDtoFromDocument(Document document);
+    @Mapping(target = "numberOfLikes", ignore = true)
+    @Mapping(target = "likedByUsers", ignore = true)
     @Mapping(target = "thumbnail", ignore = true)
     @Mapping(target = "postTime", ignore = true)
     @Mapping(target = "id", ignore = true)
