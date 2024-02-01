@@ -60,6 +60,26 @@ public class User {
     @JsonIgnore
     private Set<Group> groups = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "likedByUsers")
+    @JsonIgnore
+    private Set<Document> favouriteDocuments = new HashSet<>();
+
+    public void addFavouriteDocument(Document document) {
+        if (favouriteDocuments == null) {
+            favouriteDocuments = new HashSet<>();
+        }
+        this.favouriteDocuments.add(document);
+    }
+
+    public void removeFavouriteDocument(Document document) {
+        this.favouriteDocuments.remove(document);
+    }
+
 //    @OneToMany(mappedBy = "teacher")
 //    @JsonIgnore
 //    private Set<Classroom> ownedClasses = new HashSet<>();

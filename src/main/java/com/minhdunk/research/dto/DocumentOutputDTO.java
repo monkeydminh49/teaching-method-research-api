@@ -22,4 +22,5 @@ public class DocumentOutputDTO {
     private MediaOutputDTO audio;
     private String notionPageId;
     private MediaOutputDTO thumbnail;
+    private Integer numberOfLikes;
 }

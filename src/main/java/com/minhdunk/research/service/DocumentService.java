@@ -56,4 +56,18 @@ public class DocumentService {
         }
         return documentRepository.findAll();
     }
+
+    public void likeDocument(Long id, Principal principal) {
+        Document document = getDocumentById(id);
+        User user = userService.getUserByUsername(principal.getName());
+        document.addLikedUser(user);
+        documentRepository.save(document);
+    }
+
+    public void unlikeDocument(Long id, Principal principal) {
+        Document document = getDocumentById(id);
+        User user = userService.getUserByUsername(principal.getName());
+        document.removeLikedUser(user);
+        documentRepository.save(document);
+    }
 }
