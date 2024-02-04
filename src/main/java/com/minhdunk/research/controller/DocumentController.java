@@ -3,6 +3,7 @@ package com.minhdunk.research.controller;
 import com.minhdunk.research.dto.BaseResponse;
 import com.minhdunk.research.dto.DocumentInputDTO;
 import com.minhdunk.research.dto.DocumentOutputDTO;
+import com.minhdunk.research.dto.DocumentWithLikeStatusDTO;
 import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.mapper.DocumentMapper;
@@ -77,6 +78,11 @@ public class DocumentController {
                 .message("Remove document from favourite list successfully!")
                 .data(null)
                 .build();
+    }
+
+    @GetMapping("/detail/{id}")
+    public DocumentWithLikeStatusDTO getDocumentWithLikeStatus(@PathVariable("id") Long id, Principal principal) {
+        return documentService.getDocumentWithLikeStatus(id, principal);
     }
 
 

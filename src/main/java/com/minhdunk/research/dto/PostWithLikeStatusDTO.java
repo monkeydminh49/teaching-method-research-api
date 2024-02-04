@@ -2,6 +2,7 @@ package com.minhdunk.research.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.minhdunk.research.entity.Assignment;
+import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.entity.Post;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.mapper.PostMapper;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -40,18 +43,60 @@ public class PostWithLikeStatusDTO {
 
 
     public PostWithLikeStatusDTO(Post post, User user) {
-        PostMapperImpl postMapper = new PostMapperImpl();
-        PostOutputDTO postOutputDTO =  postMapper.getPostOutputDTOFromPost(post);
-        this.id = postOutputDTO.getId();
-        this.authorId = postOutputDTO.getAuthorId();
-        this.assignmentId = postOutputDTO.getAssignmentId();
-        this.title = postOutputDTO.getTitle();
-        this.caption = postOutputDTO.getCaption();
-        this.orientation = postOutputDTO.getOrientation();
-        this.type = postOutputDTO.getType();
-        this.medias = postOutputDTO.getMedias();
-        this.postTime = postOutputDTO.getPostTime();
-        this.numberOfLikes = postOutputDTO.getNumberOfLikes();
+        this.id = post.getId();
+        this.authorId = post.getAuthorId();
+        this.assignmentId = postAssignmentId(post);
+        this.title = post.getTitle();
+        this.caption = post.getCaption();
+        this.orientation = post.getOrientation();
+        this.type = post.getType();
+        this.medias = mediaSetToMediaOutputDTOList(post.getMedias());
+        this.postTime = post.getPostTime();
+        this.numberOfLikes = post.getNumberOfLikes();
         this.isLiked = user != null;
+    }
+
+    private Long postAssignmentId(Post post) {
+        if ( post == null ) {
+            return null;
+        }
+        Assignment assignment = post.getAssignment();
+        if ( assignment == null ) {
+            return null;
+        }
+        Long id = assignment.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
+    }
+
+    protected MediaOutputDTO mediaToMediaOutputDTO(Media media) {
+        if ( media == null ) {
+            return null;
+        }
+
+        MediaOutputDTO.MediaOutputDTOBuilder mediaOutputDTO = MediaOutputDTO.builder();
+
+        mediaOutputDTO.id( media.getId() );
+        mediaOutputDTO.name( media.getName() );
+        mediaOutputDTO.description( media.getDescription() );
+        mediaOutputDTO.type( media.getType() );
+        mediaOutputDTO.size( media.getSize() );
+
+        return mediaOutputDTO.build();
+    }
+
+    protected List<MediaOutputDTO> mediaSetToMediaOutputDTOList(Set<Media> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        List<MediaOutputDTO> list = new ArrayList<MediaOutputDTO>( set.size() );
+        for ( Media media : set ) {
+            list.add( mediaToMediaOutputDTO( media ) );
+        }
+
+        return list;
     }
 }

@@ -2,6 +2,7 @@ package com.minhdunk.research.mapper;
 
 import com.minhdunk.research.dto.DocumentInputDTO;
 import com.minhdunk.research.dto.DocumentOutputDTO;
+import com.minhdunk.research.dto.DocumentWithLikeStatusDTO;
 import com.minhdunk.research.entity.Document;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,4 +22,7 @@ public interface DocumentMapper {
     Document getDocumentFromDocumentInputDto(DocumentInputDTO documentInputDTO);
 
     List<DocumentOutputDTO> getDocumentOutputDtosFromDocuments(List<Document> documents);
+
+    @Mapping(target = "isLiked", ignore = true)
+    DocumentWithLikeStatusDTO getDocumentWithLikeStatusDtoFromDocument(Document document);
 }

@@ -35,5 +35,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "LEFT JOIN p.likedByUsers u " +
             "ON u.id = ?2 " +
             "WHERE p.id = ?1")
-    PostWithLikeStatusDTO findByIdWithLikeStatus(Long postId, Long userId);
+    Optional<PostWithLikeStatusDTO> findByIdWithLikeStatus(Long postId, Long userId);
 }

@@ -141,7 +141,6 @@ public class PostService {
 
     public PostWithLikeStatusDTO getPostByIdWithLikeStatus(Long postId, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
-        return postRepository.findByIdWithLikeStatus(postId, user.getId());
-//        return postRepository.findByIdWithLikeStatus(postId, user.getId()).orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
+        return postRepository.findByIdWithLikeStatus(postId, user.getId()).orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
     }
 }

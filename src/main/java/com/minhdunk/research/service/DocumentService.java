@@ -1,6 +1,7 @@
 package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.DocumentInputDTO;
+import com.minhdunk.research.dto.DocumentWithLikeStatusDTO;
 import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.entity.User;
@@ -69,5 +70,10 @@ public class DocumentService {
         User user = userService.getUserByUsername(principal.getName());
         document.removeLikedUser(user);
         documentRepository.save(document);
+    }
+
+    public DocumentWithLikeStatusDTO getDocumentWithLikeStatus(Long id, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        return documentRepository.getDocumentWithLikeStatus(id, user.getId()).orElseThrow(() -> new NotFoundException("Document with id " + id + " not found"));
     }
 }
