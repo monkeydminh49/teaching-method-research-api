@@ -1,6 +1,8 @@
 package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.PostInputDTO;
+import com.minhdunk.research.dto.PostOutputDTO;
+import com.minhdunk.research.dto.PostWithLikeStatusDTO;
 import com.minhdunk.research.entity.*;
 import com.minhdunk.research.exception.ForbiddenException;
 import com.minhdunk.research.exception.NotFoundException;
@@ -123,4 +125,23 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    public void likePost(Long id, Principal principal) {
+        Post post = getPostById(id);
+        User user = userService.getUserByUsername(principal.getName());
+        post.addLikedUser(user);
+        postRepository.save(post);
+    }
+
+    public void unlikePost(Long id, Principal principal) {
+        Post post = getPostById(id);
+        User user = userService.getUserByUsername(principal.getName());
+        post.removeLikedUser(user);
+        postRepository.save(post);
+    }
+
+    public PostWithLikeStatusDTO getPostByIdWithLikeStatus(Long postId, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        return postRepository.findByIdWithLikeStatus(postId, user.getId());
+//        return postRepository.findByIdWithLikeStatus(postId, user.getId()).orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
+    }
 }

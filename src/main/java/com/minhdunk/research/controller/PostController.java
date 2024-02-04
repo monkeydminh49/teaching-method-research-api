@@ -1,9 +1,6 @@
 package com.minhdunk.research.controller;
 
-import com.minhdunk.research.dto.BaseResponse;
-import com.minhdunk.research.dto.CommentOutputDTO;
-import com.minhdunk.research.dto.PostInputDTO;
-import com.minhdunk.research.dto.PostOutputDTO;
+import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Comment;
 import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.entity.Post;
@@ -89,6 +86,12 @@ public class PostController {
         return postMapper.getPostOutputDTOFromPost(post);
     }
 
+    @GetMapping("/posts/detail/{postId}")
+    public PostWithLikeStatusDTO getPostDetailById(@PathVariable Long postId, Principal principal) {
+        return postService.getPostByIdWithLikeStatus(postId, principal);
+    }
+
+
     @PutMapping("/posts/{postId}/action/{action}")
     public PostOutputDTO updatePostType(Principal principal, @PathVariable Long postId, @PathVariable @Parameter(name = "action", description = "approve | reject", example = "approve") String action) {
         PostAction postAction = PostAction.valueOf(action.toUpperCase());
@@ -99,5 +102,25 @@ public class PostController {
     public List<CommentOutputDTO> getAllPostComment(@PathVariable("postId") Long postId){
         List<Comment> comments =  commentService.getAllCommentByPostId(postId);
         return commentMapper.getCommentOutputDTOsFromComments(comments);
+    }
+
+    @PutMapping("/posts/{id}/like")
+    public BaseResponse likeDocument(@PathVariable("id") Long id, Principal principal) {
+        postService.likePost(id, principal);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Add post to favourite list successfully!")
+                .data(null)
+                .build();
+    }
+
+    @PutMapping("/posts/{id}/unlike")
+    public BaseResponse unlikeDocument(@PathVariable("id") Long id, Principal principal) {
+        postService.unlikePost(id, principal);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Remove post from favourite list successfully!")
+                .data(null)
+                .build();
     }
 }

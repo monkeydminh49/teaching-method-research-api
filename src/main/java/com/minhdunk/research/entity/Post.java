@@ -26,6 +26,7 @@ public class Post {
     private Long id;
     private Long authorId;
     private String title;
+    @Column(columnDefinition="text")
     private String caption;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "assignment_id", referencedColumnName = "id", nullable = false)
@@ -46,4 +47,33 @@ public class Post {
             inverseJoinColumns = { @JoinColumn(name = "media_id") }
     )
     private Set<Media> medias = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "FAVOURITE_POSTS",
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") }
+    )
+    private Set<User> likedByUsers = new HashSet<>();
+    private Integer numberOfLikes;
+    public void addLikedUser(User user) {
+        if(likedByUsers == null) {
+            likedByUsers = new HashSet<>();
+            numberOfLikes = 0;
+        }
+
+        this.likedByUsers.add(user);
+        this.numberOfLikes = this.likedByUsers.size();
+        user.addFavouritePost(this);
+    }
+
+    public void removeLikedUser(User user) {
+        this.likedByUsers.remove(user);
+        user.removeFavouritePost(this);
+        this.numberOfLikes = this.likedByUsers.size();
+    }
 }
