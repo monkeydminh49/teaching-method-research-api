@@ -34,6 +34,7 @@ public class DocumentService {
         Document document = documentMapper.getDocumentFromDocumentInputDto(request);
         document.setAuthor(user);
         document.setPostTime(LocalDateTime.now());
+        document.setNumberOfLikes(0);
         if (thumbnail != null) {
             Media savedThumbnail = mediaService.persistMedia(thumbnail);
             document.setThumbnail(savedThumbnail);

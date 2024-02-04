@@ -51,6 +51,7 @@ public class PostService {
                 .type(PostType.PENDING)
                 .orientation(request.getOrientation())
                 .postTime(LocalDateTime.now())
+                .numberOfLikes(0)
                 .medias(medias)
                 .build();
 
@@ -144,8 +145,8 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
     }
 
-//    public List<PostWithLikeStatusDTO> getPostsByClassroomIdWithLikeStatus(Long classId, PostType type, PostOrientation orientation, Principal principal) {
-//        User user = userService.getUserByUsername(principal.getName());
-//        return postRepository.findByClassroomIdWithLikeStatus(classId, type, orientation, user.getId());
-//    }
+    public List<PostWithLikeStatusDTO> getPostsByClassroomIdWithLikeStatus(Long classId, PostType type, PostOrientation orientation, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        return postRepository.findByClassroomIdWithLikeStatus(classId, type, orientation, user.getId());
+    }
 }

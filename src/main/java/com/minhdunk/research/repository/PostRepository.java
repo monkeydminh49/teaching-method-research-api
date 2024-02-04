@@ -37,11 +37,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "WHERE p.id = ?1 ")
     Optional<PostWithLikeStatusDTO> findByIdWithLikeStatus(Long postId, Long userId);
 
-//    @Query("SELECT new com.minhdunk.research.dto.PostWithLikeStatusDTO(p, u) " +
-//            "FROM Post p " +
-//            "LEFT JOIN p.likedByUsers u " +
-//            "ON u.id = :userId " +
-//            "WHERE p.assignment.classroom.id = :classId " +
-//            "AND (:type is null OR p.type = :type)")
-//    List<PostWithLikeStatusDTO> findByClassroomIdWithLikeStatus(Long classId, PostType type, PostOrientation orientation, Long userId);
+    @Query("SELECT new com.minhdunk.research.dto.PostWithLikeStatusDTO(p, u) " +
+            "FROM Post p " +
+            "LEFT JOIN p.likedByUsers u " +
+            "ON u.id = :userId " +
+            "WHERE p.assignment.classroom.id = :classId " +
+            "AND (:type is null OR p.type = :type) " +
+            "AND (:orientation is null OR p.orientation = :orientation)")
+    List<PostWithLikeStatusDTO> findByClassroomIdWithLikeStatus(Long classId, PostType type, PostOrientation orientation, Long userId);
 }

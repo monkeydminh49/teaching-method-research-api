@@ -110,14 +110,14 @@ public class ClassroomController {
         return postMapper.getPostOutputDTOsFromPosts(posts);
     }
 
-//    @GetMapping("/{id}/posts/detail")
-//    public List<PostWithLikeStatusDTO> getPostsByClassroomIdWithLikeStatus(
-//            @PathVariable Long id,
-//            @RequestParam(value = "type", required = false) PostType type,
-//            @RequestParam(value = "orientation", required = false) PostOrientation orientation,
-//            Principal principal) {
-//        return postService.getPostsByClassroomIdWithLikeStatus(id, type, orientation,principal);
-//    }
+    @GetMapping("/{id}/posts/detail")
+    public List<PostWithLikeStatusDTO> getPostsByClassroomIdWithLikeStatus(
+            @PathVariable Long id,
+            @RequestParam(value = "type", required = false) PostType type,
+            @RequestParam(value = "orientation", required = false) PostOrientation orientation,
+            Principal principal) {
+        return postService.getPostsByClassroomIdWithLikeStatus(id, type, orientation,principal);
+    }
 
     @GetMapping("/{id}/author/{authorId}/posts")
     public List<PostOutputDTO> getPostsByClassroomIdAndAuthorId(@PathVariable Long id, @PathVariable Long authorId) {
