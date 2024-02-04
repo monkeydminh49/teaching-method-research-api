@@ -18,6 +18,8 @@ services:
     container_name: dangminh-research-api
     ports:
       - "10049:8080"
+    volumes:
+      - ./media:/data/media/
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://dangminh-db:5432/teaching_research
       SPRING_DATASOURCE_USERNAME: minhdunk

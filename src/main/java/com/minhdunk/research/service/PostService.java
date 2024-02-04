@@ -1,16 +1,15 @@
 package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.PostInputDTO;
-import com.minhdunk.research.dto.PostOutputDTO;
 import com.minhdunk.research.dto.PostWithLikeStatusDTO;
 import com.minhdunk.research.entity.*;
 import com.minhdunk.research.exception.ForbiddenException;
 import com.minhdunk.research.exception.NotFoundException;
-import com.minhdunk.research.mapper.PostMapper;
 import com.minhdunk.research.repository.AssignmentRepository;
 import com.minhdunk.research.repository.GroupRepository;
 import com.minhdunk.research.repository.PostRepository;
 import com.minhdunk.research.utils.PostAction;
+import com.minhdunk.research.utils.PostOrientation;
 import com.minhdunk.research.utils.PostType;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -141,6 +140,12 @@ public class PostService {
 
     public PostWithLikeStatusDTO getPostByIdWithLikeStatus(Long postId, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
-        return postRepository.findByIdWithLikeStatus(postId, user.getId()).orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
+        return postRepository.findByIdWithLikeStatus(postId, user.getId())
+                .orElseThrow(() -> new NotFoundException("Post with id " + postId + " not found"));
     }
+
+//    public List<PostWithLikeStatusDTO> getPostsByClassroomIdWithLikeStatus(Long classId, PostType type, PostOrientation orientation, Principal principal) {
+//        User user = userService.getUserByUsername(principal.getName());
+//        return postRepository.findByClassroomIdWithLikeStatus(classId, type, orientation, user.getId());
+//    }
 }

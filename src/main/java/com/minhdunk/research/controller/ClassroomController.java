@@ -7,6 +7,7 @@ import com.minhdunk.research.service.AssignmentService;
 import com.minhdunk.research.service.ClassroomService;
 import com.minhdunk.research.service.NotificationService;
 import com.minhdunk.research.service.PostService;
+import com.minhdunk.research.utils.PostOrientation;
 import com.minhdunk.research.utils.PostType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,15 @@ public class ClassroomController {
         List<Post> posts = postService.getPostsByClassroomId(id, type);
         return postMapper.getPostOutputDTOsFromPosts(posts);
     }
+
+//    @GetMapping("/{id}/posts/detail")
+//    public List<PostWithLikeStatusDTO> getPostsByClassroomIdWithLikeStatus(
+//            @PathVariable Long id,
+//            @RequestParam(value = "type", required = false) PostType type,
+//            @RequestParam(value = "orientation", required = false) PostOrientation orientation,
+//            Principal principal) {
+//        return postService.getPostsByClassroomIdWithLikeStatus(id, type, orientation,principal);
+//    }
 
     @GetMapping("/{id}/author/{authorId}/posts")
     public List<PostOutputDTO> getPostsByClassroomIdAndAuthorId(@PathVariable Long id, @PathVariable Long authorId) {

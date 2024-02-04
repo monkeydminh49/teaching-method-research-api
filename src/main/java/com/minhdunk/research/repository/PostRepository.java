@@ -1,8 +1,8 @@
 package com.minhdunk.research.repository;
 
-import com.minhdunk.research.dto.PostOutputDTO;
 import com.minhdunk.research.dto.PostWithLikeStatusDTO;
 import com.minhdunk.research.entity.Post;
+import com.minhdunk.research.utils.PostOrientation;
 import com.minhdunk.research.utils.PostType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,8 +32,16 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT new com.minhdunk.research.dto.PostWithLikeStatusDTO(p, u) " +
             "FROM Post p " +
-            "LEFT JOIN p.likedByUsers u " +
+            "JOIN p.likedByUsers u " +
             "ON u.id = ?2 " +
-            "WHERE p.id = ?1")
+            "WHERE p.id = ?1 ")
     Optional<PostWithLikeStatusDTO> findByIdWithLikeStatus(Long postId, Long userId);
+
+//    @Query("SELECT new com.minhdunk.research.dto.PostWithLikeStatusDTO(p, u) " +
+//            "FROM Post p " +
+//            "LEFT JOIN p.likedByUsers u " +
+//            "ON u.id = :userId " +
+//            "WHERE p.assignment.classroom.id = :classId " +
+//            "AND (:type is null OR p.type = :type)")
+//    List<PostWithLikeStatusDTO> findByClassroomIdWithLikeStatus(Long classId, PostType type, PostOrientation orientation, Long userId);
 }
