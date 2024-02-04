@@ -32,7 +32,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT new com.minhdunk.research.dto.PostWithLikeStatusDTO(p, u) " +
             "FROM Post p " +
-            "JOIN p.likedByUsers u " +
+            "LEFT JOIN p.likedByUsers u " +
             "ON u.id = ?2 " +
             "WHERE p.id = ?1 ")
     Optional<PostWithLikeStatusDTO> findByIdWithLikeStatus(Long postId, Long userId);
