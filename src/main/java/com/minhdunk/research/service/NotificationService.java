@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -32,7 +34,8 @@ public class NotificationService {
         Notification notification = notificationMapper.getNotificationFromNotificationInputDTO(request);
         notification.setClassroom(classroomRepository.findById(id).orElseThrow(()-> new NotFoundException("Class id not found")));
         User author = userRepository.findByUsername(principal.getName()).get();
-        notification.setPostTime(LocalDateTime.now());
+        ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+        notification.setPostTime(LocalDateTime.now(zoneId));
         notification.setAuthor(author);
         notificationRepository.save(notification);
     }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -37,7 +38,8 @@ public class CommentService {
 
         comment.setDestinationId(post.getId());
         comment.setUser(user);
-        comment.setPostTime(LocalDateTime.now());
+        ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+        comment.setPostTime(LocalDateTime.now(zoneId));
         comment.setType(CommentType.COMMENT_POST);
 
         return commentRepository.save(comment);
@@ -57,7 +59,8 @@ public class CommentService {
         Notification notification = notificationService.getNotificationById(notificationId);
         newComment.setDestinationId(notification.getId());
         newComment.setUser(user);
-        newComment.setPostTime(LocalDateTime.now());
+        ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+        newComment.setPostTime(LocalDateTime.now(zoneId));
         newComment.setType(CommentType.COMMENT_NOTIFICATION);
 
         return commentRepository.save(newComment);

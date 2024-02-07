@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -33,7 +35,8 @@ public class DocumentService {
         User user = userService.getUserByUsername(principal.getName());
         Document document = documentMapper.getDocumentFromDocumentInputDto(request);
         document.setAuthor(user);
-        document.setPostTime(LocalDateTime.now());
+        ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+        document.setPostTime(LocalDateTime.now(zoneId));
         document.setNumberOfLikes(0);
         if (thumbnail != null) {
             Media savedThumbnail = mediaService.persistMedia(thumbnail);
