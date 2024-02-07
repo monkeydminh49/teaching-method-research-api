@@ -43,7 +43,6 @@ public class DocumentController {
             @RequestParam(value = "notionPageId", required = false) String notionPageId
     ) throws IOException {
         DocumentInputDTO request = new DocumentInputDTO(title, veryFirstText, type, notionPageId);
-        log.info(notionPageId + " " + thumbnail.getName());
         Document document = null;
         document = documentService.createDocument(principal, request, audio, thumbnail);
         return documentMapper.getDocumentOutputDtoFromDocument(document);
