@@ -59,6 +59,16 @@ public class DocumentController {
         return documentMapper.getDocumentOutputDtoFromDocument(documentService.getDocumentById(id));
     }
 
+    @DeleteMapping("/{id}")
+    public BaseResponse deleteDocument(@PathVariable("id") Long id) {
+        documentService.deleteDocument(id);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Delete document successfully!")
+                .data(null)
+                .build();
+    }
+
     @PutMapping("/{id}/like")
     public BaseResponse likeDocument(@PathVariable("id") Long id, Principal principal) {
         documentService.likeDocument(id, principal);

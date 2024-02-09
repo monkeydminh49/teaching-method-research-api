@@ -3,6 +3,7 @@ package com.minhdunk.research.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.minhdunk.research.utils.UserGender;
 import com.minhdunk.research.utils.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,6 +40,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
     private LocalDate dateOfBirth;
+    @Enumerated(EnumType.STRING)
+    private UserGender gender;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar_id")
     private Media avatar;

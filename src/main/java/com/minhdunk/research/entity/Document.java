@@ -26,7 +26,9 @@ public class Document {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private User author;
+    @Column(columnDefinition="text")
     private String title;
+    @Column(columnDefinition="text")
     private String veryFirstText;
     private LocalDateTime postTime;
     @Enumerated(EnumType.STRING)

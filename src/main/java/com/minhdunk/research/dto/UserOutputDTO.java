@@ -1,5 +1,6 @@
 package com.minhdunk.research.dto;
 
+import com.minhdunk.research.utils.UserGender;
 import com.minhdunk.research.utils.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class UserOutputDTO {
     private String token;
     private LocalDate dateOfBirth;
     private String avatarId;
+    private UserGender gender;
 
     public UserOutputDTO (Long id, String firstName, String lastName, String username, UserRole role, LocalDate dateOfBirth) {
         this.id = id;

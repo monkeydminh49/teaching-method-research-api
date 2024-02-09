@@ -1,5 +1,6 @@
 package com.minhdunk.research.dto;
 
+import com.minhdunk.research.utils.UserGender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,8 @@ public class RegisterRequestDTO {
     private String lastName;
     private String password;
     private LocalDate dateOfBirth;
+    @Schema(description = "Gender of user", example = "MALE | FEMALE | OTHER")
+    private UserGender gender;
     @Schema(description = "Role of user", example = "ROLE_STUDENT | ROLE_TEACHER")
     private String role;
 }

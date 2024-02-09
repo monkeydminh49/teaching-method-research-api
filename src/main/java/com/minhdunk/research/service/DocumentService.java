@@ -8,6 +8,7 @@ import com.minhdunk.research.entity.User;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.repository.DocumentRepository;
+import com.minhdunk.research.repository.MediaRepository;
 import com.minhdunk.research.utils.DocumentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class DocumentService {
     private UserService userService;
     @Autowired
     private MediaService mediaService;
+
+    @Autowired
+    private MediaRepository mediaRepository;
 
     public Document createDocument(Principal principal, DocumentInputDTO request, MultipartFile audio, MultipartFile thumbnail) throws IOException {
         User user = userService.getUserByUsername(principal.getName());
@@ -60,6 +64,14 @@ public class DocumentService {
             return documentRepository.findAllByType(type);
         }
         return documentRepository.findAll();
+    }
+
+    public boolean deleteDocument(Long id) {
+        Document document = getDocumentById(id);
+        if(document.getAudio()!= null) mediaRepository.delete(document.getAudio());
+        if(document.getThumbnail()!= null) mediaRepository.delete(document.getThumbnail());
+        documentRepository.delete(document);
+        return true;
     }
 
     public void likeDocument(Long id, Principal principal) {
