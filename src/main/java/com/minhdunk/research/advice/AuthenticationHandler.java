@@ -34,4 +34,5 @@ public class AuthenticationHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Bad credentials");
     }
 
+
 }

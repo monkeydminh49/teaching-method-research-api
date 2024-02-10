@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,10 +23,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -35,6 +38,10 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
+
+    @Autowired
+    @Qualifier("customAuthenticationEntryPoint")
+    AuthenticationEntryPoint authEntryPoint;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -74,14 +81,21 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
+//                .exceptionHandling((exceptionHandling)-> exceptionHandling.authenticationEntryPoint(authEntryPoint))
                 .exceptionHandling((exceptionHandling) ->
                         exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
+                            System.out.println(Arrays.toString(authException.getStackTrace()));
                             response.setContentType("application/json");
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            if (response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
+                                response.setStatus(response.getStatus());
+                            } else {
+                                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            }
                             response.getWriter().write(new JSONObject()
                                     .put("timestamp", LocalDateTime.now())
-                                    .put("message", "Access denied")
+                                    .put("message", (response.getHeader("message") != null ? response.getHeader("message") : "Jwt expected"))
                                     .put("status", HttpServletResponse.SC_FORBIDDEN)
+                                    .put("data", authException.getCause())
                                     .toString());
                         }))
                 .build();
