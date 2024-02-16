@@ -61,7 +61,8 @@ public class SecurityConfig {
                                         "/api/v1/auth/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/api/v1/media/**"
+                                        "/api/v1/media/**",
+                                        "/api/v1/documents/**"
                                 )
                                 .permitAll()
                                 .requestMatchers("/api/v1/user/**",
@@ -72,8 +73,7 @@ public class SecurityConfig {
                                         "/api/v1/posts/**",
                                         "/api/v1/comments/**",
                                         "/api/v1/notifications/**",
-                                        "/api/v1/groups/**",
-                                        "/api/v1/documents/**"
+                                        "/api/v1/groups/**"
                                 )
                                 .authenticated()
                 )
