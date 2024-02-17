@@ -7,6 +7,8 @@ import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.repository.DocumentRepository;
 import com.minhdunk.research.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,5 +47,9 @@ public class UserService {
 
     public List<Document> getFavouriteDocuments(Long id) {
         return documentRepository.findAllByLikedByUsersId(id);
+    }
+
+    public List<Document> getFavouriteDocuments(Long id, Integer page, Integer size) {
+        return documentRepository.findAllByLikedByUsersId(id,  PageRequest.of(page, size));
     }
 }

@@ -1,7 +1,9 @@
 package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.DocumentOutputDTO;
+import com.minhdunk.research.dto.PaginationResponse;
 import com.minhdunk.research.dto.UserOutputDTO;
+import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.mapper.UserMapper;
 import com.minhdunk.research.service.UserService;
@@ -46,5 +48,10 @@ public class UserController {
     @GetMapping("/users/{id}/favourite-documents")
     private List<DocumentOutputDTO> getFavouriteDocuments(@PathVariable Long id){
         return documentMapper.getDocumentOutputDtosFromDocuments(userService.getFavouriteDocuments(id));
+    }
+    @GetMapping("/users/{id}/favourite-documents/page")
+    private PaginationResponse<List<DocumentOutputDTO>> getFavouriteDocuments(@PathVariable Long id,  @RequestParam(value = "page") Integer page, @RequestParam(value = "pageSize") Integer pageSize){
+            List<DocumentOutputDTO> documents = documentMapper.getDocumentOutputDtosFromDocuments(userService.getFavouriteDocuments(id, page, pageSize));
+            return new PaginationResponse<List<DocumentOutputDTO>>(page, pageSize, documents);
     }
 }

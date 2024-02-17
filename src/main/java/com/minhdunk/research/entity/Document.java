@@ -1,6 +1,7 @@
 package com.minhdunk.research.entity;
 
 import com.minhdunk.research.utils.DocumentType;
+import com.minhdunk.research.utils.DocumentUserKey;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -39,34 +40,9 @@ public class Document {
     private Media thumbnail;
     private String notionPageId;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(
-            name = "FAVOURITE",
-            joinColumns = { @JoinColumn(name = "document_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_id") }
-    )
-    private Set<User> likedByUsers = new HashSet<>();
+    @OneToMany(mappedBy = "document")
+    private Set<DocumentUser> likedByUsers = new HashSet<>();
     private Integer numberOfLikes;
-    public void addLikedUser(User user) {
-        if(likedByUsers == null) {
-            likedByUsers = new HashSet<>();
-            numberOfLikes = 0;
-        }
-
-        this.likedByUsers.add(user);
-        this.numberOfLikes = this.likedByUsers.size();
-        user.addFavouriteDocument(this);
-    }
-
-    public void removeLikedUser(User user) {
-        this.likedByUsers.remove(user);
-        user.removeFavouriteDocument(this);
-        this.numberOfLikes = this.likedByUsers.size();
-    }
 
 
 

@@ -63,14 +63,8 @@ public class User {
     @JsonIgnore
     private Set<Group> groups = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "likedByUsers")
-    @JsonIgnore
-    private Set<Document> favouriteDocuments = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    private Set<DocumentUser> favouriteDocuments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -82,16 +76,15 @@ public class User {
     private Set<Post> favouritePosts = new HashSet<>();
 
     public void addFavouriteDocument(Document document) {
-        if (favouriteDocuments == null) {
-            favouriteDocuments = new HashSet<>();
-        }
-        this.favouriteDocuments.add(document);
+//        if (favouriteDocuments == null) {
+//            favouriteDocuments = new HashSet<>();
+//        }
+//        this.favouriteDocuments.add(document);
     }
 
     public void removeFavouriteDocument(Document document) {
-        this.favouriteDocuments.remove(document);
+//        this.favouriteDocuments.remove(document);
     }
-
     public void addFavouritePost(Post post) {
         if (favouritePosts == null) {
             favouritePosts = new HashSet<>();

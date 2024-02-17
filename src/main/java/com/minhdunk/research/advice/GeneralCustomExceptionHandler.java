@@ -36,4 +36,11 @@ public class GeneralCustomExceptionHandler extends ResponseEntityExceptionHandle
         log.info("Handle forbidden exception");
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ProblemDetail handleException(Exception ex) {
+        log.error("Handle exception", ex);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
 }
