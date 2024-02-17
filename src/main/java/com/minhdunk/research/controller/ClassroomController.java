@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @CrossOrigin
 @Controller
@@ -103,6 +103,12 @@ public class ClassroomController {
     public List<AssignmentOutputDTO> getAllClassAssignmentsByClassId(@PathVariable("id") Long id){
         return assignmentMapper.getAssignmentOutputDTOsFromAssignments(assignmentService.getAllClassAssignmentsByClassId(id));
     }
+
+    @GetMapping("/{id}/assignments/student/status")
+    public List<AssignmentStatusOutputDTO> getAllClassAssignmentsStatusByClassId(Principal principal , @PathVariable("id") Long id){
+        return assignmentService.getAllClassAssignmentsStatusByClassId(principal, id);
+    }
+
 
     @GetMapping("/{id}/posts")
     public List<PostOutputDTO> getPostsByClassroomId(@PathVariable Long id, @RequestParam(required = false) PostType type) {
