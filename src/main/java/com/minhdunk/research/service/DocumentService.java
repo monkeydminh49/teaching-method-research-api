@@ -107,6 +107,9 @@ public class DocumentService {
     }
 
     public DocumentWithLikeStatusDTO getDocumentWithLikeStatus(Long id, Principal principal) {
+        if (principal == null) {
+            return documentMapper.getDocumentWithLikeStatusDtoFromDocument(getDocumentById(id));
+        }
         User user = userService.getUserByUsername(principal.getName());
         return documentRepository.getDocumentWithLikeStatus(id, user.getId()).orElseThrow(() -> new NotFoundException("Document with id " + id + " not found"));
     }
