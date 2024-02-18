@@ -20,7 +20,9 @@ public class Assignment {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
     private Classroom classroom;
+    @Column(columnDefinition="TEXT")
     private String title;
+    @Column(columnDefinition="TEXT")
     private String content;
     private LocalDateTime assignedDateTime;
     private LocalDateTime dueDateTime;

@@ -25,6 +25,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long authorId;
+    @Column(columnDefinition="TEXT")
     private String title;
     @Column(columnDefinition="text")
     private String caption;

@@ -30,6 +30,7 @@ public class Notification {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private User author;
+    @Column(columnDefinition="TEXT")
     private String content;
     private LocalDateTime postTime;
 }

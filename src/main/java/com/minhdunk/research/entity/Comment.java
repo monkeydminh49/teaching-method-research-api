@@ -25,6 +25,7 @@ public class Comment {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
     private Long destinationId;
+    @Column(columnDefinition="TEXT")
     private String content;
     private LocalDateTime postTime;
     @Enumerated(EnumType.STRING)
