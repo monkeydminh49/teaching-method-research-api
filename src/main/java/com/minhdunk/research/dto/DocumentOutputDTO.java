@@ -23,4 +23,5 @@ public class DocumentOutputDTO {
     private String notionPageId;
     private MediaOutputDTO thumbnail;
     private Integer numberOfLikes;
+    private String topic;
 }

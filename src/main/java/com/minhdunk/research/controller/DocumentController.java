@@ -9,6 +9,7 @@ import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.service.DocumentService;
 import com.minhdunk.research.service.MediaService;
+import com.minhdunk.research.utils.DocumentTopic;
 import com.minhdunk.research.utils.DocumentType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,11 @@ public class DocumentController {
             @RequestParam(value = "title", required = true) String title,
             @RequestParam(value = "veryFirstText", required = false) String veryFirstText,
             @RequestParam(value = "type", required = false) DocumentType type,
-            @RequestParam(value = "notionPageId", required = false) String notionPageId
-    ) throws IOException {
-        DocumentInputDTO request = new DocumentInputDTO(title, veryFirstText, type, notionPageId);
+            @RequestParam(value = "notionPageId", required = false) String notionPageId,
+            @RequestParam(value = "topic", required = false) DocumentTopic topic
+            ) throws IOException {
+        DocumentInputDTO request = new DocumentInputDTO(title, veryFirstText, type, notionPageId, topic.toString());
+        log.info("Request: {}", request.getTopic());
         Document document = null;
         document = documentService.createDocument(principal, request, audio, thumbnail);
         return documentMapper.getDocumentOutputDtoFromDocument(document);

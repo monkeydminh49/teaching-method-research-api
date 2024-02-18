@@ -39,6 +39,7 @@ public class Document {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Media thumbnail;
     private String notionPageId;
+    private String topic;
 
     @OneToMany(mappedBy = "document")
     private Set<DocumentUser> likedByUsers = new HashSet<>();

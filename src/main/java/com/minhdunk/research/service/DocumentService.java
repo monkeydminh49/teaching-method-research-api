@@ -13,6 +13,7 @@ import com.minhdunk.research.repository.DocumentUserRepository;
 import com.minhdunk.research.repository.MediaRepository;
 import com.minhdunk.research.utils.DocumentType;
 import com.minhdunk.research.utils.DocumentUserKey;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 @Service
+@Slf4j
 public class DocumentService {
     @Autowired
     private DocumentRepository documentRepository;
@@ -47,6 +49,7 @@ public class DocumentService {
         ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
         document.setPostTime(LocalDateTime.now(zoneId));
         document.setNumberOfLikes(0);
+        log.info("Document: {}", document.getTopic());
         if (thumbnail != null) {
             Media savedThumbnail = mediaService.persistMedia(thumbnail);
             document.setThumbnail(savedThumbnail);

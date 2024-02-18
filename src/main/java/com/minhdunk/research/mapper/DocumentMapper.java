@@ -19,6 +19,7 @@ public interface DocumentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "audio", ignore = true)
+    @Mapping(target = "topic", source = "topic")
     Document getDocumentFromDocumentInputDto(DocumentInputDTO documentInputDTO);
 
     List<DocumentOutputDTO> getDocumentOutputDtosFromDocuments(List<Document> documents);

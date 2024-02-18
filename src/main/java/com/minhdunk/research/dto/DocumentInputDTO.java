@@ -14,4 +14,5 @@ public class DocumentInputDTO {
     private String veryFirstText;
     private DocumentType type;
     private String notionPageId;
+    private String topic;
 }
