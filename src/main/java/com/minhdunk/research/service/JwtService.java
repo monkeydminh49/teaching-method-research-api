@@ -1,6 +1,6 @@
 package com.minhdunk.research.service;
 
-import com.minhdunk.research.component.UserInfoUserDetails;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

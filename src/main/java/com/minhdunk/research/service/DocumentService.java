@@ -1,5 +1,6 @@
 package com.minhdunk.research.service;
 
+import com.minhdunk.research.component.UserInfoUserDetails;
 import com.minhdunk.research.dto.DocumentInputDTO;
 import com.minhdunk.research.dto.DocumentWithLikeStatusDTO;
 import com.minhdunk.research.entity.Document;
@@ -7,6 +8,7 @@ import com.minhdunk.research.entity.DocumentUser;
 import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.exception.NotFoundException;
+import com.minhdunk.research.exception.UnauthorizedException;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.repository.DocumentRepository;
 import com.minhdunk.research.repository.DocumentUserRepository;
@@ -15,6 +17,7 @@ import com.minhdunk.research.utils.DocumentType;
 import com.minhdunk.research.utils.DocumentUserKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -81,9 +84,13 @@ public class DocumentService {
         documentRepository.delete(document);
     }
 
-    public void likeDocument(Long id, Principal principal) {
+    public void likeDocument(Long id, Authentication authentication) {
         Document document = getDocumentById(id);
-        User user = userService.getUserByUsername(principal.getName());
+        if (authentication == null) {
+            throw new UnauthorizedException();
+        }
+        User user = userService.getUserByUsername(authentication.getName());
+
         ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
         DocumentUser documentUser = new DocumentUser(new DocumentUserKey(document.getId(), user.getId()), document, user, LocalDateTime.now(zoneId));
         if (documentUserRepository.findById(new DocumentUserKey(document.getId(), user.getId())).isPresent()) {
@@ -95,13 +102,19 @@ public class DocumentService {
         documentRepository.save(document);
     }
 
-    public void unlikeDocument(Long id, Principal principal) {
+    public void unlikeDocument(Long id, Authentication authentication) {
         Document document = getDocumentById(id);
-        User user = userService.getUserByUsername(principal.getName());
-        if (documentUserRepository.findById(new DocumentUserKey(document.getId(), user.getId())).isEmpty()) {
+//        User user = userService.getUserByUsername(principal.getName());
+
+        if (authentication == null) {
+           throw new UnauthorizedException();
+        }
+
+        UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
+        if (documentUserRepository.findById(new DocumentUserKey(document.getId(), userDetails.getId())).isEmpty()) {
             return;
         }
-        documentUserRepository.deleteById(new DocumentUserKey(document.getId(), user.getId()));
+        documentUserRepository.deleteById(new DocumentUserKey(document.getId(), userDetails.getId()));
         document.setNumberOfLikes(document.getNumberOfLikes() - 1);
         documentRepository.save(document);
     }

@@ -86,11 +86,11 @@ public class SecurityConfig {
                         exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
                             System.out.println(Arrays.toString(authException.getStackTrace()));
                             response.setContentType("application/json");
-                            if (response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
-                                response.setStatus(response.getStatus());
-                            } else {
-                                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            }
+//                            if (response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
+//                                response.setStatus(response.getStatus());
+//                            } else {
+//                                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                            }
                             response.getWriter().write(new JSONObject()
                                     .put("timestamp", LocalDateTime.now())
                                     .put("message", (response.getHeader("message") != null ? response.getHeader("message") : "Jwt expected"))

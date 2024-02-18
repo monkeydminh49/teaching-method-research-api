@@ -1,6 +1,7 @@
 package com.minhdunk.research.component;
 
 import com.minhdunk.research.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,15 +11,20 @@ import java.util.List;
 
 public class UserInfoUserDetails implements UserDetails {
 
-    private String firstName;
-    private final String lastName;
+    @Getter
+    private final String firstname;
+    @Getter
+    private final String lastname;
+    @Getter
+    private final Long id;
     private final String username;
     private final String password;
     private List<GrantedAuthority> authorities;
 
     public UserInfoUserDetails(User user) {
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
+        this.firstname = user.getFirstName();
+        this.lastname = user.getLastName();
+        this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
 //        this.authorities = user.getRoles().stream().map(

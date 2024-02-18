@@ -1,6 +1,7 @@
 package com.minhdunk.research.advice;
 
 import com.minhdunk.research.exception.ApiException;
+import com.minhdunk.research.exception.UnauthorizedException;
 import com.minhdunk.research.exception.UserAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,12 @@ public class AuthenticationHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ProblemDetail handleBadCredentialException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Bad credentials");
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ProblemDetail handleUnauthorizedException(UnauthorizedException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
 

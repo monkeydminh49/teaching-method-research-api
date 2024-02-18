@@ -13,6 +13,8 @@ import com.minhdunk.research.utils.DocumentTopic;
 import com.minhdunk.research.utils.DocumentType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +36,7 @@ public class DocumentController {
     @Autowired
     private MediaService mediaService;
     @PostMapping()
+    @ResponseStatus(HttpStatus.OK)
     public DocumentOutputDTO createDocument(
             Principal principal,
             @RequestParam(value = "audio", required = false) MultipartFile audio,
@@ -52,17 +55,20 @@ public class DocumentController {
     }
 
     @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
     public List<DocumentOutputDTO> getDocuments(@RequestParam(value = "type", required = false) DocumentType type) {
         return documentMapper.getDocumentOutputDtosFromDocuments(documentService.getDocuments(type));
     }
 
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public DocumentOutputDTO getDocumentById(@PathVariable("id") Long id) {
         return documentMapper.getDocumentOutputDtoFromDocument(documentService.getDocumentById(id));
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public BaseResponse deleteDocument(@PathVariable("id") Long id) {
         documentService.deleteDocument(id);
         return BaseResponse.builder()
@@ -73,8 +79,9 @@ public class DocumentController {
     }
 
     @PutMapping("/{id}/like")
-    public BaseResponse likeDocument(@PathVariable("id") Long id, Principal principal) {
-        documentService.likeDocument(id, principal);
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse likeDocument(@PathVariable("id") Long id, Authentication authentication) {
+        documentService.likeDocument(id, authentication);
         return BaseResponse.builder()
                 .status("ok")
                 .message("Add document to favourite list successfully!")
@@ -83,8 +90,9 @@ public class DocumentController {
     }
 
     @PutMapping("/{id}/unlike")
-    public BaseResponse unlikeDocument(@PathVariable("id") Long id, Principal principal) {
-        documentService.unlikeDocument(id, principal);
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse unlikeDocument(@PathVariable("id") Long id, Authentication authentication) {
+        documentService.unlikeDocument(id, authentication);
         return BaseResponse.builder()
                 .status("ok")
                 .message("Remove document from favourite list successfully!")
@@ -93,6 +101,7 @@ public class DocumentController {
     }
 
     @GetMapping("/detail/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public DocumentWithLikeStatusDTO getDocumentWithLikeStatus(@PathVariable("id") Long id, Principal principal) {
         return documentService.getDocumentWithLikeStatus(id, principal);
     }
