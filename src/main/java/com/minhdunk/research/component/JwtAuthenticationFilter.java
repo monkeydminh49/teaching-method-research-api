@@ -1,6 +1,7 @@
 package com.minhdunk.research.component;
 
 
+import com.minhdunk.research.exception.EmailNotVerifiedException;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.service.JwtService;
 import com.minhdunk.research.service.UserInfoDetailsService;
@@ -9,6 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -20,21 +22,41 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
     @Autowired
     public JwtService jwtService;
     @Autowired
     public UserInfoDetailsService userDetailsService;
-    private final HandlerExceptionResolver exceptionResolver;
+    private  List<AntPathRequestMatcher> permitAllRequestMatchers;
 
-    public JwtAuthenticationFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver exceptionResolver) {
+    private final List<String> permitAllPaths = Arrays.asList(
+            "/api/v1/hello",
+            "/api/v1/register",
+            "/api/v1/login",
+            "/api/v1/refresh-token",
+            "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/api/v1/media/**",
+            "/api/v1/documents/**"
+    );
+
+    public JwtAuthenticationFilter(List<String> permitAllPaths) {
         super();
-        this.exceptionResolver = exceptionResolver;
+        this.permitAllRequestMatchers = permitAllPaths.stream()
+                .map(AntPathRequestMatcher::new)
+                .collect(Collectors.toList());
     }
+
+
     @Override
     protected void doFilterInternal (
             HttpServletRequest request,
@@ -42,7 +64,21 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
             FilterChain filterChain
     ) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        log.info("Request" + request);
+        log.info("permitAllPaths: " + permitAllRequestMatchers.size());
+        log.info("shouldNotFilter" + permitAllRequestMatchers.stream()
+                .anyMatch(matcher -> matcher.matches(request)));
+
+        if (permitAllRequestMatchers.isEmpty()){
+            this.permitAllRequestMatchers = this.permitAllPaths.stream()
+                    .map(AntPathRequestMatcher::new)
+                    .collect(Collectors.toList());
+        }
+
+        boolean shouldNotFilter = permitAllRequestMatchers.stream()
+                .anyMatch(matcher -> matcher.matches(request));
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ") || shouldNotFilter) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -63,6 +99,7 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
+
 //                System.out.println("username: " + username);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -71,6 +108,10 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (!userDetails.isEnabled()) {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setHeader("message", "Your account is not verified yet. Please check your email to verify your account.");
+                }
             }
 
 

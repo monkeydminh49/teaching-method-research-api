@@ -29,6 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -36,8 +37,8 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtAuthenticationFilter jwtFilter;
+//    @Autowired
+//    private JwtAuthenticationFilter jwtFilter;
 
     @Autowired
     @Qualifier("customAuthenticationEntryPoint")
@@ -67,6 +68,7 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/v1/user/**",
                                         "api/v1/users/**",
+                                        "api/v1/send-verification-email",
                                         "/api/v1/hello-**",
                                         "/api/v1/classrooms/**",
                                         "/api/v1/assignments/**",
@@ -79,7 +81,7 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(myJwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
 //                .exceptionHandling((exceptionHandling)-> exceptionHandling.authenticationEntryPoint(authEntryPoint))
                 .exceptionHandling((exceptionHandling) ->
@@ -93,8 +95,8 @@ public class SecurityConfig {
 //                            }
                             response.getWriter().write(new JSONObject()
                                     .put("timestamp", LocalDateTime.now())
-                                    .put("message", (response.getHeader("message") != null ? response.getHeader("message") : "Jwt expected"))
-                                    .put("status", HttpServletResponse.SC_FORBIDDEN)
+                                    .put("message", (response.getHeader("message") != null ? response.getHeader("message") : authException.getMessage()))
+                                    .put("status", response.getStatus())
                                     .put("data", authException.getCause())
                                     .toString());
                         }))
@@ -119,10 +121,24 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-
+    @Bean
+    public JwtAuthenticationFilter myJwtFilter() {
+        // Define the list of paths to permit all
+        List<String> permitAllPaths = List.of(
+                "/api/v1/hello",
+                "/api/v1/register",
+                "/api/v1/login",
+                "/api/v1/refresh-token",
+                "/api/v1/auth/**",
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/api/v1/media/**",
+                "/api/v1/documents/**"
+        );
+        return new JwtAuthenticationFilter(permitAllPaths);
 //    @Bean
 //    public CorsWebFilter corsWebFilter() {
 //        return new CorsWebFilter(corsConfiguration());
 //    }
-
+    }
 }
