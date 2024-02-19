@@ -21,6 +21,7 @@ public class RegisterRequestDTO {
     private String lastName;
     private String password;
     private LocalDate dateOfBirth;
+    private String email;
     @Schema(description = "Gender of user", example = "MALE | FEMALE | OTHER")
     private UserGender gender;
     @Schema(description = "Role of user", example = "ROLE_STUDENT | ROLE_TEACHER")

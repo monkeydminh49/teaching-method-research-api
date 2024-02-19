@@ -30,12 +30,15 @@ public class User {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+    private Boolean enabled;
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
     @Column(unique = true)
     private String username;
     private String firstName;
     private String lastName;
-//    @Column(unique = true)
-//    private String email;
+    @Column(unique = true)
+    private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -74,6 +77,8 @@ public class User {
             mappedBy = "likedByUsers")
     @JsonIgnore
     private Set<Post> favouritePosts = new HashSet<>();
+
+
 
     public void addFavouriteDocument(Document document) {
 //        if (favouriteDocuments == null) {

@@ -2,6 +2,7 @@ package com.minhdunk.research.service;
 
 import com.minhdunk.research.component.UserInfoUserDetails;
 import com.minhdunk.research.entity.User;
+import com.minhdunk.research.exception.EmailNotVerifiedException;
 import com.minhdunk.research.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,10 @@ public class UserInfoDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userInfo = repository.findByUsername(username);
+        User user = userInfo.orElseThrow(() -> new UsernameNotFoundException("user not found " + username));
+        if (!user.getEnabled()) {
+            throw new UsernameNotFoundException("Your account is not verified yet. Please check your email to verify your account.");
+        }
 
         return userInfo.map(UserInfoUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found " + username));

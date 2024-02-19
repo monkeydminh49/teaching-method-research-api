@@ -16,12 +16,19 @@ public class UserInfoUserDetails implements UserDetails {
     @Getter
     private final String lastname;
     @Getter
+    private final String email;
+    @Getter
     private final Long id;
     private final String username;
     private final String password;
+    @Getter
+    private final User user;
+
     private List<GrantedAuthority> authorities;
 
     public UserInfoUserDetails(User user) {
+        this.user = user;
+        this.email = user.getEmail();
         this.firstname = user.getFirstName();
         this.lastname = user.getLastName();
         this.id = user.getId();
@@ -65,6 +72,6 @@ public class UserInfoUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.getEnabled();
     }
 }

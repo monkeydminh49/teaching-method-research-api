@@ -1,6 +1,7 @@
 package com.minhdunk.research.advice;
 
 import com.minhdunk.research.exception.ApiException;
+import com.minhdunk.research.exception.EmailNotVerifiedException;
 import com.minhdunk.research.exception.UnauthorizedException;
 import com.minhdunk.research.exception.UserAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,6 +22,7 @@ import java.util.Map;
 @RestControllerAdvice
 @ControllerAdvice
 @Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class AuthenticationHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -38,6 +40,12 @@ public class AuthenticationHandler {
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ProblemDetail handleUnauthorizedException(UnauthorizedException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
+    @ExceptionHandler(EmailNotVerifiedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ProblemDetail handleEmailNotVerifiedException(EmailNotVerifiedException ex) {
+        log.info("Handle email not verified exception");
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 

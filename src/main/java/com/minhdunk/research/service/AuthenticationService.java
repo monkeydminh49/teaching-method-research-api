@@ -10,7 +10,13 @@ import com.minhdunk.research.exception.UserAlreadyExistsException;
 import com.minhdunk.research.mapper.UserMapper;
 import com.minhdunk.research.repository.UserRepository;
 import com.minhdunk.research.utils.UserRole;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,11 +26,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+
 @Controller
 @RestController
 @RequestMapping("/api/v1")
 @Slf4j
 public class AuthenticationService {
+    @Autowired
+    private JavaMailSender mailSender;
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
 
@@ -41,7 +51,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public UserOutputDTO register(RegisterRequestDTO request) {
+    public UserOutputDTO register(RegisterRequestDTO request) throws MessagingException, UnsupportedEncodingException {
 
         var user = userMapper.getUserFromRegisterRequestDTO(request);
 
@@ -54,6 +64,10 @@ public class AuthenticationService {
         else user.setRole(UserRole.ROLE_STUDENT);
         user.setPassword(encoder.encode(user.getPassword()));
 
+        String randomCode = RandomStringUtils.randomAlphanumeric(64);
+        user.setVerificationCode(randomCode);
+        user.setEnabled(false);
+
         var savedUser = userRepository.save(user);
 
         UserInfoUserDetails userDetails = new UserInfoUserDetails(user);
@@ -61,6 +75,7 @@ public class AuthenticationService {
 
         UserOutputDTO userOutputDTO = userMapper.getUserOutputDTOFromUser(savedUser);
         userOutputDTO.setToken(accessToken);
+
 
         return userOutputDTO;
     }
@@ -85,6 +100,38 @@ public class AuthenticationService {
             log.info("Invalid login request! With username: " + request.getUsername() + " and password: " + request.getPassword());
             throw new UsernameNotFoundException("invalid login request! Please check the your username and password");
         }
+    }
+
+    public void sendVerificationEmail(Authentication authentication, String siteURL)
+            throws MessagingException, UnsupportedEncodingException {
+        UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
+        String toAddress = userDetails.getEmail();
+        String fromAddress = "nguyendangminh03@gmail.com";
+        String senderName = "BHA Education";
+        String subject = "Please verify your registration";
+        String content = "Dear [[name]],<br>"
+                + "Please click the link below to verify your email:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_blank\">VERIFY</a></h3>"
+                + "Thank you,<br>"
+                + "BHA Education.";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
+        String verifyURL = siteURL + "/verify-email?code=" + user.getVerificationCode();
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+
     }
 
 }

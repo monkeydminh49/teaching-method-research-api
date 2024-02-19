@@ -1,5 +1,6 @@
 package com.minhdunk.research.advice;
 
+import com.minhdunk.research.exception.EmailNotVerifiedException;
 import com.minhdunk.research.exception.ForbiddenException;
 import com.minhdunk.research.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -43,4 +44,6 @@ public class GeneralCustomExceptionHandler extends ResponseEntityExceptionHandle
         log.error("Handle exception", ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
+
+
 }

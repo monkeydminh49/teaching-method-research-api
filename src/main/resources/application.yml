@@ -23,6 +23,17 @@ spring:
     multipart:
       max-file-size: 200MB
       max-request-size: 200MB
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+    host: smtp.gmail.com
+    username: nguyendangminh03@gmail.com
+    password: 'nmfr pmus pazp emai'
+    port: '587'
 application:
   security:
     jwt:
