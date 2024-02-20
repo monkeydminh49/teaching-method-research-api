@@ -1,6 +1,7 @@
 package com.minhdunk.research.controller;
 
 
+import com.minhdunk.research.dto.BaseResponse;
 import com.minhdunk.research.dto.LoginRequestDTO;
 import com.minhdunk.research.dto.RegisterRequestDTO;
 import com.minhdunk.research.dto.UserOutputDTO;
@@ -9,6 +10,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +34,24 @@ public class AuthenticationController {
         return userResponse;
     }
 
-    @PostMapping("/send-verification-email")
-    public String sendVerificationEmail(Authentication authentication, HttpServletRequest httpRequest) throws MessagingException, UnsupportedEncodingException {
-        authenticationService.sendVerificationEmail(authentication, httpRequest.getRequestURI());
-        return "Verification email sent";
+    @GetMapping("/send-verification-email")
+    public BaseResponse sendVerificationEmail(Authentication authentication, HttpServletRequest httpRequest) throws MessagingException, UnsupportedEncodingException {
+        authenticationService.sendVerificationEmail(authentication, getSiteURL(httpRequest));
+        return new BaseResponse("ok","Verification email sent successfully", null);
+    }
+
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
+    }
+
+    @GetMapping("/verify-email")
+    public BaseResponse verifyUserEmail(@Param("code") String code) {
+        if (authenticationService.verifyUserEmail(code)) {
+            return new BaseResponse("ok","verify_success", null);
+        } else {
+            return new BaseResponse("error","verify_failed", null);
+        }
     }
 
 

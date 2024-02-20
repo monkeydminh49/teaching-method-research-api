@@ -124,13 +124,29 @@ public class AuthenticationService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
-        String verifyURL = siteURL + "/verify-email?code=" + user.getVerificationCode();
+        String verifyURL = siteURL + "/api/v1/verify-email?code=" + user.getVerificationCode();
 
         content = content.replace("[[URL]]", verifyURL);
 
         helper.setText(content, true);
 
         mailSender.send(message);
+
+    }
+
+
+    public boolean verifyUserEmail(String verificationCode) {
+        User user = userRepository.findByVerificationCode(verificationCode);
+
+        if (user == null || user.getEnabled()) {
+            return false;
+        } else {
+//            user.setVerificationCode(null);
+            user.setEnabled(true);
+            userRepository.save(user);
+
+            return true;
+        }
 
     }
 

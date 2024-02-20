@@ -18,4 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new com.minhdunk.research.dto.UserOutputDTO(u.id, u.firstName, u.lastName, u.username, u.role, u.dateOfBirth) " +
             "FROM User u JOIN u.classes c WHERE c.id = ?1")
     List<UserOutputDTO> getUserOutputDTOsByClassesId(Long id);
+
+    @Query("SELECT u FROM User u WHERE u.verificationCode = ?1")
+    User findByVerificationCode(String code);
 }

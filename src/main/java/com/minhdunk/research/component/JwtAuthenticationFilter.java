@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +48,9 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/api/v1/media/**",
-            "/api/v1/documents/**"
+            "/api/v1/documents/**",
+            "/api/v1/verify-email/**"
+//            "/api/v1/send-verification-email"
     );
 
     public JwtAuthenticationFilter(List<String> permitAllPaths) {
@@ -78,6 +82,8 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
         boolean shouldNotFilter = permitAllRequestMatchers.stream()
                 .anyMatch(matcher -> matcher.matches(request));
 
+        boolean sendVerificationEmail = request.getRequestURI().equals("/api/v1/send-verification-email");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ") || shouldNotFilter) {
             filterChain.doFilter(request, response);
             return;
@@ -92,13 +98,13 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setHeader("message", e.getMessage());
         }
-        UserInfoUserDetails userDetails = (UserInfoUserDetails) this.userDetailsService.loadUserByUsername(username);
+
 
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-
-            if (jwtService.isTokenValid(jwt, userDetails) && userDetails.getUser().getEnabled()){
+            UserDetails userDetails =  this.userDetailsService.loadUserByUsername(username);
+            UserInfoUserDetails user = (UserInfoUserDetails) userDetails;
+            if (jwtService.isTokenValid(jwt, userDetails) ){
 
 //                System.out.println("username: " + username);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -108,15 +114,17 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-
+                if (!sendVerificationEmail && !user.getUser().getEnabled()) {
+                    log.info("Email not verified");
+                    response.setStatus(HttpStatus.valueOf(409).value());
+                    response.setHeader("message", "Email not verified");
+                    response.sendError(HttpStatus.valueOf(409).value(), "Email not verified");
+                    response.setHeader("message", "Email not verified");
+                }
             }
 
         }
-        if (!userDetails.getUser().getEnabled()) {
-            log.info("Email not verified");
-            response.setStatus(HttpStatus.valueOf(453).value());
-            response.setHeader("message", "Email not verified");
-        }
+
         filterChain.doFilter(request, response);
 
     }

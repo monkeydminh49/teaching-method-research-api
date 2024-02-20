@@ -63,12 +63,14 @@ public class SecurityConfig {
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/api/v1/media/**",
-                                        "/api/v1/documents/**"
+                                        "/api/v1/documents/**",
+                                        "/api/v1/verify-email/**"
                                 )
                                 .permitAll()
                                 .requestMatchers("/api/v1/user/**",
                                         "api/v1/users/**",
-                                        "api/v1/send-verification-email",
+                                        "/api/v1/send-verification-email/**",
+                                        "/api/v1/send-verification-email",
                                         "/api/v1/hello-**",
                                         "/api/v1/classrooms/**",
                                         "/api/v1/assignments/**",

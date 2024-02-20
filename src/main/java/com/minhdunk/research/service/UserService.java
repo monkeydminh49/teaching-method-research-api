@@ -25,6 +25,7 @@ public class UserService {
     private MediaService mediaService;
     @Autowired
     private DocumentRepository documentRepository;
+
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(()->new NotFoundException("User with username " + username + " not found."));
     }

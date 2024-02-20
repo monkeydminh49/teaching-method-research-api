@@ -19,6 +19,7 @@ public class UserOutputDTO {
     private String firstName;
     private String lastName;
     private String username;
+    private String email;
     private UserRole role;
     private String token;
     private LocalDate dateOfBirth;
