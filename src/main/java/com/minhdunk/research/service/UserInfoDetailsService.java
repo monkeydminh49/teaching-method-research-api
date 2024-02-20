@@ -20,9 +20,7 @@ public class UserInfoDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userInfo = repository.findByUsername(username);
         User user = userInfo.orElseThrow(() -> new UsernameNotFoundException("user not found " + username));
-        if (!user.getEnabled()) {
-            throw new UsernameNotFoundException("Your account is not verified yet. Please check your email to verify your account.");
-        }
+
 
         return userInfo.map(UserInfoUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found " + username));

@@ -92,13 +92,13 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setHeader("message", e.getMessage());
         }
+        UserInfoUserDetails userDetails = (UserInfoUserDetails) this.userDetailsService.loadUserByUsername(username);
 
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (jwtService.isTokenValid(jwt, userDetails) && userDetails.getUser().getEnabled()){
 
 //                System.out.println("username: " + username);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -108,15 +108,16 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-                if (!userDetails.isEnabled()) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.setHeader("message", "Your account is not verified yet. Please check your email to verify your account.");
-                }
+
             }
 
-
-
+        }
+        if (!userDetails.getUser().getEnabled()) {
+            log.info("Email not verified");
+            response.setStatus(HttpStatus.valueOf(453).value());
+            response.setHeader("message", "Email not verified");
         }
         filterChain.doFilter(request, response);
+
     }
 }

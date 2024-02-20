@@ -37,8 +37,8 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-//    @Autowired
-//    private JwtAuthenticationFilter jwtFilter;
+    @Autowired
+    private JwtAuthenticationFilter jwtFilter;
 
     @Autowired
     @Qualifier("customAuthenticationEntryPoint")
@@ -81,18 +81,16 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterAfter(myJwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
 //                .exceptionHandling((exceptionHandling)-> exceptionHandling.authenticationEntryPoint(authEntryPoint))
                 .exceptionHandling((exceptionHandling) ->
                         exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
                             System.out.println(Arrays.toString(authException.getStackTrace()));
                             response.setContentType("application/json");
-//                            if (response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
-//                                response.setStatus(response.getStatus());
-//                            } else {
-//                                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-//                            }
+                            if (response.getStatus() == HttpServletResponse.SC_INTERNAL_SERVER_ERROR) {
+                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            }
                             response.getWriter().write(new JSONObject()
                                     .put("timestamp", LocalDateTime.now())
                                     .put("message", (response.getHeader("message") != null ? response.getHeader("message") : authException.getMessage()))
@@ -121,24 +119,24 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    @Bean
-    public JwtAuthenticationFilter myJwtFilter() {
-        // Define the list of paths to permit all
-        List<String> permitAllPaths = List.of(
-                "/api/v1/hello",
-                "/api/v1/register",
-                "/api/v1/login",
-                "/api/v1/refresh-token",
-                "/api/v1/auth/**",
-                "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/api/v1/media/**",
-                "/api/v1/documents/**"
-        );
-        return new JwtAuthenticationFilter(permitAllPaths);
+//    @Bean
+//    public JwtAuthenticationFilter myJwtFilter() {
+//        // Define the list of paths to permit all
+//        List<String> permitAllPaths = List.of(
+//                "/api/v1/hello",
+//                "/api/v1/register",
+//                "/api/v1/login",
+//                "/api/v1/refresh-token",
+//                "/api/v1/auth/**",
+//                "/v3/api-docs/**",
+//                "/swagger-ui/**",
+//                "/api/v1/media/**",
+//                "/api/v1/documents/**"
+//        );
+//        return new JwtAuthenticationFilter(permitAllPaths);
 //    @Bean
 //    public CorsWebFilter corsWebFilter() {
 //        return new CorsWebFilter(corsConfiguration());
 //    }
-    }
+//    }
 }
