@@ -1,14 +1,18 @@
 package com.minhdunk.research.controller;
 
+import com.minhdunk.research.dto.BaseResponse;
 import com.minhdunk.research.dto.DocumentOutputDTO;
 import com.minhdunk.research.dto.PaginationResponse;
 import com.minhdunk.research.dto.UserOutputDTO;
 import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.mapper.UserMapper;
+import com.minhdunk.research.service.DocumentService;
 import com.minhdunk.research.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +33,30 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired
     private DocumentMapper documentMapper;
+    @Autowired
+    private DocumentService documentService;
+
+    @PutMapping("/users/documents/{id}/like")
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse likeDocument(@PathVariable("id") Long id, Authentication authentication) {
+        documentService.likeDocument(id, authentication);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Add document to favourite list successfully!")
+                .data(null)
+                .build();
+    }
+
+    @PutMapping("/users/documents/{id}/unlike")
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse unlikeDocument(@PathVariable("id") Long id, Authentication authentication) {
+        documentService.unlikeDocument(id, authentication);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Remove document from favourite list successfully!")
+                .data(null)
+                .build();
+    }
 
     @GetMapping("/user")
     private UserOutputDTO getUserByUsernameInPrincipal(Principal principal){

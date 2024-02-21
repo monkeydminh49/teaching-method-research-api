@@ -78,27 +78,7 @@ public class DocumentController {
                 .build();
     }
 
-    @PutMapping("/{id}/like")
-    @ResponseStatus(HttpStatus.OK)
-    public BaseResponse likeDocument(@PathVariable("id") Long id, Authentication authentication) {
-        documentService.likeDocument(id, authentication);
-        return BaseResponse.builder()
-                .status("ok")
-                .message("Add document to favourite list successfully!")
-                .data(null)
-                .build();
-    }
 
-    @PutMapping("/{id}/unlike")
-    @ResponseStatus(HttpStatus.OK)
-    public BaseResponse unlikeDocument(@PathVariable("id") Long id, Authentication authentication) {
-        documentService.unlikeDocument(id, authentication);
-        return BaseResponse.builder()
-                .status("ok")
-                .message("Remove document from favourite list successfully!")
-                .data(null)
-                .build();
-    }
 
     @GetMapping("/detail/{id}")
     @ResponseStatus(HttpStatus.OK)
