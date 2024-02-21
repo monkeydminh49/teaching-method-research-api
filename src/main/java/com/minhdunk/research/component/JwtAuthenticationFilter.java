@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/api/v1/media/**",
-            "/api/v1/documents/**",
+//            "/api/v1/documents/**",
             "/api/v1/verify-email/**"
 //            "/api/v1/send-verification-email"
     );
@@ -84,7 +84,7 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter  {
 
         boolean sendVerificationEmail = request.getRequestURI().equals("/api/v1/send-verification-email");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ") || shouldNotFilter) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ") || shouldNotFilter || authHeader.startsWith("Bearer null")) {
             filterChain.doFilter(request, response);
             return;
         }

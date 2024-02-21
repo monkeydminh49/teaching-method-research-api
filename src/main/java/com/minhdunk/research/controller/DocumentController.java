@@ -61,6 +61,8 @@ public class DocumentController {
     }
 
 
+
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public DocumentOutputDTO getDocumentById(@PathVariable("id") Long id) {
@@ -78,12 +80,10 @@ public class DocumentController {
                 .build();
     }
 
-
-
     @GetMapping("/detail/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public DocumentWithLikeStatusDTO getDocumentWithLikeStatus(@PathVariable("id") Long id, Principal principal) {
-        return documentService.getDocumentWithLikeStatus(id, principal);
+    public DocumentWithLikeStatusDTO getDocumentWithLikeStatus(@PathVariable("id") Long id, Authentication authentication) {
+        return documentService.getDocumentWithLikeStatus(id, authentication);
     }
 
 

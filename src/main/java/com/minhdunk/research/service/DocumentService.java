@@ -119,11 +119,14 @@ public class DocumentService {
         documentRepository.save(document);
     }
 
-    public DocumentWithLikeStatusDTO getDocumentWithLikeStatus(Long id, Principal principal) {
-        if (principal == null) {
+    public DocumentWithLikeStatusDTO getDocumentWithLikeStatus(Long id, Authentication authentication) {
+        if (authentication == null) {
+            log.info("Authentication: {}", "null");
             return documentMapper.getDocumentWithLikeStatusDtoFromDocument(getDocumentById(id));
         }
-        User user = userService.getUserByUsername(principal.getName());
+        UserInfoUserDetails user = (UserInfoUserDetails) authentication.getPrincipal();
+        log.info("Authentication: {}", user.getUsername());
+
         return documentRepository.getDocumentWithLikeStatus(id, user.getId()).orElseThrow(() -> new NotFoundException("Document with id " + id + " not found"));
     }
 }

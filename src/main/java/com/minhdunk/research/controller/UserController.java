@@ -1,9 +1,6 @@
 package com.minhdunk.research.controller;
 
-import com.minhdunk.research.dto.BaseResponse;
-import com.minhdunk.research.dto.DocumentOutputDTO;
-import com.minhdunk.research.dto.PaginationResponse;
-import com.minhdunk.research.dto.UserOutputDTO;
+import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.mapper.UserMapper;
@@ -35,6 +32,7 @@ public class UserController {
     private DocumentMapper documentMapper;
     @Autowired
     private DocumentService documentService;
+
 
     @PutMapping("/users/documents/{id}/like")
     @ResponseStatus(HttpStatus.OK)
