@@ -80,22 +80,14 @@ public class AuthenticationService {
         return userOutputDTO;
     }
 
-    public UserOutputDTO login(LoginRequestDTO request) {
+    public UserInfoUserDetails login(LoginRequestDTO request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
         if (authentication.isAuthenticated()) {
             UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
-
-            var user = userRepository.findByUsername(request.getUsername())
-                    .orElseThrow();
-
-            String accessToken = jwtService.generateToken(userDetails);
-
-            UserOutputDTO userOutputDTO = userMapper.getUserOutputDTOFromUser(user);
-            userOutputDTO.setToken(accessToken);
-            return userOutputDTO;
+            return userDetails;
         } else {
             log.info("Invalid login request! With username: " + request.getUsername() + " and password: " + request.getPassword());
             throw new UsernameNotFoundException("invalid login request! Please check the your username and password");
