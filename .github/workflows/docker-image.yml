@@ -35,7 +35,7 @@ jobs:
           context: ./
           push: true
           dockerfile: ./Dockerfile
-          tags: monkeydminh49/research-api:latest
+          tags: monkeydminh49/research-api:1.0
   deploy:
     needs: build
     runs-on: ubuntu-latest

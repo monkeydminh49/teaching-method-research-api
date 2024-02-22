@@ -90,7 +90,7 @@ public class SecurityConfig {
                         exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
                             System.out.println(Arrays.toString(authException.getStackTrace()));
                             response.setContentType("application/json");
-                            if (response.getStatus() == HttpServletResponse.SC_INTERNAL_SERVER_ERROR) {
+                            if (response.getStatus() != HttpServletResponse.SC_INTERNAL_SERVER_ERROR) {
                                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             }
                             response.getWriter().write(new JSONObject()

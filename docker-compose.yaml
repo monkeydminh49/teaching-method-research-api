@@ -14,7 +14,7 @@ services:
       - my_network
 
   spring-boot-app:
-    image: monkeydminh49/research-api:latest
+    image: monkeydminh49/research-api:1.0
     container_name: dangminh-research-api
     ports:
       - "10049:8080"

@@ -43,10 +43,10 @@ public class AuthenticationHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
     @ExceptionHandler(EmailNotVerifiedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ProblemDetail handleEmailNotVerifiedException(EmailNotVerifiedException ex) {
         log.info("Handle email not verified exception");
-        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
     }
 
 
