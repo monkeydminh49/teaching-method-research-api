@@ -26,12 +26,13 @@ public class UserOutputDTO {
     private String avatarId;
     private UserGender gender;
 
-    public UserOutputDTO (Long id, String firstName, String lastName, String username, UserRole role, LocalDate dateOfBirth) {
+    public UserOutputDTO (Long id, String firstName, String lastName, String username, UserRole role, LocalDate dateOfBirth, String avatarId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.role = role;
         this.dateOfBirth = dateOfBirth;
+        this.avatarId = avatarId;
     }
 }

@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findUsersByClassesId(Long id);
 
-    @Query("SELECT new com.minhdunk.research.dto.UserOutputDTO(u.id, u.firstName, u.lastName, u.username, u.role, u.dateOfBirth) " +
+    @Query("SELECT new com.minhdunk.research.dto.UserOutputDTO(u.id, u.firstName, u.lastName, u.username, u.role, u.dateOfBirth, u.avatar.id) " +
             "FROM User u JOIN u.classes c WHERE c.id = ?1")
     List<UserOutputDTO> getUserOutputDTOsByClassesId(Long id);
 
