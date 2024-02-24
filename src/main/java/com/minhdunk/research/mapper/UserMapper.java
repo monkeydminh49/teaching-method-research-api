@@ -25,5 +25,8 @@ public interface UserMapper {
 
     List<UserOutputDTO> getUserOutputDTOsFromUsers(List<User> users);
 
+    @Mapping(target = "avatarId", source = "avatar.id")
+    StudentOutputDTO getStudentOutputDTOFromUser(User user);
+
     List<StudentOutputDTO> getStudentOutputDTOsFromUsers(List<User> users);
 }

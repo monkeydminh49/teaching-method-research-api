@@ -12,6 +12,7 @@ import com.minhdunk.research.utils.PostType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,8 +78,8 @@ public class ClassroomController {
     }
 
     @GetMapping("/all")
-    public List<ClassroomOutputInListDTO> getAllClassrooms(Principal principal) {
-        return  classRoomMapper.getClassRoomOutputInListDTOsFromClassRooms(classRoomService.getAllClassrooms(principal));
+    public List<ClassroomOutputInListDTO> getAllClassrooms(Authentication authentication) {
+        return  classRoomMapper.getClassRoomOutputInListDTOsFromClassRooms(classRoomService.getAllClassrooms(authentication));
     }
 
     @PostMapping("/{id}/notifications")

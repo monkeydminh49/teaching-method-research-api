@@ -12,7 +12,7 @@ public class ClassroomOutputInListDTO {
     private String name;
     private String code;
     private Long teacherId;
-    private Long teacherAvatarId;
+    private String teacherAvatarId;
     private String teacherFirstName;
     private String teacherLastName;
     private int numberOfStudents;

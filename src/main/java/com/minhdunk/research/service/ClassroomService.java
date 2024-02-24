@@ -17,6 +17,7 @@ import com.minhdunk.research.utils.PostType;
 import com.minhdunk.research.utils.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -78,8 +79,8 @@ public class ClassroomService {
         return userRepository.findUsersByClassesId(id);
     }
 
-    public List<Classroom> getAllClassrooms(Principal principal) {
-        UserInfoUserDetails userInfoDetails = (UserInfoUserDetails) principal;
+    public List<Classroom> getAllClassrooms(Authentication authentication) {
+        UserInfoUserDetails userInfoDetails = (UserInfoUserDetails) authentication.getPrincipal();
         User user = userInfoDetails.getUser();
         if (user.getRole() == UserRole.ROLE_TEACHER) {
             return classroomRepository.findAllByTeacherId(user.getId());
