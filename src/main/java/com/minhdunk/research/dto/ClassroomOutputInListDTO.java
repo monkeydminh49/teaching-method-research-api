@@ -11,5 +11,9 @@ public class ClassroomOutputInListDTO {
     private Long id;
     private String name;
     private String code;
+    private Long teacherId;
+    private Long teacherAvatarId;
+    private String teacherFirstName;
+    private String teacherLastName;
     private int numberOfStudents;
 }

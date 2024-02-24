@@ -19,4 +19,5 @@ public class StudentOutputDTO {
     private String username;
     private UserRole role;
     private LocalDate dateOfBirth;
+    private Long avatarId;
 }

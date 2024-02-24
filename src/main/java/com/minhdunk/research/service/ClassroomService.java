@@ -1,5 +1,6 @@
 package com.minhdunk.research.service;
 
+import com.minhdunk.research.component.UserInfoUserDetails;
 import com.minhdunk.research.dto.ClassroomInputDTO;
 import com.minhdunk.research.dto.UserOutputDTO;
 import com.minhdunk.research.entity.Assignment;
@@ -78,7 +79,8 @@ public class ClassroomService {
     }
 
     public List<Classroom> getAllClassrooms(Principal principal) {
-        User user = userRepository.findByUsername(principal.getName()).get();
+        UserInfoUserDetails userInfoDetails = (UserInfoUserDetails) principal;
+        User user = userInfoDetails.getUser();
         if (user.getRole() == UserRole.ROLE_TEACHER) {
             return classroomRepository.findAllByTeacherId(user.getId());
         }

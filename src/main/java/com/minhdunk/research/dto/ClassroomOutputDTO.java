@@ -12,6 +12,7 @@ public class ClassroomOutputDTO {
     private String name;
     private String code;
     private Long teacherId;
+    private Long teacherAvatarId;
     private String teacherFirstName;
     private String teacherLastName;
     private int numberOfStudents;
