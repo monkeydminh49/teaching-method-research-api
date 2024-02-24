@@ -72,10 +72,6 @@ public class DocumentService {
 
     // TODO: Pagination
     public List<Document> getDocuments(DocumentType type, String topic) {
-//        if (type != null) {
-//            return documentRepository.findAllByType(type);
-//        }
-//        return documentRepository.findAll();
         return documentRepository.findAllByTypeAndByTopic(type, topic);
     }
 

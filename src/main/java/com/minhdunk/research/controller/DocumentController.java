@@ -59,7 +59,7 @@ public class DocumentController {
     public List<DocumentOutputDTO> getDocuments(
             @RequestParam(value = "type", required = false) DocumentType type,
             @RequestParam(value = "topic", required = false) DocumentTopic topic) {
-        return documentMapper.getDocumentOutputDtosFromDocuments(documentService.getDocuments(type, String.valueOf(topic)));
+        return documentMapper.getDocumentOutputDtosFromDocuments(documentService.getDocuments(type, topic == null ? null : String.valueOf(topic)));
     }
 
 
