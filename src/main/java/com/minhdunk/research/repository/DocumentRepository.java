@@ -2,6 +2,7 @@ package com.minhdunk.research.repository;
 
 import com.minhdunk.research.dto.DocumentWithLikeStatusDTO;
 import com.minhdunk.research.entity.Document;
+import com.minhdunk.research.utils.DocumentTopic;
 import com.minhdunk.research.utils.DocumentType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,4 +36,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
             "WHERE d.type = ?1"
     )
     List<DocumentWithLikeStatusDTO> getDocumentsWithLikeStatusByType(DocumentType type, Long userId);
+
+    @Query("SELECT d FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)")
+    List<Document> findAllByTypeAndByTopic(DocumentType type, String topic);
 }

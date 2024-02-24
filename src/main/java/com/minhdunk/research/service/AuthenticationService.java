@@ -17,6 +17,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -94,6 +95,7 @@ public class AuthenticationService {
         }
     }
 
+    @Async
     public void sendVerificationEmail(Authentication authentication, String siteURL)
             throws MessagingException, UnsupportedEncodingException {
         UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
@@ -116,7 +118,9 @@ public class AuthenticationService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
-        String verifyURL = siteURL + "/api/v1/verify-email?code=" + user.getVerificationCode();
+        log.info(siteURL);
+        siteURL = "http://localhost:3000";
+        String verifyURL = siteURL + "/verify-email?code=" + user.getVerificationCode();
 
         content = content.replace("[[URL]]", verifyURL);
 

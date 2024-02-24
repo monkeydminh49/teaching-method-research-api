@@ -46,6 +46,7 @@ public class AuthenticationController {
         return userResponse;
     }
 
+    // TODO: async
     @GetMapping("/send-verification-email")
     public BaseResponse sendVerificationEmail(Authentication authentication, HttpServletRequest httpRequest) throws MessagingException, UnsupportedEncodingException {
         authenticationService.sendVerificationEmail(authentication, getSiteURL(httpRequest));

@@ -56,8 +56,10 @@ public class DocumentController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<DocumentOutputDTO> getDocuments(@RequestParam(value = "type", required = false) DocumentType type) {
-        return documentMapper.getDocumentOutputDtosFromDocuments(documentService.getDocuments(type));
+    public List<DocumentOutputDTO> getDocuments(
+            @RequestParam(value = "type", required = false) DocumentType type,
+            @RequestParam(value = "topic", required = false) DocumentTopic topic) {
+        return documentMapper.getDocumentOutputDtosFromDocuments(documentService.getDocuments(type, String.valueOf(topic)));
     }
 
 

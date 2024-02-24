@@ -13,6 +13,7 @@ import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.repository.DocumentRepository;
 import com.minhdunk.research.repository.DocumentUserRepository;
 import com.minhdunk.research.repository.MediaRepository;
+import com.minhdunk.research.utils.DocumentTopic;
 import com.minhdunk.research.utils.DocumentType;
 import com.minhdunk.research.utils.DocumentUserKey;
 import lombok.extern.slf4j.Slf4j;
@@ -70,11 +71,12 @@ public class DocumentService {
     }
 
     // TODO: Pagination
-    public List<Document> getDocuments(DocumentType type) {
-        if (type != null) {
-            return documentRepository.findAllByType(type);
-        }
-        return documentRepository.findAll();
+    public List<Document> getDocuments(DocumentType type, String topic) {
+//        if (type != null) {
+//            return documentRepository.findAllByType(type);
+//        }
+//        return documentRepository.findAll();
+        return documentRepository.findAllByTypeAndByTopic(type, topic);
     }
 
     public void deleteDocument(Long id) {
