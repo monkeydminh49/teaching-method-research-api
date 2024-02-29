@@ -119,7 +119,7 @@ public class AuthenticationService {
 
         content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
         log.info(siteURL);
-        siteURL = "http://localhost:3000";
+        siteURL = "http://www.minhupro.xyz";
         String verifyURL = siteURL + "/verify-email?code=" + user.getVerificationCode();
 
         content = content.replace("[[URL]]", verifyURL);
