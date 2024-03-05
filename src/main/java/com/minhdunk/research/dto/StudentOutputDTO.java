@@ -17,6 +17,7 @@ public class StudentOutputDTO {
     private String firstName;
     private String lastName;
     private String username;
+    private String email;
     private UserRole role;
     private LocalDate dateOfBirth;
     private String avatarId;
