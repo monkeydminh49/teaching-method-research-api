@@ -35,7 +35,7 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SecurityConfig  {
 
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
@@ -64,7 +64,9 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/api/v1/media/**",
                                         "/api/v1/documents/**",
-                                        "/api/v1/verify-email/**"
+                                        "/api/v1/verify-email/**",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
                                 )
                                 .permitAll()
                                 .requestMatchers("/api/v1/user/**",
