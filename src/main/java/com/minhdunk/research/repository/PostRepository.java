@@ -45,4 +45,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND (:type is null OR p.type = :type) " +
             "AND (:orientation is null OR p.orientation = :orientation)")
     List<PostWithLikeStatusDTO> findByClassroomIdWithLikeStatus(Long classId, PostType type, PostOrientation orientation, Long userId);
+
+    @Query("SELECT p FROM Post p LEFT JOIN FETCH p.medias WHERE p.assignment.id = ?1" +
+            " AND p.authorId = ?2 AND p.assignment.isForGroup = false")
+    List<Post> getPostsByAssignmentIdNotForGroup(Long assignmentId, Long userId);
+
+    @Query("SELECT p FROM Post p LEFT JOIN FETCH p.medias WHERE p.assignment.id = ?1 " +
+            "AND p.assignment.isForGroup = true " +
+            "AND ?2 in (SELECT gs.id FROM Group g JOIN g.students gs WHERE g.assignment.id = ?1)")
+    List<Post> getPostsByAssignmentIdForGroup(Long id, Long id1);
 }

@@ -1,5 +1,6 @@
 package com.minhdunk.research.service;
 
+import com.minhdunk.research.component.UserInfoUserDetails;
 import com.minhdunk.research.dto.PostInputDTO;
 import com.minhdunk.research.dto.PostWithLikeStatusDTO;
 import com.minhdunk.research.entity.*;
@@ -14,6 +15,7 @@ import com.minhdunk.research.utils.PostType;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -148,5 +150,14 @@ public class PostService {
     public List<PostWithLikeStatusDTO> getPostsByClassroomIdWithLikeStatus(Long classId, PostType type, PostOrientation orientation, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
         return postRepository.findByClassroomIdWithLikeStatus(classId, type, orientation, user.getId());
+    }
+
+    public List<Post> getPostsByAssignmentId(Long id, Authentication authentication) {
+        UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
+        List<Post> posts =  postRepository.getPostsByAssignmentIdNotForGroup(id, user.getId());
+        List<Post> groupPosts = postRepository.getPostsByAssignmentIdForGroup(id, user.getId());
+        posts.addAll(groupPosts);
+        return posts;
     }
 }
