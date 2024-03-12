@@ -55,6 +55,7 @@ public class PostService {
                 .postTime(LocalDateTime.now())
                 .numberOfLikes(0)
                 .medias(medias)
+                .submitter(user)
                 .build();
 
         if (assignment.getIsForGroup()) {
@@ -159,5 +160,18 @@ public class PostService {
         List<Post> groupPosts = postRepository.getPostsByAssignmentIdForGroup(id, user.getId());
         posts.addAll(groupPosts);
         return posts;
+    }
+
+    public void addTeacherComment(Authentication authentication, Long postId, String comment) {
+        UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
+        Post post = getPostById(postId);
+        // TODO: Resolve n+1 problem
+//        Classroom classroom = classroomService.getClassroomById(post.getAssignment().getClassroom().getId());
+//        if (!user.getId().equals(classroom.getTeacher().getId())) {
+//            throw new ForbiddenException("You are not allowed to perform this action");
+//        }
+        post.setTeacherComment(comment);
+        postRepository.save(post);
     }
 }

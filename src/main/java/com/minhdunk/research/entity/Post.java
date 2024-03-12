@@ -29,7 +29,7 @@ public class Post {
     private String title;
     @Column(columnDefinition="text")
     private String caption;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY ,optional = false)
     @JoinColumn(name = "assignment_id", referencedColumnName = "id", nullable = false)
     private Assignment assignment;
     @Enumerated(EnumType.STRING)
@@ -61,6 +61,11 @@ public class Post {
     )
     private Set<User> likedByUsers = new HashSet<>();
     private Integer numberOfLikes;
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private User submitter;
+    @Column(columnDefinition="text")
+    private String teacherComment;
     public void addLikedUser(User user) {
         if(likedByUsers == null) {
             likedByUsers = new HashSet<>();

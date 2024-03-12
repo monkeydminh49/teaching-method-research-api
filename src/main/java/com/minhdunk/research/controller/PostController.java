@@ -93,9 +93,20 @@ public class PostController {
         return postMapper.getPostOutputDTOFromPost(post);
     }
 
+
     @GetMapping("/posts/detail/{postId}")
     public PostWithLikeStatusDTO getPostDetailById(@PathVariable Long postId, Principal principal) {
         return postService.getPostByIdWithLikeStatus(postId, principal);
+    }
+
+    @PostMapping("/posts/{postId}/teacher-comment")
+    public BaseResponse addTeacherComment(Authentication authentication, @PathVariable Long postId, @RequestParam("comment") String comment) {
+        postService.addTeacherComment(authentication, postId, comment);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Add teacher comment successfully!")
+                .data(null)
+                .build();
     }
 
 

@@ -13,6 +13,7 @@ public interface PostMapper {
     @Mapping(target = "assignmentId", source = "assignment.id")
     @Mapping(target = "title", source = "title")
     @Mapping(target = "numberOfLikes", source = "numberOfLikes")
+    @Mapping(target = "submitterId",source = "submitter.id")
     PostOutputDTO getPostOutputDTOFromPost(Post post);
 
     List<PostOutputDTO> getPostOutputDTOsFromPosts(List<Post> posts);

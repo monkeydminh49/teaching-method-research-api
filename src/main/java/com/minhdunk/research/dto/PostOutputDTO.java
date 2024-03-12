@@ -30,6 +30,8 @@ public class PostOutputDTO {
     private List<MediaOutputDTO> medias;
     private LocalDateTime postTime;
     private Integer numberOfLikes;
+    private Long submitterId;
+    private String teacherComment;
     public LocalDateTime getPostTime(){
         return this.postTime.truncatedTo(ChronoUnit.SECONDS);
     }
