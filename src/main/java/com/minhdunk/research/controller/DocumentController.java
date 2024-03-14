@@ -95,7 +95,13 @@ public class DocumentController {
         return documentService.getDocumentWithLikeStatus(id, authentication);
     }
 
-
+    @GetMapping("/detail")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DocumentWithLikeStatusDTO> getDocumentsWithLikeStatus(
+            @RequestParam(value = "type", required = false) DocumentType type,
+            Authentication authentication) {
+        return documentService.getDocumentsWithLikeStatus(type, authentication);
+    }
 
 
 }
