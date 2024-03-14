@@ -3,6 +3,7 @@ package com.minhdunk.research.advice;
 import com.minhdunk.research.exception.EmailNotVerifiedException;
 import com.minhdunk.research.exception.ForbiddenException;
 import com.minhdunk.research.exception.NotFoundException;
+import com.minhdunk.research.exception.TestTypeExistsForDocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -43,6 +44,13 @@ public class GeneralCustomExceptionHandler extends ResponseEntityExceptionHandle
     public ProblemDetail handleException(Exception ex) {
         log.error("Handle exception", ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    @ExceptionHandler(TestTypeExistsForDocumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ProblemDetail handleTestTypeExistsForDocumentException(TestTypeExistsForDocumentException ex) {
+        log.info("Handle test type exists for document exception");
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
 

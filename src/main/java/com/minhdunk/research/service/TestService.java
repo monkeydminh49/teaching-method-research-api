@@ -7,6 +7,7 @@ import com.minhdunk.research.entity.Question;
 import com.minhdunk.research.entity.Test;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.exception.NotFoundException;
+import com.minhdunk.research.exception.TestTypeExistsForDocumentException;
 import com.minhdunk.research.mapper.TestMapper;
 import com.minhdunk.research.repository.ChoiceRepository;
 import com.minhdunk.research.repository.DocumentRepository;
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TestService {
@@ -33,6 +34,12 @@ public class TestService {
     private ChoiceRepository choiceRepository;
 
     public Test createTest(Authentication authentication, TestInputDTO testInputDTO) {
+        Optional<Test> checkTest = testRepository.findByDocumentIdAndType(testInputDTO.getDocumentId(), testInputDTO.getType());
+
+        if (checkTest.isPresent()) {
+            throw new TestTypeExistsForDocumentException("Test type exists for this document. Please delete the existing test first");
+        }
+
         Test test = testMapper.getTestFromTestInputDTO(testInputDTO);
         UserInfoUserDetails userInfoUserDetails = (UserInfoUserDetails) authentication.getPrincipal();
         User author = userInfoUserDetails.getUser();
@@ -67,8 +74,8 @@ public class TestService {
         testRepository.deleteById(testId);
     }
 
-    public List<Test> getTestsByDocumentId(Long documentId, TestType type) {
-
-        return testRepository.findByDocumentId(documentId, type);
+    public Test getTestsByDocumentIdAndType(Long documentId, TestType type) {
+        Optional<Test> test =  testRepository.findByDocumentIdAndType(documentId, type);
+        return test.orElseThrow(() -> new NotFoundException("Test not found"));
     }
 }

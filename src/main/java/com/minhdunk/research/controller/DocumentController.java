@@ -2,7 +2,6 @@ package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Document;
-import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.mapper.TestMapper;
 import com.minhdunk.research.service.DocumentService;
@@ -68,8 +67,8 @@ public class DocumentController {
 
 
     @GetMapping("/{documentId}/tests")
-    public List<TestDTO> getTestsByDocumentId(@PathVariable Long documentId, @RequestParam TestType type) {
-        return testMapper.getTestDTOsFromTests(testService.getTestsByDocumentId(documentId, type));
+    public TestDTO getTestsByDocumentId(@PathVariable Long documentId, @RequestParam TestType type) {
+        return testMapper.getTestDTOFromTest(testService.getTestsByDocumentIdAndType(documentId, type));
     }
 
 
