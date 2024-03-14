@@ -127,4 +127,9 @@ public class DocumentService {
 
         return documentRepository.getDocumentWithLikeStatus(id, user.getId()).orElseThrow(() -> new NotFoundException("Document with id " + id + " not found"));
     }
+
+    public List<DocumentWithLikeStatusDTO> getDocumentsWithLikeStatus(DocumentType type, DocumentTopic topic, Authentication authentication) {
+        UserInfoUserDetails user = (UserInfoUserDetails) authentication.getPrincipal();
+        return documentRepository.getDocumentsWithLikeStatusByType(type, topic, user.getId());
+    }
 }
