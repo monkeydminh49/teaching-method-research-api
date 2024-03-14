@@ -167,10 +167,10 @@ public class PostService {
         User user = userDetails.getUser();
         Post post = getPostById(postId);
         // TODO: Resolve n+1 problem
-//        Classroom classroom = classroomService.getClassroomById(post.getAssignment().getClassroom().getId());
-//        if (!user.getId().equals(classroom.getTeacher().getId())) {
-//            throw new ForbiddenException("You are not allowed to perform this action");
-//        }
+        Classroom classroom = classroomService.getClassroomById(post.getAssignment().getClassroom().getId());
+        if (!user.getId().equals(classroom.getTeacher().getId())) {
+            throw new ForbiddenException("You are not allowed to perform this action");
+        }
         post.setTeacherComment(comment);
         postRepository.save(post);
     }
