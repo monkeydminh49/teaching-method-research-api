@@ -1,16 +1,16 @@
 package com.minhdunk.research.controller;
 
-import com.minhdunk.research.dto.BaseResponse;
-import com.minhdunk.research.dto.DocumentInputDTO;
-import com.minhdunk.research.dto.DocumentOutputDTO;
-import com.minhdunk.research.dto.DocumentWithLikeStatusDTO;
+import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.mapper.DocumentMapper;
+import com.minhdunk.research.mapper.TestMapper;
 import com.minhdunk.research.service.DocumentService;
 import com.minhdunk.research.service.MediaService;
+import com.minhdunk.research.service.TestService;
 import com.minhdunk.research.utils.DocumentTopic;
 import com.minhdunk.research.utils.DocumentType;
+import com.minhdunk.research.utils.TestType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +35,10 @@ public class DocumentController {
     private DocumentMapper documentMapper;
     @Autowired
     private MediaService mediaService;
+    @Autowired
+    private TestService testService;
+    @Autowired
+    private TestMapper testMapper;
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     public DocumentOutputDTO createDocument(
@@ -63,6 +67,10 @@ public class DocumentController {
     }
 
 
+    @GetMapping("/{documentId}/tests")
+    public List<TestDTO> getTestsByDocumentId(@PathVariable Long documentId, @RequestParam TestType type) {
+        return testMapper.getTestDTOsFromTests(testService.getTestsByDocumentId(documentId, type));
+    }
 
 
     @GetMapping("/{id}")
