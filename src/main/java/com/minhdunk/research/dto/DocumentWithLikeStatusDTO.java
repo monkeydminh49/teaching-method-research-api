@@ -5,6 +5,7 @@ import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.mapper.DocumentMapperImpl;
+import com.minhdunk.research.utils.DocumentTopic;
 import com.minhdunk.research.utils.DocumentType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class DocumentWithLikeStatusDTO {
     private String notionPageId;
     private MediaOutputDTO thumbnail;
     private Integer numberOfLikes;
+    private String topic;
     private Boolean isLiked;
     public LocalDateTime getPostTime(){
         return this.postTime.truncatedTo(ChronoUnit.SECONDS);
@@ -42,7 +44,8 @@ public class DocumentWithLikeStatusDTO {
         this.audio = mediaToMediaOutputDTO( document.getAudio() ) ;
         this.notionPageId = document.getNotionPageId();
         this.thumbnail = mediaToMediaOutputDTO( document.getThumbnail() ) ;
-        this.numberOfLikes = document.getNumberOfLikes();
+        this.numberOfLikes = document.getNumberOfLikes();;
+        this.topic = document.getTopic();
         this.isLiked = user != null;
     }
 
