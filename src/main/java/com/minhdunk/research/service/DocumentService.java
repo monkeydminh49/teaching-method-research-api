@@ -130,7 +130,7 @@ public class DocumentService {
 
     public List<DocumentWithLikeStatusDTO> getDocumentsWithLikeStatus(DocumentType type, DocumentTopic topic, Authentication authentication) {
         if (authentication == null) {
-            return documentRepository.getDocumentsWithLikeStatusByType(type, topic, null);
+            return documentMapper.getDocumentWithLikeStatusDtosFromDocuments(documentRepository.findAllByTypeAndByTopic(type, topic));
         }
         UserInfoUserDetails user = (UserInfoUserDetails) authentication.getPrincipal();
 

@@ -26,4 +26,6 @@ public interface DocumentMapper {
 
     @Mapping(target = "isLiked", ignore = true)
     DocumentWithLikeStatusDTO getDocumentWithLikeStatusDtoFromDocument(Document document);
+
+    List<DocumentWithLikeStatusDTO> getDocumentWithLikeStatusDtosFromDocuments(List<Document> documents);
 }
