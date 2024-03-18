@@ -18,6 +18,7 @@ public class QuestionDTO {
     private String question;
     private List<ChoiceDTO> choices;
     private String hint;
+    private String answerHint;
 
     public List<ChoiceDTO> getChoices() {
         return choices != null ? choices : List.of();

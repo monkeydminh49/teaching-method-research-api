@@ -20,4 +20,5 @@ public class QuestionInputDTO {
     private String type;
     private List<ChoiceInputDTO> choices;
     private String hint;
+    private String answerHint;
 }

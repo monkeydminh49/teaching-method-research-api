@@ -53,6 +53,8 @@ public class Question {
 
     @Column(columnDefinition="text")
     private String hint;
+    @Column(columnDefinition="text")
+    private String answerHint;
     public QuestionType getType() {
         return type != null ? type : QuestionType.SINGLE_CHOICE;
     }
