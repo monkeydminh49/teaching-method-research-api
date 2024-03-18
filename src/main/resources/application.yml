@@ -34,6 +34,9 @@ spring:
     username: nguyendangminh03@gmail.com
     password: 'nmfr pmus pazp emai'
     port: '587'
+springdoc:
+  swagger-ui:
+    displayOperationId: true
 application:
   security:
     jwt:

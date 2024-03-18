@@ -20,5 +20,5 @@ public class TestInputDTO {
     private String title;
     private List<QuestionInputDTO> questions;
     @Schema(description = "Type of the test", example = "WRITING | MULTIPLE_CHOICE")
-    private String type;
+    private TestType type;
 }
