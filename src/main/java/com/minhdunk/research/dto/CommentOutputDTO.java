@@ -21,7 +21,7 @@ public class CommentOutputDTO {
     private String content;
     private LocalDateTime postTime;
     private CommentType type;
-
+    private Boolean isPinned;
 
     public LocalDateTime getPostTime(){
         return this.postTime.truncatedTo(ChronoUnit.SECONDS);

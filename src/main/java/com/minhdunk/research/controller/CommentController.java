@@ -1,5 +1,6 @@
 package com.minhdunk.research.controller;
 
+import com.minhdunk.research.dto.BaseResponse;
 import com.minhdunk.research.dto.CommentInputDTO;
 import com.minhdunk.research.dto.CommentOutputDTO;
 import com.minhdunk.research.entity.Comment;
@@ -38,4 +39,17 @@ public class CommentController {
     public CommentOutputDTO getCommentById(@PathVariable("commentId") Long commentId){
         return commentService.getCommentOutputDtoById(commentId);
     }
+
+    @PutMapping("/pin/{commentId}")
+    public BaseResponse pinComment(@PathVariable("commentId") Long commentId){
+        commentService.pinComment(commentId);
+        return new BaseResponse( "ok", "Pinned comment successfully", null);
+    }
+
+    @PutMapping("/unpin/{commentId}")
+    public BaseResponse unpinComment(@PathVariable("commentId") Long commentId){
+        commentService.unpinComment(commentId);
+        return new BaseResponse( "ok", "Unpinned comment successfully", null);
+    }
+
 }

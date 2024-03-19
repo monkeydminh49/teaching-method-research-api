@@ -30,4 +30,5 @@ public class Comment {
     private LocalDateTime postTime;
     @Enumerated(EnumType.STRING)
     private CommentType type;
+    private Boolean isPinned;
 }

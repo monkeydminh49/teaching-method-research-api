@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -68,5 +69,25 @@ public class CommentService {
 
     public List<Comment> getAllCommentByNotificationId(Long notificationId) {
         return commentRepository.findAllCommentsByNotificationId(notificationId);
+    }
+
+    public void pinComment(Long commentId) {
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        if (commentOptional.isEmpty()) {
+            throw new RuntimeException("Comment not found");
+        }
+        Comment comment = commentOptional.get();
+        comment.setIsPinned(true);
+        commentRepository.save(comment);
+    }
+
+    public void unpinComment(Long commentId) {
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        if (commentOptional.isEmpty()) {
+            throw new RuntimeException("Comment not found");
+        }
+        Comment comment = commentOptional.get();
+        comment.setIsPinned(false);
+        commentRepository.save(comment);
     }
 }
