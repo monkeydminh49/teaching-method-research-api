@@ -51,10 +51,16 @@ public class Question {
     )
     private List<Choice> choices;
 
-    @Column(columnDefinition="text")
-    private String hint;
-    @Column(columnDefinition="text")
-    private String answerHint;
+    @OneToMany(
+            mappedBy = "question",
+            cascade = { CascadeType.REMOVE }
+    )
+    private List<Hint> hints;
+    @OneToMany(
+            mappedBy = "question",
+            cascade = { CascadeType.REMOVE }
+    )
+    private List<Hint> answerHints;
     public QuestionType getType() {
         return type != null ? type : QuestionType.SINGLE_CHOICE;
     }

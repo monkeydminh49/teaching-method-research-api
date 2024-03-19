@@ -9,10 +9,7 @@ import com.minhdunk.research.entity.User;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.exception.TestTypeExistsForDocumentException;
 import com.minhdunk.research.mapper.TestMapper;
-import com.minhdunk.research.repository.ChoiceRepository;
-import com.minhdunk.research.repository.DocumentRepository;
-import com.minhdunk.research.repository.QuestionRepository;
-import com.minhdunk.research.repository.TestRepository;
+import com.minhdunk.research.repository.*;
 import com.minhdunk.research.utils.TestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -32,6 +29,8 @@ public class TestService {
     private QuestionRepository questionRepository;
     @Autowired
     private ChoiceRepository choiceRepository;
+    @Autowired
+    private HintRepository hintRepository;
 
     public Test createTest(Authentication authentication, TestInputDTO testInputDTO) {
         Optional<Test> checkTest = testRepository.findByDocumentIdAndType(testInputDTO.getDocumentId(), testInputDTO.getType());
@@ -55,6 +54,16 @@ public class TestService {
             question.getChoices().forEach(choice -> {
                 choice.setQuestion(savedQuestion);
                 choiceRepository.save(choice);
+            });
+
+            question.getHints().forEach(hint -> {
+                hint.setQuestion(savedQuestion);
+                hintRepository.save(hint);
+            });
+
+            question.getAnswerHints().forEach(hint -> {
+                hint.setQuestion(savedQuestion);
+                hintRepository.save(hint);
             });
 
         });

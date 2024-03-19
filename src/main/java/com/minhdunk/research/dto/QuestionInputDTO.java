@@ -19,6 +19,6 @@ public class QuestionInputDTO {
     @Schema(description = "Type of the question", example = "SINGLE_CHOICE | FILL_IN_BLANK | MULTI_CHOICE")
     private String type;
     private List<ChoiceInputDTO> choices;
-    private String hint;
-    private String answerHint;
+    private List<HintInputDTO> hints;
+    private List<HintInputDTO> answerHints;
 }
