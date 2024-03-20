@@ -1,6 +1,7 @@
 package com.minhdunk.research.config;
 
 
+import com.minhdunk.research.document.DocumentElastic;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.repository.UserRepository;
 import com.minhdunk.research.utils.UserRole;
@@ -22,6 +23,10 @@ public class InitConfig {
     @Bean
     CommandLineRunner commandLineRunner() {
         return args -> {
+            DocumentElastic documentElastic = new DocumentElastic();
+            documentElastic.setTitle("Test elastic");
+
+//            documentElasticRepository.save(documentElastic);
             User admin = userRepository.findByUsername("admin").orElse(null);
             if (admin == null) {
                 admin = new User();

@@ -8,6 +8,20 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+#  data:
+#    elasticsearch:
+#      repositories:
+#        enabled: true
+  elasticsearch:
+    rest:
+      username: 'elastic'
+      read-timeout: 1m
+      uris: localhost:9200
+      connection-timeout: 1s
+      password: 'dangminh49'
+#  main:
+#    allow-bean-definition-overriding: true
   jpa:
     hibernate:
       ddl-auto: update
