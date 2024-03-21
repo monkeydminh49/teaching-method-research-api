@@ -26,7 +26,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     @Query("SELECT new com.minhdunk.research.dto.DocumentWithLikeStatusDTO(d, du.user) FROM Document d " +
             "LEFT JOIN d.likedByUsers du " +
             "ON du.user.id = ?2 " +
-            "WHERE d.id = ?1"
+            "WHERE d.id = ?1" +
+            "ORDER BY d.postTime DESC"
     )
     Optional<DocumentWithLikeStatusDTO> getDocumentWithLikeStatus(Long id, Long userId);
 

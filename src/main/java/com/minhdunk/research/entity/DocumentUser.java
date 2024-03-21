@@ -20,7 +20,7 @@ public class DocumentUser {
     @EmbeddedId
     private DocumentUserKey id;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @MapsId("documentId")
     @JoinColumn(name = "document_id")
     private Document document;

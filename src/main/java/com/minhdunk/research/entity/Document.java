@@ -41,7 +41,10 @@ public class Document {
     private String notionPageId;
     private String topic;
 
-    @OneToMany(mappedBy = "document")
+    @OneToMany(mappedBy = "document", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Test> tests = new HashSet<>();
+
+    @OneToMany(mappedBy = "document", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<DocumentUser> likedByUsers = new HashSet<>();
     private Integer numberOfLikes;
 

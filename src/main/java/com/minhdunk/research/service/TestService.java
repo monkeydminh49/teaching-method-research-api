@@ -44,6 +44,8 @@ public class TestService {
         User author = userInfoUserDetails.getUser();
         test.setAuthor(author);
         Document document = documentRepository.findById(testInputDTO.getDocumentId()).orElseThrow(() -> new NotFoundException("Document not found"));
+        document.getTests().add(test);
+        documentRepository.save(document);
         test.setDocument(document);
         Test savedTest =  testRepository.save(test);
 
