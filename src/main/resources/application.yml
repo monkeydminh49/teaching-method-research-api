@@ -1,7 +1,7 @@
 bezkoder:
   openapi:
     dev-url: http://localhost:8080
-    prod-url: http://www.minhupro.xyz
+    prod-url: ${SPRING_DOMAIN_URL}
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}

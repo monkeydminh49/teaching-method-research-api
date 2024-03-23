@@ -32,6 +32,7 @@ public interface DocumentMapper {
     List<DocumentWithLikeStatusDTO> getDocumentWithLikeStatusDtosFromDocuments(List<Document> documents);
 
 
+    @Mapping(target = "thumbnailId", source = "thumbnail.id")
     DocumentSearchOutputDTO getDocumentSearchOutputDtoFromDocument(Document document);
 
     List<DocumentSearchOutputDTO> getDocumentSearchOutputDtosFromDocuments(List<Document> documents);

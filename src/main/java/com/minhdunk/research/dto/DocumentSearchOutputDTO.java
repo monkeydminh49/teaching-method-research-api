@@ -15,7 +15,7 @@ public class DocumentSearchOutputDTO {
     private String veryFirstText;
     private LocalDateTime postTime;
     private DocumentType type;
-    private MediaOutputDTO thumbnail;
+    private String thumbnailId;
     private Integer numberOfLikes;
     private String topic;
 }
