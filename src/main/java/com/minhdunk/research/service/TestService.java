@@ -10,11 +10,13 @@ import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.exception.TestTypeExistsForDocumentException;
 import com.minhdunk.research.mapper.TestMapper;
 import com.minhdunk.research.repository.*;
+import com.minhdunk.research.utils.HintType;
 import com.minhdunk.research.utils.TestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,11 +61,13 @@ public class TestService {
             });
 
             question.getHints().forEach(hint -> {
+                hint.setType(HintType.HINT_REGULAR);
                 hint.setQuestion(savedQuestion);
                 hintRepository.save(hint);
             });
 
             question.getAnswerHints().forEach(hint -> {
+                hint.setType(HintType.HINT_ANSWER);
                 hint.setQuestion(savedQuestion);
                 hintRepository.save(hint);
             });
@@ -78,7 +82,10 @@ public class TestService {
 
 
     public Test getTestById(Long testId) {
-        return testRepository.findById(testId).orElseThrow(() -> new NotFoundException("Test not found"));
+        Test test = testRepository.findById(testId).orElseThrow(() -> new NotFoundException("Test not found"));
+//        List<Question> questions = questionRepository.findByTestId(testId);
+//        test.setQuestions(questions);
+        return test;
     }
 
     public void deleteTest(Long testId) {

@@ -1,5 +1,6 @@
 package com.minhdunk.research.entity;
 
+import com.minhdunk.research.utils.HintType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,6 @@ public class Hint {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "question_id", referencedColumnName = "id", nullable = false)
     private Question question;
+    @Enumerated(EnumType.STRING)
+    private HintType type;
 }

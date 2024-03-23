@@ -17,4 +17,7 @@ public interface TestRepository extends JpaRepository<Test, Long> {
 
     @Query("SELECT t FROM Test t WHERE t.document.id = :documentId AND t.type = :type")
     Optional<Test> findByDocumentIdAndType(Long documentId, String type);
+
+    @Query("SELECT t FROM Test t JOIN FETCH t.questions q WHERE t.id = :id")
+    Optional<Test> findByIdFetchAll(Long id);
 }

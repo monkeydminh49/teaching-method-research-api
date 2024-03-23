@@ -4,9 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.minhdunk.research.utils.QuestionType;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.With;
+import org.hibernate.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -45,20 +49,30 @@ public class Question {
     @JoinColumn(name="test_id", referencedColumnName = "id", nullable=false)
     private Test test;
 
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(
             mappedBy = "question",
             cascade = { CascadeType.REMOVE }
     )
     private List<Choice> choices;
 
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(
             mappedBy = "question",
             cascade = { CascadeType.REMOVE }
     )
+    @SQLRestriction(
+            "type = 'HINT_REGULAR'"
+    )
     private List<Hint> hints;
+
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(
             mappedBy = "question",
             cascade = { CascadeType.REMOVE }
+    )
+    @SQLRestriction(
+            "type = 'HINT_ANSWER'"
     )
     private List<Hint> answerHints;
     public QuestionType getType() {

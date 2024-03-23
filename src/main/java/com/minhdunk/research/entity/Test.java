@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -33,6 +35,7 @@ public class Test {
     private Long id;
     @Column(columnDefinition="text")
     private String title;
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "test", cascade = { CascadeType.REMOVE})
     private List<Question> questions;
     @ManyToOne(fetch = FetchType.LAZY ,optional = true)
