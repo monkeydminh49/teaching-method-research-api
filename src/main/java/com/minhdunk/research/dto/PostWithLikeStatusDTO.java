@@ -32,6 +32,7 @@ public class PostWithLikeStatusDTO {
     private LocalDateTime postTime;
     private Integer numberOfLikes;
     private Boolean isLiked;
+    private Long submitterId;
     private String teacherComment;
     public LocalDateTime getPostTime(){
         return this.postTime.truncatedTo(ChronoUnit.SECONDS);

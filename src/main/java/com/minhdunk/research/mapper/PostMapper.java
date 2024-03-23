@@ -18,6 +18,7 @@ public interface PostMapper {
 
     List<PostOutputDTO> getPostOutputDTOsFromPosts(List<Post> posts);
 
+    @Mapping(target = "submitterId", source = "submitter.id")
     @Mapping(target = "isLiked", ignore = true)
     @Mapping(target = "assignmentId", source = "assignment.id")
     @Mapping(target = "title", source = "title")
