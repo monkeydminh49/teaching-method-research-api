@@ -61,7 +61,7 @@ public class Post {
     )
     private Set<User> likedByUsers = new HashSet<>();
     private Integer numberOfLikes;
-    @OneToOne(fetch = FetchType.LAZY,
+    @ManyToOne(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private User submitter;
     @Column(columnDefinition="text")
