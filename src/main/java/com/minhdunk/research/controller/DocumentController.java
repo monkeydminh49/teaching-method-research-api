@@ -104,5 +104,11 @@ public class DocumentController {
         return documentService.getDocumentsWithLikeStatus(type, topic,  authentication);
     }
 
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DocumentSearchOutputDTO> searchDocuments(
+            @RequestParam(value = "keyword", required = false) String keyword) {
+        return documentMapper.getDocumentSearchOutputDtosFromDocuments(documentService.searchDocuments(keyword));
+    }
 
 }

@@ -2,6 +2,7 @@ package com.minhdunk.research.mapper;
 
 import com.minhdunk.research.dto.DocumentInputDTO;
 import com.minhdunk.research.dto.DocumentOutputDTO;
+import com.minhdunk.research.dto.DocumentSearchOutputDTO;
 import com.minhdunk.research.dto.DocumentWithLikeStatusDTO;
 import com.minhdunk.research.entity.Document;
 import org.mapstruct.Mapper;
@@ -12,6 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface DocumentMapper {
     DocumentOutputDTO getDocumentOutputDtoFromDocument(Document document);
+    @Mapping(target = "tests", ignore = true)
     @Mapping(target = "numberOfLikes", ignore = true)
     @Mapping(target = "likedByUsers", ignore = true)
     @Mapping(target = "thumbnail", ignore = true)
@@ -28,4 +30,10 @@ public interface DocumentMapper {
     DocumentWithLikeStatusDTO getDocumentWithLikeStatusDtoFromDocument(Document document);
 
     List<DocumentWithLikeStatusDTO> getDocumentWithLikeStatusDtosFromDocuments(List<Document> documents);
+
+
+    DocumentSearchOutputDTO getDocumentSearchOutputDtoFromDocument(Document document);
+
+    List<DocumentSearchOutputDTO> getDocumentSearchOutputDtosFromDocuments(List<Document> documents);
+
 }

@@ -18,14 +18,18 @@ import com.minhdunk.research.utils.DocumentType;
 import com.minhdunk.research.utils.DocumentUserKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -135,5 +139,20 @@ public class DocumentService {
         UserInfoUserDetails user = (UserInfoUserDetails) authentication.getPrincipal();
 
         return documentRepository.getDocumentsWithLikeStatusByType(type, topic, user.getId());
+    }
+
+    private static final ExampleMatcher SEARCH_CONDITIONS_MATCH_ANY = ExampleMatcher
+            .matchingAny()
+            .withMatcher("title", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withIgnoreNullValues();
+
+    @Transactional(readOnly = true)
+    public List<Document> searchDocuments(String keyword) {
+        if (keyword == null) {
+            return new ArrayList<Document>();
+        }
+        Document document = Document.builder().title(keyword).build();
+        Example<Document> example = Example.of(document, SEARCH_CONDITIONS_MATCH_ANY);
+        return documentRepository.findAll(example);
     }
 }

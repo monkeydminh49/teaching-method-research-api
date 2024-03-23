@@ -1,19 +1,14 @@
 package com.minhdunk.research.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.minhdunk.research.entity.Assignment;
 import com.minhdunk.research.entity.Media;
 import com.minhdunk.research.entity.Post;
 import com.minhdunk.research.entity.User;
-import com.minhdunk.research.mapper.PostMapper;
-import com.minhdunk.research.mapper.PostMapperImpl;
 import com.minhdunk.research.utils.PostOrientation;
 import com.minhdunk.research.utils.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -37,6 +32,7 @@ public class PostWithLikeStatusDTO {
     private LocalDateTime postTime;
     private Integer numberOfLikes;
     private Boolean isLiked;
+    private String teacherComment;
     public LocalDateTime getPostTime(){
         return this.postTime.truncatedTo(ChronoUnit.SECONDS);
     }
@@ -54,6 +50,7 @@ public class PostWithLikeStatusDTO {
         this.postTime = post.getPostTime();
         this.numberOfLikes = post.getNumberOfLikes();
         this.isLiked = user != null;
+        this.teacherComment = post.getTeacherComment();
     }
 
     private Long postAssignmentId(Post post) {

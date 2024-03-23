@@ -2,10 +2,7 @@ package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.CommentInputDTO;
 import com.minhdunk.research.dto.CommentOutputDTO;
-import com.minhdunk.research.entity.Comment;
-import com.minhdunk.research.entity.Notification;
-import com.minhdunk.research.entity.Post;
-import com.minhdunk.research.entity.User;
+import com.minhdunk.research.entity.*;
 import com.minhdunk.research.mapper.CommentMapper;
 import com.minhdunk.research.repository.CommentRepository;
 import com.minhdunk.research.utils.CommentType;

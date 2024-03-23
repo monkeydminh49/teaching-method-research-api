@@ -2,6 +2,7 @@ package com.minhdunk.research.repository;
 
 import com.minhdunk.research.dto.CommentOutputDTO;
 import com.minhdunk.research.entity.Comment;
+import com.minhdunk.research.entity.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -32,4 +33,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "WHERE n.id = ?1 " +
             "AND c.type = 'COMMENT_NOTIFICATION'")
     List<Comment> findAllCommentsByNotificationId(Long notificationId);
+
 }
