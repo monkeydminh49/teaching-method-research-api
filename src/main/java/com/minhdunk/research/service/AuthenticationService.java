@@ -122,7 +122,7 @@ public class AuthenticationService {
 
         content = content.replace("[[name]]", user.getFirstName() + " " + user.getLastName());
         log.info(siteURL);
-        siteURL = "http://densach.edu.vn";
+        siteURL = webDomain;
         String verifyURL = siteURL + "/verify-email?code=" + user.getVerificationCode();
 
         content = content.replace("[[URL]]", verifyURL);
