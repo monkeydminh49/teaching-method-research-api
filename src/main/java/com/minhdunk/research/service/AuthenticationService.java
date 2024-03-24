@@ -15,6 +15,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -43,6 +44,8 @@ public class AuthenticationService {
 
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    @Value("${bezkoder.openapi.prod-url}")
+    private  String webDomain;
 
     public AuthenticationService(PasswordEncoder encoder, UserRepository userRepository, UserMapper userMapper, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.encoder = encoder;
