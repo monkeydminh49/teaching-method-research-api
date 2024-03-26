@@ -17,7 +17,7 @@ import java.util.Optional;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findAllByType(DocumentType type);
 
-    @Query("select d from Document d join d.likedByUsers du where du.user.id = ?1")
+    @Query("select d from Document d join d.likedByUsers du where du.user.id = ?1 order by du.likedAt desc")
     List<Document> findAllByLikedByUsersId(Long id);
 
     @Query("select d from Document d join d.likedByUsers du where du.user.id = ?1 order by du.likedAt desc")
@@ -42,15 +42,17 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
             "LEFT JOIN d.likedByUsers du " +
             "ON du.user.id = :userId " +
             "AND (:type IS NULL OR d.type = :type) " +
-            "AND (:topic IS NULL OR d.topic = :topic)" +
+            "AND (:topic IS NULL OR d.topic = :topic) " +
             "ORDER BY d.postTime DESC"
     )
     List<DocumentWithLikeStatusDTO> getDocumentsWithLikeStatusByType(DocumentType type, DocumentTopic topic, Long userId);
 
-    @Query("SELECT d FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)")
+    @Query("SELECT d FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)" +
+            "ORDER BY d.postTime DESC")
     List<Document> findAllByTypeAndByTopic(DocumentType type, String topic);
 
-    @Query("SELECT d FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)")
+    @Query("SELECT d FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)" +
+            "ORDER BY d.postTime DESC")
     List<Document> findAllByTypeAndByTopic(DocumentType type, DocumentTopic topic);
 
 
