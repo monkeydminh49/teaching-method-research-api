@@ -15,6 +15,7 @@ import com.minhdunk.research.utils.TestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,8 @@ public class TestService {
     @Autowired
     private HintRepository hintRepository;
 
+
+    @Transactional
     public Test createTest(Authentication authentication, TestInputDTO testInputDTO) {
         Optional<Test> checkTest = testRepository.findByDocumentIdAndType(testInputDTO.getDocumentId(), testInputDTO.getType());
 
