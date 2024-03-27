@@ -137,6 +137,9 @@ public class DocumentService {
 
     public List<DocumentWithLikeStatusDTO> getDocumentsWithLikeStatus(DocumentType type, DocumentTopic topic, Authentication authentication) {
         if (authentication == null) {
+            if (topic == null) {
+                return documentMapper.getDocumentWithLikeStatusDtosFromDocuments(documentRepository.findAllByTypeAndByTopic(type, (String) null));
+            }
             return documentMapper.getDocumentWithLikeStatusDtosFromDocuments(documentRepository.findAllByTypeAndByTopic(type, topic.toString()));
         }
         UserInfoUserDetails user = (UserInfoUserDetails) authentication.getPrincipal();
