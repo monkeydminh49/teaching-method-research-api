@@ -33,13 +33,13 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI myOpenAPI() {
-        Server devServer = new Server();
-        devServer.setUrl(devUrl);
-        devServer.setDescription("Server URL in Development environment");
-
         Server prodServer = new Server();
         prodServer.setUrl(prodUrl);
         prodServer.setDescription("Server URL in Production environment");
+
+        Server devServer = new Server();
+        devServer.setUrl(devUrl);
+        devServer.setDescription("Server URL in Development environment");
 
         Contact contact = new Contact();
         contact.setEmail("nguyendangminh49@gmail.com");
@@ -55,7 +55,7 @@ public class OpenApiConfig {
                 .description("This API exposes endpoints to manage demo.")
                 .license(mitLicense);
 
-        return new OpenAPI().info(info).servers(List.of(devServer, prodServer))
+        return new OpenAPI().info(info).servers(List.of(prodServer, devServer))
                 .addSecurityItem(new SecurityRequirement().
                         addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()));

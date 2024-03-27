@@ -5,6 +5,8 @@ import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.utils.DocumentTopic;
 import com.minhdunk.research.utils.DocumentType;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -56,4 +58,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findAllByTypeAndByTopic(DocumentType type, DocumentTopic topic);
 
 
+    @Query(value = "SELECT d FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)" +
+            "ORDER BY d.postTime DESC",
+    countQuery = "SELECT count(d) FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)")
+    Page<Document> findAllByTypeAndByTopic(DocumentType type, String topic, PageRequest of);
 }

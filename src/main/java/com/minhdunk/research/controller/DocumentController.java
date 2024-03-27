@@ -12,6 +12,7 @@ import com.minhdunk.research.utils.DocumentType;
 import com.minhdunk.research.utils.TestType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -63,6 +64,17 @@ public class DocumentController {
             @RequestParam(value = "type", required = false) DocumentType type,
             @RequestParam(value = "topic", required = false) DocumentTopic topic) {
         return documentMapper.getDocumentOutputDtosFromDocuments(documentService.getDocuments(type, topic == null ? null : String.valueOf(topic)));
+    }
+
+    @GetMapping("/page")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<DocumentOutputDTO> getDocuments(
+            @RequestParam(value = "type", required = false) DocumentType type,
+            @RequestParam(value = "topic", required = false) DocumentTopic topic,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        Page<Document> documents = documentService.getDocumentsByPage(type, topic == null ? null : String.valueOf(topic), page, pageSize);
+        return documents.map(documentMapper::getDocumentOutputDtoFromDocument);
     }
 
 

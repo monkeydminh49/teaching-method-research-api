@@ -18,8 +18,7 @@ import com.minhdunk.research.utils.DocumentType;
 import com.minhdunk.research.utils.DocumentUserKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +76,10 @@ public class DocumentService {
     // TODO: Pagination
     public List<Document> getDocuments(DocumentType type, String topic) {
         return documentRepository.findAllByTypeAndByTopic(type, topic);
+    }
+
+    public Page<Document> getDocumentsByPage(DocumentType type, String topic, Integer page, Integer size) {
+        return documentRepository.findAllByTypeAndByTopic(type, topic, PageRequest.of(page, size));
     }
 
     public void deleteDocument(Long id) {
