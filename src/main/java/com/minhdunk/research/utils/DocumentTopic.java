@@ -1,8 +1,15 @@
 package com.minhdunk.research.utils;
 
 public enum DocumentTopic {
-    SOCIAL,
+    POLITICS,
+    ECONOMY,
+    EDUCATION,
+    LAW,
+    MEDICAL,
     CULTURE,
     SPORT,
-    TOURISM
+    LIFE_ENTERTAINMENT,
+    SCIENCE_TECHNOLOGY,
+    ENVIRONMENT
+
 }

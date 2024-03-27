@@ -59,7 +59,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 
     @Query(value = "SELECT d FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)" +
-            "ORDER BY d.postTime DESC",
-    countQuery = "SELECT count(d) FROM Document d WHERE (:type is null or d.type=:type) AND (:topic is null or d.topic=:topic)")
-    Page<Document> findAllByTypeAndByTopic(DocumentType type, String topic, PageRequest of);
+            "ORDER BY d.postTime DESC")
+    Page<Document> findAllByTypeAndByTopic(DocumentType type, String topic, Pageable pageable);
 }
