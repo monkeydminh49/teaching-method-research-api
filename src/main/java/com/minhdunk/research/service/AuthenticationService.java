@@ -104,14 +104,14 @@ public class AuthenticationService {
         UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
         User user = userDetails.getUser();
         String toAddress = userDetails.getEmail();
-        String fromAddress = "nguyendangminh03@gmail.com";
-        String senderName = "BHA Education";
+        String fromAddress = "main@densach.edu.vn";
+        String senderName = "Đèn Sách Edu";
         String subject = "Please verify your registration";
         String content = "Dear [[name]],<br>"
                 + "Please click the link below to verify your email:<br>"
                 + "<h3><a href=\"[[URL]]\" target=\"_blank\">VERIFY</a></h3>"
                 + "Thank you,<br>"
-                + "BHA Education.";
+                + "Đèn Sách Edu.";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
