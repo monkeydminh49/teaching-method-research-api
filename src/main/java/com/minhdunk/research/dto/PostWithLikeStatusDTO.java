@@ -52,6 +52,7 @@ public class PostWithLikeStatusDTO {
         this.numberOfLikes = post.getNumberOfLikes();
         this.isLiked = user != null;
         this.teacherComment = post.getTeacherComment();
+        this.submitterId = post.getSubmitter() != null ? post.getSubmitter().getId() : null;
     }
 
     private Long postAssignmentId(Post post) {
