@@ -66,6 +66,12 @@ public class UserController {
         return userMapper.getUserOutputDTOFromUser(userService.getUserById(id));
     }
 
+    @GetMapping("/users/all")
+    private List<UserOutputDTO> getAllUsers(){
+        return userMapper.getUserOutputDTOsFromUsers(userService.getAllUsers());
+    }
+
+
     @PostMapping("/users/update-avatar")
     private UserOutputDTO updateAvatar(Principal principal ,@RequestParam("file") MultipartFile avatar) throws IOException {
         return userMapper.getUserOutputDTOFromUser(userService.updateAvatar(principal, avatar));

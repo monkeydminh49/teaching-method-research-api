@@ -53,4 +53,8 @@ public class UserService {
     public List<Document> getFavouriteDocuments(Long id, Integer page, Integer size) {
         return documentRepository.findAllByLikedByUsersId(id,  PageRequest.of(page, size));
     }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }
