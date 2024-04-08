@@ -52,7 +52,8 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
-                    CascadeType.MERGE
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
             },
             mappedBy = "students")
     @JsonIgnore
@@ -60,7 +61,8 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
-                    CascadeType.MERGE
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
             },
             mappedBy = "students")
     @JsonIgnore
@@ -72,7 +74,8 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
-                    CascadeType.MERGE
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
             },
             mappedBy = "likedByUsers")
     @JsonIgnore
