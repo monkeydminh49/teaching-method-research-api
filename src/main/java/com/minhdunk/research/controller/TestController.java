@@ -54,7 +54,7 @@ public class TestController {
         return testMapper.getTestHistoryOutputDTOsFromTestHistorys(testService.getTestHistory(testId));
     }
 
-    @GetMapping("/user-history/{testId}")
+    @GetMapping("/{testId}/user-history")
     public List<TestHistoryOutputDTO> getUserTestHistoryByTestId(@PathVariable Long testId, Authentication authentication) {
         return testMapper.getTestHistoryOutputDTOsFromTestHistorys(testService.getUserTestHistory(testId, authentication));
     }
