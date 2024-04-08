@@ -2,9 +2,9 @@ version: '3'
 services:
   postgres:
     image: postgres:latest
-    container_name: dangminh-db
+    container_name: dangminh-ltw-final-db
     ports:
-      - "2003:5432"
+      - "20077:5432"
     environment:
       POSTGRES_USER: minhdunk
       POSTGRES_PASSWORD: dangminh49
@@ -17,7 +17,7 @@ services:
     image: monkeydminh49/research-api:1.0
     container_name: dangminh-research-api
     ports:
-      - "10049:8080"
+      - "10053:8080"
     volumes:
       - ./media:/data/media/
     environment:

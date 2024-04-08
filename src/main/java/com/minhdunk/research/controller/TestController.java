@@ -1,17 +1,18 @@
 package com.minhdunk.research.controller;
 
-import com.minhdunk.research.dto.BaseResponse;
-import com.minhdunk.research.dto.TestDTO;
-import com.minhdunk.research.dto.TestInputDTO;
-import com.minhdunk.research.dto.TestWithoutAnswerDTO;
+import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Test;
+import com.minhdunk.research.entity.TestHistory;
 import com.minhdunk.research.mapper.TestMapper;
 import com.minhdunk.research.service.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -41,4 +42,38 @@ public class TestController {
         testService.deleteTest(testId);
         return new BaseResponse("ok", "Delete test successfully", null);
     }
+
+    @PostMapping("/{testId}/submit")
+    public BaseResponse submitTest(Authentication authentication, @PathVariable Long testId, @RequestBody List<QuestionSubmitDTO> questionSubmitDTO) {
+        TestHistory testHistory =  testService.submitTest(testId, questionSubmitDTO, authentication);
+        return new BaseResponse("ok", "Submit test successfully", testHistory);
+    }
+
+    @GetMapping("/{testId}/history/")
+    public List<TestHistoryOutputDTO> getTestHistorysByTestId(@PathVariable Long testId) {
+        return testMapper.getTestHistoryOutputDTOsFromTestHistorys(testService.getTestHistory(testId));
+    }
+
+    @GetMapping("/user-history/{testId}")
+    public List<TestHistoryOutputDTO> getUserTestHistoryByTestId(@PathVariable Long testId, Authentication authentication) {
+        return testMapper.getTestHistoryOutputDTOsFromTestHistorys(testService.getUserTestHistory(testId, authentication));
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<TestDTO> getAllTests() {
+        return testMapper.getTestDTOsFromTests(testService.getAllTests());
+    }
+
+    @GetMapping("/history/{testHistoryId}")
+    public TestHistoryOutputDTO getTestHistoryByTestHistoryId(@PathVariable Long testHistoryId) {
+        return testMapper.getTestHistoryOutputDTOFromTestHistory(testService.getTestHistoryByTestHistoryId(testHistoryId));
+    }
+
+    @DeleteMapping("/history/{testHistoryId}")
+    public BaseResponse deleteTestHistory(@PathVariable Long testHistoryId) {
+        testService.deleteTestHistory(testHistoryId);
+        return new BaseResponse("ok", "Delete test history successfully", null);
+    }
+
 }

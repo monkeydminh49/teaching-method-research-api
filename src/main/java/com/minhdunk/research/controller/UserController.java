@@ -86,4 +86,14 @@ public class UserController {
             List<DocumentOutputDTO> documents = documentMapper.getDocumentOutputDtosFromDocuments(userService.getFavouriteDocuments(id, page, pageSize));
             return new PaginationResponse<List<DocumentOutputDTO>>(page, pageSize, documents);
     }
+
+    @DeleteMapping("/users/{id}")
+    private BaseResponse deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Delete user successfully!")
+                .data(null)
+                .build();
+    }
 }
