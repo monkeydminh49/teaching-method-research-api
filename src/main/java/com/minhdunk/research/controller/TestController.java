@@ -46,7 +46,7 @@ public class TestController {
     @PostMapping("/{testId}/submit")
     public BaseResponse submitTest(Authentication authentication, @PathVariable Long testId, @RequestBody List<QuestionSubmitDTO> questionSubmitDTO) {
         TestHistory testHistory =  testService.submitTest(testId, questionSubmitDTO, authentication);
-        return new BaseResponse("ok", "Submit test successfully", testHistory);
+        return new BaseResponse("ok", "Submit test successfully", testMapper.getTestHistoryOutputDTOFromTestHistory(testHistory));
     }
 
     @GetMapping("/{testId}/history/")

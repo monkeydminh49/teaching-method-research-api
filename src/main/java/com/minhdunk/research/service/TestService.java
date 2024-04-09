@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,10 +127,12 @@ public class TestService {
 
         int totalNumberOfQuestions = test.getQuestions().size();
 
+        List<Question> questions = test.getQuestions();
 
         int countTotalNumberOfCorrectQuestions = 0;
         for (QuestionSubmitDTO questionSubmit : questionSubmitDTO) {
-            Question question = questionRepository.findById(questionSubmit.getQuestionId()).orElseThrow(() -> new NotFoundException("Question not found"));
+//            Question question = questionRepository.findById(questionSubmit.getQuestionId()).orElseThrow(() -> new NotFoundException("Question not found"));
+            Question question = questions.stream().filter(q -> q.getId().equals(questionSubmit.getQuestionId())).findFirst().orElseThrow(() -> new NotFoundException("Question not found"));
 
             boolean isACorrectQuestion = true;
             for (Choice choice : question.getChoices()) {
@@ -151,9 +154,12 @@ public class TestService {
         testHistory.setTotalScore(score);
         TestHistory savedTest = testHistoryRepository.save(testHistory);
 
+//        List<QuestionHistory> questionHistories = new ArrayList<>();
 
         for (QuestionSubmitDTO questionSubmit : questionSubmitDTO) {
-            Question question = questionRepository.findById(questionSubmit.getQuestionId()).orElseThrow(() -> new NotFoundException("Question not found"));
+//            Question question = questionRepository.findById(questionSubmit.getQuestionId()).orElseThrow(() -> new NotFoundException("Question not found"));
+            Question question = questions.stream().filter(q -> q.getId().equals(questionSubmit.getQuestionId())).findFirst().orElseThrow(() -> new NotFoundException("Question not found"));
+
             QuestionHistory questionHistory = questionMapper.getQuestionHistoryFromQuestion(question);
             questionHistory.setTest(savedTest);
             QuestionHistory questionHistory1 = questionHistoryRepository.save(questionHistory);
