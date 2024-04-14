@@ -2,6 +2,7 @@ package com.minhdunk.research.controller;
 
 import com.minhdunk.research.dto.*;
 import com.minhdunk.research.entity.Document;
+import com.minhdunk.research.mapper.CounsellingMapper;
 import com.minhdunk.research.mapper.DocumentMapper;
 import com.minhdunk.research.mapper.TestMapper;
 import com.minhdunk.research.service.DocumentService;
@@ -35,6 +36,8 @@ public class DocumentController {
     private DocumentMapper documentMapper;
     @Autowired
     private MediaService mediaService;
+    @Autowired
+    private CounsellingMapper counsellingMapper;
     @Autowired
     private TestService testService;
     @Autowired
@@ -121,6 +124,23 @@ public class DocumentController {
     public List<DocumentSearchOutputDTO> searchDocuments(
             @RequestParam(value = "keyword", required = false) String keyword) {
         return documentMapper.getDocumentSearchOutputDtosFromDocuments(documentService.searchDocuments(keyword));
+    }
+
+    @PostMapping("/{documentId}/post-counselling")
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse postCounselling(@PathVariable("documentId") Long documentId, @RequestBody CounsellingInputDTO counsellingInputDTO) {
+        documentService.postCounselling(documentId, counsellingInputDTO);
+        return BaseResponse.builder()
+                .status("ok")
+                .message("Post counselling successfully!")
+                .data(null)
+                .build();
+    }
+
+    @GetMapping("/{documentId}/counsellings")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CounsellingOutputDTO> getCounsellings(@PathVariable("documentId") Long documentId) {
+        return counsellingMapper.getCounsellingOutputDtosFromCounsellings(documentService.getCounsellings(documentId));
     }
 
 }

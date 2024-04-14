@@ -28,6 +28,8 @@ public class Assignment {
     private LocalDateTime dueDateTime;
     @Column(columnDefinition = "boolean default false")
     private Boolean isForGroup;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "related_document_id", referencedColumnName = "id")
+    private Document relatedDocument;
 
 }

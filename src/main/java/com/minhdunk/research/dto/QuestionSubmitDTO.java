@@ -1,5 +1,6 @@
 package com.minhdunk.research.dto;
 
+import com.minhdunk.research.utils.QuestionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

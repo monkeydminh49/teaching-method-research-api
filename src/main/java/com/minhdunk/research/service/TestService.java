@@ -12,6 +12,7 @@ import com.minhdunk.research.mapper.QuestionMapper;
 import com.minhdunk.research.mapper.TestMapper;
 import com.minhdunk.research.repository.*;
 import com.minhdunk.research.utils.HintType;
+import com.minhdunk.research.utils.QuestionType;
 import com.minhdunk.research.utils.TestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -135,6 +136,12 @@ public class TestService {
             Question question = questions.stream().filter(q -> q.getId().equals(questionSubmit.getQuestionId())).findFirst().orElseThrow(() -> new NotFoundException("Question not found"));
 
             boolean isACorrectQuestion = true;
+
+            if (question.getType() == QuestionType.FILL_IN_THE_BLANK){
+                totalNumberOfQuestions--;
+                continue;
+            }
+
             for (Choice choice : question.getChoices()) {
                 for (ChoiceSubmitDTO choiceSubmit : questionSubmit.getChoices()) {
                     if (choice.getId().equals(choiceSubmit.getChoiceId())) {
@@ -152,34 +159,63 @@ public class TestService {
         double score = (double) countTotalNumberOfCorrectQuestions / totalNumberOfQuestions * 10;
 
         testHistory.setTotalScore(score);
-        TestHistory savedTest = testHistoryRepository.save(testHistory);
+//        TestHistory savedTest = testHistoryRepository.save(testHistory);
 
-//        List<QuestionHistory> questionHistories = new ArrayList<>();
+        List<QuestionHistory> questionHistories = new ArrayList<>();
 
         for (QuestionSubmitDTO questionSubmit : questionSubmitDTO) {
 //            Question question = questionRepository.findById(questionSubmit.getQuestionId()).orElseThrow(() -> new NotFoundException("Question not found"));
             Question question = questions.stream().filter(q -> q.getId().equals(questionSubmit.getQuestionId())).findFirst().orElseThrow(() -> new NotFoundException("Question not found"));
 
             QuestionHistory questionHistory = questionMapper.getQuestionHistoryFromQuestion(question);
-            questionHistory.setTest(savedTest);
-            QuestionHistory questionHistory1 = questionHistoryRepository.save(questionHistory);
+            questionHistory.setTest(testHistory);
 
+//            QuestionHistory questionHistory1 = questionHistoryRepository.save(questionHistory);
+
+            List<ChoiceHistory> choiceHistories = new ArrayList<>();
             for (Choice choice : question.getChoices()) {
                 for (ChoiceSubmitDTO choiceSubmit : questionSubmit.getChoices()) {
                     if (choice.getId().equals(choiceSubmit.getChoiceId())) {
 
                         ChoiceHistory choiceHistory = choiceMapper.getChoiceHistoryFromChoice(choice);
+
+                        if (question.getType() == QuestionType.FILL_IN_THE_BLANK) {
+                            choiceHistory.setContent(choiceSubmit.getContent());
+                            choiceHistory.setIsPicked(choiceSubmit.getIsPicked());
+                            choiceHistory.setQuestion(questionHistory);
+                            choiceHistory.setTest(testHistory);
+                            choiceHistories.add(choiceHistory);
+                            continue;
+                        }
+
                         choiceHistory.setIsPicked(choiceSubmit.getIsPicked());
-                        choiceHistory.setQuestion(questionHistory1);
-                        choiceHistory.setTest(savedTest);
-                        choiceHistoryRepository.save(choiceHistory);
+                        choiceHistory.setQuestion(questionHistory);
+                        choiceHistory.setTest(testHistory);
+                        choiceHistories.add(choiceHistory);
+//                        choiceHistoryRepository.save(choiceHistory);
                     }
                 }
             }
 
+            List<HintHistory> hintHistories = new ArrayList<>();
+            for (Hint hint : question.getAnswerHints()) {
+                HintHistory hintHistory = new HintHistory();
+                hintHistory.setContent(hint.getContent());
+                hintHistory.setType(hint.getType());
+                hintHistory.setQuestionHistory(questionHistory);
+                hintHistories.add(hintHistory);
+            }
+
+            questionHistory.setChoices(choiceHistories);
+            questionHistory.setAnswerHintHistories(hintHistories);
+            questionHistories.add(questionHistory);
+
         }
 
-        return savedTest;
+        testHistory.setQuestions(questionHistories);
+
+        return testHistoryRepository.save(testHistory);
+
     }
 
     public List<TestHistory> getTestHistory(Long testId) {

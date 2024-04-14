@@ -14,4 +14,5 @@ public class PostInputDTO {
     private String title;
     private String caption;
     private PostOrientation orientation;
+    private Long counsellingId;
 }

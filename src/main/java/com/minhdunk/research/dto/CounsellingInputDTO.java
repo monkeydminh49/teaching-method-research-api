@@ -1,5 +1,6 @@
 package com.minhdunk.research.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @Builder
 @Component
-
-public class ChoiceSubmitDTO {
-    private Long choiceId;
-    private Boolean isPicked;
+public class CounsellingInputDTO {
+    private String title;
     private String content;
 }

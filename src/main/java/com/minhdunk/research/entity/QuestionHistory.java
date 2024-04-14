@@ -39,15 +39,28 @@ public class QuestionHistory {
 
     @ManyToOne(
             fetch = FetchType.LAZY,
-            optional = false
+            optional = true
     )
-    @JoinColumn(name="test_id", referencedColumnName = "id", nullable=false)
+    @JoinColumn(name="test_id", referencedColumnName = "id", nullable=true)
     private TestHistory test;
 
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(
             mappedBy = "question",
-            cascade = { CascadeType.REMOVE}
+            cascade = {
+                    CascadeType.REMOVE,
+                    CascadeType.PERSIST
+            }
     )
     private List<ChoiceHistory> choices;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(
+            mappedBy = "questionHistory",
+            cascade = {
+                    CascadeType.REMOVE,
+                    CascadeType.PERSIST
+            }
+    )
+    private List<HintHistory> answerHintHistories;
 }

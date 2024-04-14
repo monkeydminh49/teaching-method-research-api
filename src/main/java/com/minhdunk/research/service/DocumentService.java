@@ -1,15 +1,15 @@
 package com.minhdunk.research.service;
 
 import com.minhdunk.research.component.UserInfoUserDetails;
+import com.minhdunk.research.dto.CounsellingInputDTO;
 import com.minhdunk.research.dto.DocumentInputDTO;
 import com.minhdunk.research.dto.DocumentWithLikeStatusDTO;
-import com.minhdunk.research.entity.Document;
-import com.minhdunk.research.entity.DocumentUser;
-import com.minhdunk.research.entity.Media;
-import com.minhdunk.research.entity.User;
+import com.minhdunk.research.entity.*;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.exception.UnauthorizedException;
+import com.minhdunk.research.mapper.CounsellingMapper;
 import com.minhdunk.research.mapper.DocumentMapper;
+import com.minhdunk.research.repository.CounsellingRepository;
 import com.minhdunk.research.repository.DocumentRepository;
 import com.minhdunk.research.repository.DocumentUserRepository;
 import com.minhdunk.research.repository.MediaRepository;
@@ -18,7 +18,10 @@ import com.minhdunk.research.utils.DocumentType;
 import com.minhdunk.research.utils.DocumentUserKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +51,12 @@ public class DocumentService {
 
     @Autowired
     private DocumentUserRepository documentUserRepository;
+
+    @Autowired
+    private CounsellingRepository counsellingRepository;
+
+    @Autowired
+    private CounsellingMapper counsellingMapper;
 
     public Document createDocument(Principal principal, DocumentInputDTO request, MultipartFile audio, MultipartFile thumbnail) throws IOException {
         User user = userService.getUserByUsername(principal.getName());
@@ -160,5 +169,17 @@ public class DocumentService {
         Document document = Document.builder().title(keyword).build();
         Example<Document> example = Example.of(document, SEARCH_CONDITIONS_MATCH_ANY);
         return documentRepository.findAll(example);
+    }
+
+    public void postCounselling(Long documentId, CounsellingInputDTO counsellingInputDTO) {
+        Counselling counselling = counsellingMapper.getCounsellingFromCounsellingInputDto(counsellingInputDTO);
+        Document document = getDocumentById(documentId);
+        counselling.setDocument(document);
+        counselling.setCreateAt(LocalDateTime.now());
+        counsellingRepository.save(counselling);
+    }
+
+    public List<Counselling> getCounsellings(Long documentId) {
+        return counsellingRepository.findAllByDocumentId(documentId);
     }
 }

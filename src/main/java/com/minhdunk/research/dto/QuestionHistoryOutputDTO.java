@@ -20,4 +20,5 @@ public class QuestionHistoryOutputDTO {
     private QuestionType type;
     private Long testId;
     private List<ChoiceHistoryOutputDTO> choices;
+    private List<HintHistoryOutputDTO> hintAnswerHistories;
 }

@@ -13,6 +13,7 @@ public interface ChoiceMapper {
     @Mapping(target = "isPicked", ignore = true)
     @Mapping(target = "question", ignore = true)
     @Mapping(target = "test", ignore = true)
+    @Mapping(target = "id", ignore = true)
     ChoiceHistory getChoiceHistoryFromChoice(Choice choice);
 
     @Mapping(target = "testId", source = "test.id")

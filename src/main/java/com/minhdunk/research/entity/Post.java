@@ -66,6 +66,10 @@ public class Post {
     private User submitter;
     @Column(columnDefinition="text")
     private String teacherComment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "counselling_id", referencedColumnName = "id")
+    private Counselling counselling;
+
     public void addLikedUser(User user) {
         if(likedByUsers == null) {
             likedByUsers = new HashSet<>();

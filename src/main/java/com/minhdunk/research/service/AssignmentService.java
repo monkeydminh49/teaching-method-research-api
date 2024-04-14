@@ -4,12 +4,15 @@ import com.minhdunk.research.dto.AssignmentInputDTO;
 import com.minhdunk.research.dto.AssignmentStatusOutputDTO;
 import com.minhdunk.research.entity.Assignment;
 import com.minhdunk.research.entity.Classroom;
+import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.mapper.AssignmentMapper;
 import com.minhdunk.research.repository.AssignmentRepository;
 import com.minhdunk.research.repository.ClassroomRepository;
+import com.minhdunk.research.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -27,6 +30,8 @@ public class AssignmentService {
     private ClassroomRepository classroomRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private DocumentRepository documentRepository;
 
     public List<Assignment> getAllClassAssignmentsByClassId(Long id) {
         return assignmentRepository.findAllByClassroomId(id);
@@ -37,9 +42,12 @@ public class AssignmentService {
         return assignmentRepository.findAllAssignmentsStatusByClassroomId(id, userId);
     }
 
+    @Transactional
     public void postAssignmentToClassWithId(Long id, AssignmentInputDTO request) {
+        Document document = documentRepository.findById(request.getDocumentId()).orElseThrow(()-> new NotFoundException("Document id "+ request.getDocumentId() + " not found"));
         Assignment assignment = assignmentMapper.getAssignmentFromAssignmentInputDTO(request);
         Classroom classroom = classroomRepository.findById(id).orElseThrow(()-> new NotFoundException("Class id "+ id + " not found"));
+        assignment.setRelatedDocument(document);
         assignment.setClassroom(classroom);
         assignment.setAssignedDateTime(LocalDateTime.now());
         assignmentRepository.save(assignment);

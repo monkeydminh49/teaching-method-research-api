@@ -16,6 +16,7 @@ public class AssignmentInputDTO {
     private String content;
     private LocalDateTime dueDateTime;
     private Boolean isForGroup;
+    private Long documentId;
     public LocalDateTime getDueDateTime(){
         return this.dueDateTime.truncatedTo(ChronoUnit.SECONDS);
     }

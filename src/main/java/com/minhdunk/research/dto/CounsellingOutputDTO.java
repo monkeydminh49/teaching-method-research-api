@@ -6,14 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Component
-
-public class ChoiceSubmitDTO {
-    private Long choiceId;
-    private Boolean isPicked;
+public class CounsellingOutputDTO {
+    private Long id;
+    private String title;
     private String content;
+    private LocalDateTime createAt;
+    private Long documentId;
 }

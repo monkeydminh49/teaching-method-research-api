@@ -32,6 +32,7 @@ public interface TestMapper {
     @Mapping(target = "submitter", ignore = true)
     @Mapping(target = "submitAt", ignore = true)
     @Mapping(target = "questions", ignore = true)
+    @Mapping(target = "id", ignore = true)
     TestHistory getTestHistoryFromTest(Test test);
 
 

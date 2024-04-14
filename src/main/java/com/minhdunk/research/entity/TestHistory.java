@@ -35,7 +35,10 @@ public class TestHistory {
     @Column(columnDefinition="text")
     private String title;
     @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "test", cascade = { CascadeType.REMOVE})
+    @OneToMany(mappedBy = "test", cascade = {
+            CascadeType.REMOVE,
+            CascadeType.PERSIST,
+    })
     private List<QuestionHistory> questions;
     @ManyToOne(fetch = FetchType.LAZY ,optional = false)
     @JoinColumn(name = "submitter_id", referencedColumnName = "id", nullable = false)
@@ -44,9 +47,14 @@ public class TestHistory {
     private TestType type;
     @ManyToOne(fetch = FetchType.LAZY ,optional = false)
     @JoinColumn(name = "test_id", referencedColumnName = "id", nullable = false)
-
     private Test test;
     private Double totalScore;
     private LocalDateTime submitAt;
 //    private Double durationInMinutes;
+
+
+//    public void setQuestions(List<QuestionHistory> questions) {
+//        this.questions = questions;
+////        questions.forEach(question -> question.setTest(this));
+//    }
 }

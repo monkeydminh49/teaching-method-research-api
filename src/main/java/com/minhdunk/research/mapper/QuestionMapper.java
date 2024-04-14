@@ -12,6 +12,7 @@ import java.util.List;
 public interface QuestionMapper {
     @Mapping(target = "test", ignore = true)
     @Mapping(target = "choices", ignore = true)
+    @Mapping(target = "id", ignore = true)
     QuestionHistory getQuestionHistoryFromQuestion(Question question);
 
     @Mapping(target = "testId", source = "test.id")

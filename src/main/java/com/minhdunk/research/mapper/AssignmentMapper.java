@@ -10,6 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AssignmentMapper {
+    @Mapping(target = "relatedDocument", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "classroom", ignore = true)
     @Mapping(target = "assignedDateTime", ignore = true)

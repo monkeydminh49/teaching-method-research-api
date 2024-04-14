@@ -7,6 +7,7 @@ import com.minhdunk.research.entity.*;
 import com.minhdunk.research.exception.ForbiddenException;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.repository.AssignmentRepository;
+import com.minhdunk.research.repository.CounsellingRepository;
 import com.minhdunk.research.repository.GroupRepository;
 import com.minhdunk.research.repository.PostRepository;
 import com.minhdunk.research.utils.PostAction;
@@ -38,10 +39,13 @@ public class PostService {
     private GroupRepository groupRepository;
     @Autowired
     private ClassroomService classroomService;
+    @Autowired
+    private CounsellingRepository counsellingRepository;
 
     @Transactional
     public Post submitAssignment(Principal principal, Long assignmentId, PostInputDTO request, Set<Media> medias, Long[] memberIds) {
         User user = userService.getUserByUsername(principal.getName());
+        Counselling counselling = counsellingRepository.findById(request.getCounsellingId()).orElseThrow(() -> new NotFoundException("Counselling with id " + assignmentId + " not found"));
         Assignment assignment = assignmentRepository.findById(assignmentId).get();
         Set<User> members = new HashSet<>();
         Group group = new Group();
@@ -56,6 +60,7 @@ public class PostService {
                 .numberOfLikes(0)
                 .medias(medias)
                 .submitter(user)
+                .counselling(counselling)
                 .build();
 
         if (assignment.getIsForGroup()) {
