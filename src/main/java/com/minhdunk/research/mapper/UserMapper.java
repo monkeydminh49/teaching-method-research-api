@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -30,4 +31,6 @@ public interface UserMapper {
     StudentOutputDTO getStudentOutputDTOFromUser(User user);
 
     List<StudentOutputDTO> getStudentOutputDTOsFromUsers(List<User> users);
+
+
 }

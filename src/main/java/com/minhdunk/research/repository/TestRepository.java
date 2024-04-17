@@ -20,4 +20,7 @@ public interface TestRepository extends JpaRepository<Test, Long> {
 
     @Query("SELECT t FROM Test t JOIN FETCH t.questions q WHERE t.id = :id")
     Optional<Test> findByIdFetchAll(Long id);
+
+    @Query("SELECT t FROM Test t WHERE t.document.id = :documentId")
+    List<Test> findAllByDocumentId(Long documentId);
 }

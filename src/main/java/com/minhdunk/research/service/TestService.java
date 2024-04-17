@@ -109,7 +109,7 @@ public class TestService {
         testRepository.deleteById(testId);
     }
 
-    public Test getTestsByDocumentIdAndType(Long documentId, TestType type) {
+    public Test getTestByDocumentIdAndType(Long documentId, TestType type) {
         Optional<Test> test =  testRepository.findByDocumentIdAndType(documentId, type);
         return test.orElseThrow(() -> new NotFoundException("Test not found"));
     }
@@ -239,5 +239,9 @@ public class TestService {
 
     public void deleteTestHistory(Long testHistoryId) {
         testHistoryRepository.deleteById(testHistoryId);
+    }
+
+    public List<Test> getAllTestsByDocumentId(Long documentId) {
+        return testRepository.findAllByDocumentId(documentId);
     }
 }

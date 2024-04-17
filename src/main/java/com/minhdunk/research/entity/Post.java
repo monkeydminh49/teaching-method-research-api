@@ -70,6 +70,8 @@ public class Post {
     @JoinColumn(name = "counselling_id", referencedColumnName = "id")
     private Counselling counselling;
 
+
+
     public void addLikedUser(User user) {
         if(likedByUsers == null) {
             likedByUsers = new HashSet<>();

@@ -1,5 +1,6 @@
 package com.minhdunk.research.entity;
 
+import com.minhdunk.research.utils.AssignmentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +32,11 @@ public class Assignment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "related_document_id", referencedColumnName = "id")
     private Document relatedDocument;
+    @Enumerated(EnumType.STRING)
+    private AssignmentType type = AssignmentType.OTHER;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "related_test_id", referencedColumnName = "id")
+    private Test relatedTest;
+
 
 }

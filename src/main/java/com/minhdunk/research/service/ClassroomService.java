@@ -2,16 +2,18 @@ package com.minhdunk.research.service;
 
 import com.minhdunk.research.component.UserInfoUserDetails;
 import com.minhdunk.research.dto.ClassroomInputDTO;
+import com.minhdunk.research.dto.StudentOutputDTO;
 import com.minhdunk.research.dto.UserOutputDTO;
-import com.minhdunk.research.entity.Assignment;
-import com.minhdunk.research.entity.Classroom;
-import com.minhdunk.research.entity.Post;
-import com.minhdunk.research.entity.User;
+import com.minhdunk.research.entity.*;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.mapper.AssignmentMapper;
 import com.minhdunk.research.mapper.ClassroomMapper;
+
+import com.minhdunk.research.mapper.UserMapper;
 import com.minhdunk.research.repository.ClassroomRepository;
 import com.minhdunk.research.repository.PostRepository;
+
+import com.minhdunk.research.repository.TestHistoryRepository;
 import com.minhdunk.research.repository.UserRepository;
 import com.minhdunk.research.utils.PostType;
 import com.minhdunk.research.utils.UserRole;
@@ -21,10 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -43,6 +42,10 @@ public class ClassroomService {
     private AssignmentMapper assignmentMapper;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private TestHistoryRepository testHistoryRepository;
+    @Autowired
+    private UserMapper userMapper;
 
     public Classroom createClassRoom(Principal principal, ClassroomInputDTO request) {
         Classroom classRoom = classRoomMapper.getClassRoomFromClassRoomInputDTO(request);
@@ -96,17 +99,20 @@ public class ClassroomService {
         Map<Object,Object> status = new HashMap<>();
         Map<Object, Object> tmpStatus = new HashMap<>();
         List<Assignment> assignments = assignmentService.getAllClassAssignmentsByClassId(id);
-        List<UserOutputDTO> students = getStudentOutputDTOsByClassroomId(id);
+        Classroom classroom = classroomRepository.findById(id).orElseThrow(() -> new NotFoundException("Classroom not found"));
+        List<User> students = List.copyOf(classroom.getStudents());
         List<Post> posts = postRepository.getPostsByClassroomIdWithoutMedias(id);
+        List<TestHistory> testHistory = testHistoryRepository.findLatestTestHistoryPerSubmitterInListOfSubmitter(students);
+
         status.put("assignments", assignmentMapper.getAssignmentOutputDTOsFromAssignments(assignments));
 
-        for (UserOutputDTO student: students) {
+        for (User student: students) {
             tmpStatus.put(student.getId(), new int[assignments.size()]);
         }
 
         for (int i = 0; i < assignments.size(); i++) {
             Assignment assignment = assignments.get(i);
-            for (UserOutputDTO student : students) {
+            for (User student : students) {
                 int[] studentStatus = (int[]) tmpStatus.get(student.getId());
                 for (Post post : posts) {
                     if (post.getAuthorId().equals(student.getId()) && post.getAssignment().getId().equals(assignment.getId())) {
@@ -120,12 +126,22 @@ public class ClassroomService {
                         break;
                     }
                 }
+//                if (assignment.getTest() == null) {
+//                    continue;
+//                }
+//                for (TestHistory th : testHistory) {
+//                    if (th.getSubmitter().getId().equals(student.getId()) && th.getTest().getId().equals(assignment.getTest().getId())) {
+//                        studentStatus[i] = 2;
+//                        break;
+//                    }
+//                }
             }
         }
 
+        List<StudentOutputDTO> studentOutputDTOs = userMapper.getStudentOutputDTOsFromUsers(students);
 
         status.put("status", tmpStatus);
-        status.put("students", students);
+        status.put("students", studentOutputDTOs);
         status.put("notations", Map.of(
                 0, "NOT_YET_SUBMITTED" ,
                 1, PostType.PENDING,

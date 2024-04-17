@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 public class QuestionInputDTO {
     private String question;
-    @Schema(description = "Type of the question", example = "SINGLE_CHOICE | FILL_IN_BLANK | MULTI_CHOICE")
+    @Schema(description = "Type of the question", example = "SINGLE_CHOICE | FILL_IN_BLANK | MULTIPLE_CHOICE")
     private String type;
     private List<ChoiceInputDTO> choices;
     private List<HintInputDTO> hints;

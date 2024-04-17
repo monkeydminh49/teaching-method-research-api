@@ -81,9 +81,14 @@ public class DocumentController {
     }
 
 
+    @GetMapping("/{documentId}/test")
+    public TestDTO getTestByDocumentIdAndType(@PathVariable Long documentId, @RequestParam(required = false) TestType type) {
+        return testMapper.getTestDTOFromTest(testService.getTestByDocumentIdAndType(documentId, type));
+    }
+
     @GetMapping("/{documentId}/tests")
-    public TestDTO getTestsByDocumentId(@PathVariable Long documentId, @RequestParam TestType type) {
-        return testMapper.getTestDTOFromTest(testService.getTestsByDocumentIdAndType(documentId, type));
+    public List<TestDTO> getAllTestsByDocumentId(@PathVariable Long documentId) {
+        return testMapper.getTestDTOsFromTests(testService.getAllTestsByDocumentId(documentId));
     }
 
 

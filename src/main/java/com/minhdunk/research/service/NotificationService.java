@@ -2,7 +2,6 @@ package com.minhdunk.research.service;
 
 import com.minhdunk.research.dto.NotificationInputDTO;
 import com.minhdunk.research.dto.NotificationOutputDTO;
-import com.minhdunk.research.entity.Assignment;
 import com.minhdunk.research.entity.Notification;
 import com.minhdunk.research.entity.User;
 import com.minhdunk.research.exception.NotFoundException;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
