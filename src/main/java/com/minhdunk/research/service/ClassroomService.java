@@ -102,7 +102,7 @@ public class ClassroomService {
         Classroom classroom = classroomRepository.findById(id).orElseThrow(() -> new NotFoundException("Classroom not found"));
         List<User> students = List.copyOf(classroom.getStudents());
         List<Post> posts = postRepository.getPostsByClassroomIdWithoutMedias(id);
-        List<TestHistory> testHistory = testHistoryRepository.findLatestTestHistoryPerSubmitterInListOfSubmitter(students);
+        List<TestHistory> testHistory = testHistoryRepository.findAllTestHistoryPerSubmitterInListOfSubmitterForEachTest(students);
 
         status.put("assignments", assignmentMapper.getAssignmentOutputDTOsFromAssignments(assignments));
 
@@ -110,8 +110,11 @@ public class ClassroomService {
             tmpStatus.put(student.getId(), new int[assignments.size()]);
         }
 
+        assignments.sort(Comparator.comparing(Assignment::getId));
+
         for (int i = 0; i < assignments.size(); i++) {
             Assignment assignment = assignments.get(i);
+
             for (User student : students) {
                 int[] studentStatus = (int[]) tmpStatus.get(student.getId());
                 for (Post post : posts) {
@@ -126,20 +129,20 @@ public class ClassroomService {
                         break;
                     }
                 }
-//                if (assignment.getTest() == null) {
-//                    continue;
-//                }
-//                for (TestHistory th : testHistory) {
-//                    if (th.getSubmitter().getId().equals(student.getId()) && th.getTest().getId().equals(assignment.getTest().getId())) {
-//                        studentStatus[i] = 2;
-//                        break;
-//                    }
-//                }
+                if (assignment.getRelatedTest() == null) {
+                    continue;
+                }
+                for (TestHistory th : testHistory) {
+                    if (th.getSubmitter().getId().equals(student.getId()) && th.getTest().getId().equals(assignment.getRelatedTest().getId())) {
+                        studentStatus[i] = 2;
+                        break;
+                    }
+                }
             }
         }
 
         List<StudentOutputDTO> studentOutputDTOs = userMapper.getStudentOutputDTOsFromUsers(students);
-
+        status.put("testHistories", testHistory.size());
         status.put("status", tmpStatus);
         status.put("students", studentOutputDTOs);
         status.put("notations", Map.of(
