@@ -1,5 +1,6 @@
 package com.minhdunk.research.entity;
 
+import com.minhdunk.research.utils.PostOrientation;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -28,4 +29,6 @@ public class Counselling {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id", referencedColumnName = "id")
     private Document document;
+    @Enumerated(EnumType.STRING)
+    private PostOrientation orientation = PostOrientation.SOCIAL;
 }

@@ -1,5 +1,6 @@
 package com.minhdunk.research.dto;
 
+import com.minhdunk.research.utils.PostOrientation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,4 +20,5 @@ public class CounsellingOutputDTO {
     private String content;
     private LocalDateTime createAt;
     private Long documentId;
+    private PostOrientation orientation;
 }

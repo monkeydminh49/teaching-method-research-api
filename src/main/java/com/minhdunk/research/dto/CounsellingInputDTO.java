@@ -1,6 +1,7 @@
 package com.minhdunk.research.dto;
 
 
+import com.minhdunk.research.utils.PostOrientation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ import org.springframework.stereotype.Component;
 public class CounsellingInputDTO {
     private String title;
     private String content;
+    private PostOrientation orientation = PostOrientation.SOCIAL;
 }
