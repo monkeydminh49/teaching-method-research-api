@@ -1,5 +1,6 @@
 package com.minhdunk.research.dto;
 
+import com.minhdunk.research.utils.AssignmentType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,9 @@ public class AssignmentOutputDTO {
     private LocalDateTime dueDateTime;
     private LocalDateTime assignedDateTime;
     private Boolean isForGroup;
+    private Long relatedDocumentId;
+    private AssignmentType type = AssignmentType.OTHER;
+    private Long relatedTestId;
 
     public LocalDateTime getDueDateTime(){
         return this.dueDateTime.truncatedTo(ChronoUnit.SECONDS);
