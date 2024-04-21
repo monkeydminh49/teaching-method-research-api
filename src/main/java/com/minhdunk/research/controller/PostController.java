@@ -50,6 +50,7 @@ public class PostController {
                                          @RequestParam(value = "caption", required = false) String caption,
                                          @RequestParam(value = "orientation", required = false) PostOrientation orientation ,
                                          @RequestParam(value = "member-ids", required = false) Long[] memberIds,
+                                         @RequestParam(value = "counselling-id", required = false) Long counsellingId,
                                          @PathVariable Long id) {
         Set<Media> medias = new HashSet<>();
         if(files != null){
@@ -68,6 +69,7 @@ public class PostController {
                 .title(title)
                 .caption(caption)
                 .orientation(orientation)
+                .counsellingId(counsellingId)
                 .build();
         Post post = postService.submitAssignment(principal ,id, request, medias, memberIds);
         log.info(post.getTitle());
