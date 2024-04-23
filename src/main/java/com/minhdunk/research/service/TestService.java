@@ -171,31 +171,34 @@ public class TestService {
             questionHistory.setTest(testHistory);
 
 //            QuestionHistory questionHistory1 = questionHistoryRepository.save(questionHistory);
-
             List<ChoiceHistory> choiceHistories = new ArrayList<>();
-            for (Choice choice : question.getChoices()) {
-                for (ChoiceSubmitDTO choiceSubmit : questionSubmit.getChoices()) {
-                    if (choice.getId().equals(choiceSubmit.getChoiceId())) {
 
-                        ChoiceHistory choiceHistory = choiceMapper.getChoiceHistoryFromChoice(choice);
+            if (question.getType() == QuestionType.FILL_IN_THE_BLANK) {
+                ChoiceHistory choiceHistory = new ChoiceHistory();
+                ChoiceSubmitDTO choiceSubmit = questionSubmit.getChoices().get(0);
+                choiceHistory.setContent(choiceSubmit.getContent());
+                choiceHistory.setIsPicked(choiceSubmit.getIsPicked());
+                choiceHistory.setQuestion(questionHistory);
+                choiceHistory.setTest(testHistory);
+                choiceHistories.add(choiceHistory);
+            } else {
+                for (Choice choice : question.getChoices()) {
+                    for (ChoiceSubmitDTO choiceSubmit : questionSubmit.getChoices()) {
+                        if (choice.getId().equals(choiceSubmit.getChoiceId())) {
 
-                        if (question.getType() == QuestionType.FILL_IN_THE_BLANK) {
-                            choiceHistory.setContent(choiceSubmit.getContent());
+                            ChoiceHistory choiceHistory = choiceMapper.getChoiceHistoryFromChoice(choice);
+
+
                             choiceHistory.setIsPicked(choiceSubmit.getIsPicked());
                             choiceHistory.setQuestion(questionHistory);
                             choiceHistory.setTest(testHistory);
                             choiceHistories.add(choiceHistory);
-                            continue;
-                        }
-
-                        choiceHistory.setIsPicked(choiceSubmit.getIsPicked());
-                        choiceHistory.setQuestion(questionHistory);
-                        choiceHistory.setTest(testHistory);
-                        choiceHistories.add(choiceHistory);
 //                        choiceHistoryRepository.save(choiceHistory);
+                        }
                     }
                 }
             }
+
 
             List<HintHistory> hintHistories = new ArrayList<>();
             for (Hint hint : question.getAnswerHints()) {

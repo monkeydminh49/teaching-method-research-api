@@ -58,6 +58,7 @@ public class DocumentService {
     @Autowired
     private CounsellingMapper counsellingMapper;
 
+    @Transactional
     public Document createDocument(Principal principal, DocumentInputDTO request, MultipartFile audio, MultipartFile thumbnail) throws IOException {
         User user = userService.getUserByUsername(principal.getName());
         Document document = documentMapper.getDocumentFromDocumentInputDto(request);
