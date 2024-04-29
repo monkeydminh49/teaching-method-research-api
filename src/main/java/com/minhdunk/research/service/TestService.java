@@ -247,4 +247,8 @@ public class TestService {
     public List<Test> getAllTestsByDocumentId(Long documentId) {
         return testRepository.findAllByDocumentId(documentId);
     }
+
+    public List<TestHistory> getUserTestHistoryByTestIdAndUserId(Long testId, Long userId) {
+        return testHistoryRepository.findByTestIdAndSubmitterId(testId, userId);
+    }
 }

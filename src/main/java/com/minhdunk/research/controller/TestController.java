@@ -59,6 +59,11 @@ public class TestController {
         return testMapper.getTestHistoryOutputDTOsFromTestHistorys(testService.getUserTestHistory(testId, authentication));
     }
 
+    @GetMapping("/{test-id}/user-history/{user-id}")
+    public List<TestHistoryOutputDTO> getUserTestHistoryByTestIdAndUserId(@PathVariable("test-id") Long testId, @PathVariable("user-id") Long userId) {
+        return testMapper.getTestHistoryOutputDTOsFromTestHistorys(testService.getUserTestHistoryByTestIdAndUserId(testId, userId));
+    }
+
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<TestDTO> getAllTests() {

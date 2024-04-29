@@ -53,7 +53,7 @@ public class PostController {
                                          @RequestParam(value = "counselling-id", required = false) Long counsellingId,
                                          @PathVariable Long id) {
         Set<Media> medias = new HashSet<>();
-        if(files != null){
+        if(files != null && files.length > 0) {
             for(MultipartFile file : files) {
                 try {
                     Media media = mediaService.persistMedia(file);
