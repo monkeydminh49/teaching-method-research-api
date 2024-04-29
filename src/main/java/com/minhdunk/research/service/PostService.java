@@ -45,7 +45,10 @@ public class PostService {
     @Transactional
     public Post submitAssignment(Principal principal, Long assignmentId, PostInputDTO request, Set<Media> medias, Long[] memberIds) {
         User user = userService.getUserByUsername(principal.getName());
-        Counselling counselling = counsellingRepository.findById(request.getCounsellingId()).orElseThrow(() -> new NotFoundException("Counselling with id " + assignmentId + " not found"));
+        Counselling counselling = null;
+        if (request.getCounsellingId() != null){
+            counselling = counsellingRepository.findById(request.getCounsellingId()).orElseThrow(() -> new NotFoundException("Counselling with id " + assignmentId + " not found"));
+        }
         Assignment assignment = assignmentRepository.findById(assignmentId).get();
         Set<User> members = new HashSet<>();
         Group group = new Group();
