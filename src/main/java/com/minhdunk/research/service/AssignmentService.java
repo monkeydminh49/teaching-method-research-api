@@ -8,10 +8,8 @@ import com.minhdunk.research.entity.Document;
 import com.minhdunk.research.entity.Test;
 import com.minhdunk.research.exception.NotFoundException;
 import com.minhdunk.research.mapper.AssignmentMapper;
-import com.minhdunk.research.repository.AssignmentRepository;
-import com.minhdunk.research.repository.ClassroomRepository;
-import com.minhdunk.research.repository.DocumentRepository;
-import com.minhdunk.research.repository.TestRepository;
+import com.minhdunk.research.repository.*;
+import com.minhdunk.research.utils.AssignmentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +32,8 @@ public class AssignmentService {
     private DocumentRepository documentRepository;
     @Autowired
     private TestRepository testRepository;
+    @Autowired
+    private TestHistoryRepository testHistoryRepository;
 
     public List<Assignment> getAllClassAssignmentsByClassId(Long id) {
         return assignmentRepository.findAllByClassroomId(id);
@@ -41,7 +41,18 @@ public class AssignmentService {
 
     public List<AssignmentStatusOutputDTO> getAllClassAssignmentsStatusByClassId(Principal principal, Long id) {
         Long userId = userService.getUserByUsername(principal.getName()).getId();
-        return assignmentRepository.findAllAssignmentsStatusByClassroomId(id, userId);
+        List<AssignmentStatusOutputDTO> assignmentStatusOutputDTOS =  assignmentRepository.findAllAssignmentsStatusByClassroomId(id, userId);
+        assignmentStatusOutputDTOS.forEach((item) -> {
+            if (item.getStatus().equals("NOT_SUBMITTED")
+                    && !item.getDueDateTime().isBefore(LocalDateTime.now())
+                    && item.getType().equals(AssignmentType.FOR_TEST)
+            ) {
+                if (!testHistoryRepository.findByTestIdAndSubmitterId(item.getRelatedTestId(), userId).isEmpty()) {
+                    item.setStatus("APPROVED");
+                }
+            }
+        });
+        return assignmentStatusOutputDTOS;
     }
 
     @Transactional
